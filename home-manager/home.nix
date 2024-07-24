@@ -154,6 +154,7 @@
 
       monitor = [
         "Unknown-1,disable"
+        "HDMI-A-1,1024x768@144,0x0,1"
       ];
 
       "exec-once" = "ags";
