@@ -1087,11 +1087,11 @@
         "sadan4": "sadan4"
       },
       "locked": {
-        "lastModified": 1722027542,
-        "narHash": "sha256-t39zM6bHXpPcjlc4dXleQlfUyE0qOiu08ya0/OlMQmY=",
+        "lastModified": 1722027643,
+        "narHash": "sha256-tKs5f7PDhY1FfkKZ523p2amfjjN4jEavr63gqcjQZ3M=",
         "owner": "poollovernathan",
         "repo": "nixos",
-        "rev": "cf89329ceb8e2cf6c4288a163683c480f447bf35",
+        "rev": "db9e278df19d375e693eb471b138cf86e4a0368c",
         "type": "github"
       },
       "original": {
