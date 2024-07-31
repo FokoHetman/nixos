@@ -148,7 +148,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
 
-    inputs.nixvim.packages.${system}.default
+    #inputs.nixvim.packages.${system}.default
     inputs.fokquote.packages.${system}.default
 
     unzip
@@ -167,9 +167,11 @@
     wget
     git
     curl
+    zip
 
     grim
     slurp
+    fuzzel
     
     wl-clipboard
     wf-recorder
@@ -180,6 +182,7 @@
     
     xdg-desktop-portal
     gtk3
+    qt6ct
 
     nasm
     gcc
@@ -188,6 +191,8 @@
     ffmpeg
     
     pulseaudio
+
+    gparted
     
 
     #(pkgs.writeShellScriptBin "theme_update" /*bash*/ ''

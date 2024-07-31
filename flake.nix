@@ -52,8 +52,8 @@
 	  ./nixos/configuration.nix
           home-manager.nixosModules.default
           inputs.stylix.nixosModules.stylix
-          ( inputs.nathan.mkTailnet{} )
-          
+          (inputs.nathan.mkTailnet {})
+          (inputs.nathan.nixosModules.nathan)
 	];
       };
     };

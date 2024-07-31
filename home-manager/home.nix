@@ -19,11 +19,13 @@
     homeDirectory = "/home/${username}";
     packages = with pkgs; [
       vesktop
-      dolphin
       krita
       prismlauncher
 
+      dolphin
+
       drawio
+      freecad
 
       colorls
 
@@ -33,13 +35,91 @@
       tree
       gimp
 
+      inputs.nixvim.packages.${pkgs.system}.default
+
       (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
     ];
   };
 
   fonts.fontconfig.enable = true;
-
+  
+  xdg.configFile."lf/icons".source = ./icons;
   programs = {
+    #neovim = {
+    #  enable = true;
+    #};
+    lf = {
+      enable = true;
+      settings = {
+        preview = true;
+        drawbox = true;
+        icons = true;
+      };
+      commands = {
+        edit = ''$$EDITOR $f'';
+        mkdir = ''
+        ''${{
+          printf "Directory Name: "
+          read DIR
+          mkdir $DIR
+        }}'';
+        sh = ''bash'';
+
+
+        fok-quote = ''
+        ''${{
+          printf "Quote: "
+          read QUOTE
+          printf "Author: "
+          read AUTHOR
+          fok-quote $QUOTE $AUTHOR
+        }}'';
+        fokpack = ''
+        ''${{
+          printf "Fok Utility: "
+          read FOK
+          lf -remote "send $id $FOK"
+        }}'';
+        quit = "q";
+      };
+      keybindings = {
+        "\\\"" = "";
+        "o" = "";
+        "c" = "sh";
+        "d" = "mkdir";
+        "<enter>" = "open";
+        "<c-c>" = "quit";
+        "e" = "edit";
+        "f" = "fokpack";
+      };
+      extraConfig = 
+      let
+        previewer =
+          pkgs.writeShellScriptBin "prev.sh" ''
+          file=$1
+          w=$2
+          h=#3
+          x=$4
+          y=$5
+
+          if [[ "$( ${pkgs.file}/bin/file -Lb --mime-type "$file")" =~ ^image ]] then
+            ${pkgs.kitty}/bin/kitty + kitten icat --silent --stdin no --transfer-mode file --place "''${w}x''${h}@''${x}x''${y}" "$file" < /dev/null > /dev/tty
+
+            exit 1
+          fi
+          
+          ${pkgs.pistol}/bin/pistol "$file"
+        '';
+        cleaner = pkgs.writeShellScriptBin "clean.sh" ''
+          ${pkgs.kitty}/bin/kitty + kitten icat --clear --stdin no --silent --transfer-mode file < /dev/null > /dev/tty
+        '';
+      in
+      ''
+        set cleaner ${cleaner}/bin/clean.sh
+        set previewer ${previewer}/bin/prev.sh
+      '';
+
+    };
     ags = {
       enable = true;
       configDir = ./ags;
@@ -52,7 +132,15 @@
 
     home-manager.enable = true;
     git.enable = true;
-    kitty.enable = true;
+    
+    kitty = {
+      enable = true;
+      font = lib.mkForce {
+        name = "FiraCode Nerd Font Reg";
+        size = 12;
+      };
+    };
+
     wofi.enable = true;
     firefox = {
       enable = true;
@@ -154,7 +242,11 @@
 
       monitor = [
         "Unknown-1,disable"
-        "HDMI-A-1,1024x768@144,0x0,1"
+      ];
+
+      env = [
+        "QT_QPA_PLATFORM,wayland"
+        "QT_QPA_PLATFORMTHEME,qt5ct"
       ];
 
       "exec-once" = "ags";
@@ -162,7 +254,7 @@
       "$mod" = "SUPER";
       "$browser" = "firefox";
       "$terminal" = "kitty";#"alacritty";
-      "$fileManager" = "nemo";
+      "$fileManager" = "dolphin";
       "$discord" = "vesktop";
       "$menu" = "wofi --show drun --show-icons";
 
