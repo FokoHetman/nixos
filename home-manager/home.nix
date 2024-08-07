@@ -34,7 +34,6 @@
 
       colorls
       tree
-      gimp
 
       inputs.nixvim.packages.${pkgs.system}.default
 
@@ -70,6 +69,26 @@
           read NULL
         }}'';
 
+	compile = ''
+	''${{
+	  set -m
+	  extension=$(echo "$fx" | cut -d "." -f 2)
+	  fxnoext=$(echo "fx" | cut -d "." -f 1)
+	  case "$extension" in
+	    rs		) ${pkgs.rustc}/bin/rustc $fx;;
+	    c		) ${pkgs.gcc}/bin/gcc -o $fxnoext $fx;;
+	    zig		) ${pkgs.zig}/bin/zig $fx;;
+	    hs		) ${pkgs.ghc}/bin/ghc $fx;;
+	    py		) ${pkgs.python3}/bin/python $fx;;
+	    *		) echo "Unknown extension";;
+	  esac
+
+	}}'';
+	execute = ''
+	''${{
+	  ${pkgs.bash}/bin/bash -c $fx
+	}}'';
+
 
         fok-quote = ''
         ''${{
@@ -77,9 +96,13 @@
           read QUOTE
           printf "Author: "
           read AUTHOR
-          fok-quote $QUOTE $AUTHOR
+          fok-quote "$QUOTE" "$AUTHOR"
           read NULL
         }}'';
+	chess = ''
+	''${{
+	  chess
+	}}'';
         fokpack = ''
         ''${{
           printf "Fok Utility: "
@@ -92,7 +115,8 @@
         "\\\"" = "";
         "o" = "";
         "c" = "shell";
-        "d" = "mkdir";
+	"b" = "compile";
+	"x" = "execute";
         "." = "set hidden!";        
 
         "<enter>" = "open";
@@ -100,10 +124,10 @@
         "<esc>" = "quit";
         "e" = "edit";
         "f" = "fokpack";
-        "rd" = "ripdrag";
+        "d" = "ripdrag";
 
 
-        "V" = ''$${pkgs.bat}/bin/bat --paging=always --theme=gruvbox "$f"'';
+        "V" = ''''$${pkgs.bat}/bin/bat --paging=always --theme=gruvbox "$f"'';
       };
       previewer = {
         keybinding = "i";

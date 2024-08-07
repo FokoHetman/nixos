@@ -11,7 +11,13 @@
       submodules/secrets.nix
       submodules/networking.nix
       submodules/theme.nix
+      inputs.sops-nix.nixosModules.sops
     ];
+
+  sops.defaultSopsFile = ../secrets/secrets.yaml;
+  sops.defaultSopsFormat = "yaml";
+  sops.age.keyFile = "/home/${username}/.config/sops/age/keys.txt";
+  sops.secrets.shrimp = { };
 
 
   nixpkgs.config.allowUnfree = true;
@@ -150,6 +156,9 @@
 
     #inputs.nixvim.packages.${system}.default
     inputs.fokquote.packages.${system}.default
+    inputs.chess.packages.${system}.default#.packages.${system}.default
+
+    sops
 
     unzip
     neofetch
@@ -187,12 +196,28 @@
     nasm
     gcc
     rustc
+    cargo
+
+    ncurses
 
     ffmpeg
     
     pulseaudio
+    
+    texliveMedium
+    tetex
 
-    gparted
+    (pkgs.writeShellScriptBin "nixos" /*bash*/ ''
+      #! {pkgs.bash}/bin/bash
+      case $1 in
+        sw      ) sudo nixos-rebuild switch;;
+        test      ) sudo nixos-rebuild test;;
+        edit    ) sudo lf /etc/nixos;;
+	up	) sudo nix flake update /etc/nixos;;
+        *       ) echo "Bad Usage";;
+      esac
+
+    '')
     
 
     #(pkgs.writeShellScriptBin "theme_update" /*bash*/ ''

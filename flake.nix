@@ -4,16 +4,13 @@
   inputs = {
     fokquote.url = "github:fokohetman/fok-quote";
     nixvim.url = "github:fokohetman/nixvim-foko";
+    chess.url = "github:fokohetman/cli_chess";
 
-    nathan.url = "github:poollovernathan/nixos";
+#    nathan.url = "github:poollovernathan/nixos";
 
 
     stylix.url = "github:danth/stylix";
     ags.url = "github:Aylur/ags";
-
-
-    
-    
 
     hyprland = {
       type = "git";
@@ -26,6 +23,7 @@
       inputs.hyprland.follows = "hyprland";
     };
 
+    sops-nix.url = "github:Mic92/sops-nix";
 
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -52,8 +50,8 @@
 	  ./nixos/configuration.nix
           home-manager.nixosModules.default
           inputs.stylix.nixosModules.stylix
-          (inputs.nathan.mkTailnet {})
-          (inputs.nathan.nixosModules.nathan)
+          #(inputs.nathan.mkTailnet {})
+          #(inputs.nathan.nixosModules.nathan)
 	];
       };
     };
