@@ -90,25 +90,11 @@
 	}}'';
 
 
-        fok-quote = ''
-        ''${{
-          printf "Quote: "
-          read QUOTE
-          printf "Author: "
-          read AUTHOR
-          fok-quote "$QUOTE" "$AUTHOR"
-          read NULL
-        }}'';
-	chess = ''
+	fok-utils = ''
 	''${{
-	  chess
+	  fok-utils
 	}}'';
-        fokpack = ''
-        ''${{
-          printf "Fok Utility: "
-          read FOK
-          lf -remote "send $id $FOK"
-        }}'';
+
         quit = "q";
       };
       keybindings = {
@@ -123,7 +109,7 @@
         "<c-c>" = "quit";
         "<esc>" = "quit";
         "e" = "edit";
-        "f" = "fokpack";
+        "f" = "fok-utils";
         "d" = "ripdrag";
 
 

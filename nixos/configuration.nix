@@ -156,7 +156,8 @@
 
     #inputs.nixvim.packages.${system}.default
     inputs.fokquote.packages.${system}.default
-    inputs.chess.packages.${system}.default#.packages.${system}.default
+    inputs.chess.packages.${system}.default
+    inputs.fokutils.packages.${system}.default
 
     sops
 
