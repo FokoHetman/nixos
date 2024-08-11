@@ -121,7 +121,6 @@
   };
 
   hardware.pulseaudio.enable = true;
-  sound.enable = true;
   security.rtkit.enable = true;
 
 
@@ -204,10 +203,9 @@
     ffmpeg
     
     pulseaudio
-    
-    texliveMedium
-    tetex
 
+
+    
     (pkgs.writeShellScriptBin "nixos" /*bash*/ ''
       #! {pkgs.bash}/bin/bash
       case $1 in

@@ -2,6 +2,8 @@
   description = "fokflakefokflakefokflakefokflakefokflakefokflakefokflakefokflakefokflakefokflakefokflake";
 
   inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
     fokquote.url = "github:fokohetman/fok-quote";
     nixvim.url = "github:fokohetman/nixvim-foko";
     chess.url = "github:fokohetman/cli_chess";

@@ -8,7 +8,22 @@
 }: {
   imports = [inputs.ags.homeManagerModules.default];
   nixpkgs = {
-    overlays = [];
+    overlays = [
+      (self: super:
+      {
+	
+	vesktop = super.vesktop.overrideAttrs(prev: rec {
+	  src = super.fetchFromGitHub {
+	    owner = "FokoHetman";
+	    repo = "Vesktop";
+	    rev = "v${prev.version}";
+	    hash = "sha256-HlT7ddlrMHG1qOCqdaYjuWhJD+5FF1Nkv2sfXLWd07o=";#"sha256-HlT7ddlrMHG1qOCqdaYjuWhJD+5FF1Nkv2sfXLWd07o="; 
+	  };
+	  #withMiddleClickScroll = true;
+	#vesktop.override {withMiddleClickScroll = true;} ;
+	});
+      })
+    ];
     config = {
       allowUnfree = true;
       allowUnfreePredicate = _: true;
@@ -18,7 +33,8 @@
     username = "${username}";
     homeDirectory = "/home/${username}";
     packages = with pkgs; [
-      vesktop
+
+      (vesktop.override {withMiddleClickScroll = true;})
       krita
       prismlauncher
 
