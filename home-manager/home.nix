@@ -11,13 +11,21 @@
     overlays = [
       (self: super:
       {
-	
+	/*vencord = super.vencord.overrideAttrs(prev: rec {
+	  src = super.fetchFromGitHub {
+	    owner = "FokoHetman";
+	    repo = "Vencord";
+	    rev = "test";
+	    hash = "sha256-YyYDHQ03X+//K/wzpwWHgeoyNxGgIPKtkShCikV/1tk=";
+	  };
+	});*/
 	vesktop = super.vesktop.overrideAttrs(prev: rec {
+
 	  src = super.fetchFromGitHub {
 	    owner = "FokoHetman";
 	    repo = "Vesktop";
-	    rev = "v${prev.version}";
-	    hash = "sha256-HlT7ddlrMHG1qOCqdaYjuWhJD+5FF1Nkv2sfXLWd07o=";#"sha256-HlT7ddlrMHG1qOCqdaYjuWhJD+5FF1Nkv2sfXLWd07o="; 
+	    rev = "v1.5.3-patched3";
+	    hash = "sha256-vWwcFlMtfqOQ2M4NuXLy3C57iTC90gvmq0BeBNFQ3SI=";#"sha256-YyYDHQ03X+//K/wzpwWHgeoyNxGgIPKtkShCikV/1tk=";#"sha256-lFuTTtooc3Gs7GADCvFzM5ZcOu+/3KCN3s0s4Aa09n4=";
 	  };
 	  #withMiddleClickScroll = true;
 	#vesktop.override {withMiddleClickScroll = true;} ;
@@ -34,7 +42,8 @@
     homeDirectory = "/home/${username}";
     packages = with pkgs; [
 
-      (vesktop.override {withMiddleClickScroll = true;})
+      (vesktop.override {withMiddleClickScroll = true;/* withSystemVencord = true;*/})
+      #vencord
       krita
       prismlauncher
 
@@ -69,6 +78,7 @@
         icons = true;
       };
       commands = {
+	rm = ''rm "$fx"'';
         ripdrag = ''%${pkgs.ripdrag}/bin/ripdrag -x "$fx"'';
         edit = ''$$EDITOR $f'';
         mkdir = ''
@@ -121,6 +131,7 @@
 	"x" = "execute";
         "." = "set hidden!";        
 
+	"<delete>" = "rm";
         "<enter>" = "open";
         "<c-c>" = "quit";
         "<esc>" = "quit";
@@ -216,7 +227,7 @@
             definedAliases = [ "@np" ];
           };
 
-          "Nix Optioms" = {
+          "Nix Options" = {
             urls = [{
               template = "https://search.nixos.org/options";
               params = [
