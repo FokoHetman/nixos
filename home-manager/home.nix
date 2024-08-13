@@ -78,7 +78,6 @@
         icons = true;
       };
       commands = {
-	rm = ''rm "$fx"'';
         ripdrag = ''%${pkgs.ripdrag}/bin/ripdrag -x "$fx"'';
         edit = ''$$EDITOR $f'';
         mkdir = ''
@@ -131,7 +130,6 @@
 	"x" = "execute";
         "." = "set hidden!";        
 
-	"<delete>" = "rm";
         "<enter>" = "open";
         "<c-c>" = "quit";
         "<esc>" = "quit";
