@@ -8,8 +8,8 @@
     nixvim.url = "github:fokohetman/nixvim-foko";
     chess.url = "github:fokohetman/cli_chess";
     fokutils.url = "github:fokohetman/fok-utils";
-#    nathan.url = "github:poollovernathan/nixos";
-
+    #nathan.url = "github:poollovernathan/nixos";
+    nathan.url = "path:/etc/nixos/nathan/nixos";
 
     stylix.url = "github:danth/stylix";
     ags.url = "github:Aylur/ags";
@@ -52,8 +52,8 @@
 	  ./nixos/configuration.nix
           home-manager.nixosModules.default
           inputs.stylix.nixosModules.stylix
-          #(inputs.nathan.mkTailnet {})
-          #(inputs.nathan.nixosModules.nathan)
+          (inputs.nathan.mkTailnet {})
+          (inputs.nathan.nixosModules.nathan)
 	];
       };
     };

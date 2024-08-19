@@ -11,14 +11,10 @@
       submodules/secrets.nix
       submodules/networking.nix
       submodules/theme.nix
-      inputs.sops-nix.nixosModules.sops
+      inputs.nix-minecraft.nixosModules.minecraft-servers
+      submodules/minecraft.nix
     ];
-
-  sops.defaultSopsFile = ../secrets/secrets.yaml;
-  sops.defaultSopsFormat = "yaml";
-  sops.age.keyFile = "/home/${username}/.config/sops/age/keys.txt";
-  sops.secrets.shrimp = { };
-
+  nixpkgs.overlays = [inputs.nix-minecraft.overlay];
 
   nixpkgs.config.allowUnfree = true;
   
@@ -37,27 +33,15 @@
   hardware.bluetooth.powerOnBoot = true;
 
 
-  hardware.nvidia = {
-    modesetting.enable=true;
-    powerManagement.enable = false;
-
-    powerManagement.finegrained=false;
-
-    open=false;
-    nvidiaSettings=true;
-
-    package = config.boot.kernelPackages.nvidiaPackages.beta;
-  };
-
-
-
-
-
 
   # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.supportedFilesystems = ["ntfs"];
+  boot.loader = {
+    grub = {
+      enable = true;
+      device = "nodev";
+    };
+    efi.canTouchEfiVariables = true;
+  };
 
   networking= {
     hostName = "${hostname}";
@@ -66,7 +50,8 @@
     };
     interfaces.enp5s0.wakeOnLan.enable=true;
     firewall.allowedTCPPorts = [22 44];
-    firewall.allowedUDPPorts = [];
+    firewall.allowedUDPPorts = [ config.services.tailscale.port ];
+    firewall.trustedInterfaces = [ "tailscale0" ];
     firewall.enable = true;
 
     #proxy.default = "http://user:password@proxy:port/";
@@ -86,42 +71,10 @@
 
 
   services = {
-    xserver = {
-      enable = true;
-      xkb.layout = "pl";
-      xkb.options = "eurosign:e,caps:escape";
-      videoDrivers = ["nvidia"];
-    };
-    upower.enable=true;
-    displayManager.sddm = {
-      enable = true;
-      wayland = {
-        enable = true;
-      };
-    };
+    tailscale.enable = true;
     blueman.enable = true;
-    printing.enable = true;
-    ollama = {
-      enable = true;
-      acceleration = "cuda";
-    };
   };
 
-
-  programs = {
-    hyprland = {
-      enable=true;
-      package = inputs.hyprland.packages."${pkgs.system}".hyprland;
-    };
-    steam = {
-      enable = true;
-      gamescopeSession.enable = true;
-    };
-    gamemode.enable = true;
-  };
-
-  hardware.pulseaudio.enable = true;
-  security.rtkit.enable = true;
 
 
   users.users = {
@@ -134,6 +87,9 @@
         
       ];
     };
+    foko = {
+      isNormalUser = true;
+    };
 
   };
   home-manager = {
@@ -142,10 +98,6 @@
       "${username}" = import ./../home-manager/home.nix;
     };
     backupFileExtension = "backup";
-  };
-  xdg.portal = {
-    enable = true;
-    extraPortals = [pkgs.xdg-desktop-portal-gtk ];
   };
 
 
@@ -158,18 +110,10 @@
     inputs.chess.packages.${system}.default
     inputs.fokutils.packages.${system}.default
 
-    sops
 
     unzip
     neofetch
-    bluez
-    qemu
-    blockbench
-    blender
-    godot_4
-    vlc
-    libvlc
-    
+    bluez    
 
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     nmap
@@ -177,22 +121,12 @@
     git
     curl
     zip
-
-    grim
-    slurp
-    fuzzel
     
     wl-clipboard
-    wf-recorder
-    libnotify
 
     imagemagick7
-    dunst
+ 
     
-    xdg-desktop-portal
-    gtk3
-    qt6ct
-
     nasm
     gcc
     rustc
@@ -201,9 +135,6 @@
     ncurses
 
     ffmpeg
-    
-    pulseaudio
-
 
     
     (pkgs.writeShellScriptBin "nixos" /*bash*/ ''
@@ -251,17 +182,8 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  services.openssh = {
-    enable = true;
-    ports = [ 22 ];
-    settings = {
-      PasswordAuthentication = true;
-      AllowUsers = null; # Allows all users by default. Can be [ "user1" "user2" ]
-      #UseDns = true;
-      #X11Forwarding = false;
-      #PermitRootLogin = "prohibit-password"; # "yes", "without-password", "prohibit-password", "forced-commands-only", "no"
-    };
-  };
+  # services.openssh.enable = true;
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];

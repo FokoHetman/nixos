@@ -53,7 +53,7 @@
       drawio
       freecad
 
-      colorls
+      lsd
 
       mangohud
 
@@ -249,11 +249,11 @@
       historyControl = ["ignoreboth"];
       enableCompletion=true;
       /*shellAliases = {
-        ll = "colorls -l";
+        ll = "lsd -l";
         ".." = "cd ..";
-        la = "colorls -a";
-        lla = "colorls -al";
-        ls = "colorls";
+        la = "lsd -a";
+        lla = "lsd -al";
+        ls = "lsd";
       };*/
 
     };

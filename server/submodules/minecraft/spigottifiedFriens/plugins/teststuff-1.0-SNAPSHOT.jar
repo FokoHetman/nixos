@@ -1,0 +1,7 @@
+--2024-08-15 21:11:26--  http://192.168.0.12:8000/teststuff-1.0-SNAPSHOT.jar
+Connecting to 192.168.0.12:8000... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 10799 (11K) [application/octet-stream]
+teststuff-1.0-SNAPSHOT.jar.1: Permission denied
+
+Cannot write to 'teststuff-1.0-SNAPSHOT.jar.1' (Permission denied).
