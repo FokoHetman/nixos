@@ -1,0 +1,12 @@
+The fonts used in 5D Chess With Multiverse Time Travel are the following:
+
+
+Crimson Text by Sebastian Kosch / SIL Open Font License 1.1
+https://github.com/skosch/Crimson
+
+Public Sans by Pablo Impallari, Rodrigo Fuenzalida (Modified by Dan O. Williams and USWDS) / SIL Open Font License 1.1
+https://github.com/uswds/public-sans
+
+Inconsolata by The Inconsolata Project Authors / SIL Open Font License 1.1
+https://github.com/googlefonts/inconsolata
+
