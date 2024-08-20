@@ -7,6 +7,9 @@
 			program = "${pkgs.writers.writeBash "5dchess" ''
 				${pkgs.wine64}/bin/wine64 ${self}/5dchesswithmultiversetimetravel.exe
 			''}";
+		package = pkgs.writeShellScriptBin "5dchess" ''
+		  ${pkgs.wine64}/bin/wine64 ${self}/5dchesswithmultiversetimetravel.exe
+		''};
 		}) nixpkgs.legacyPackages;
 	};
 }
