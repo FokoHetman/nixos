@@ -6,7 +6,7 @@
 
   outputs = { ... }@inputs: {
     apps = [
-      inputs."5dchess".package
+      inputs."5dchess".self
     ];
   };
 }

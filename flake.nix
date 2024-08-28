@@ -8,6 +8,9 @@
     nixvim.url = "github:fokohetman/nixvim-foko";
     chess.url = "github:fokohetman/cli_chess";
     fokutils.url = "github:fokohetman/fok-utils";
+
+
+
     #nathan.url = "github:poollovernathan/nixos";
     nathan.url = "path:/etc/nixos/nathan/nixos";
 

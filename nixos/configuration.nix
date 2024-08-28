@@ -65,7 +65,7 @@
       enable = true;
     };
     interfaces.enp5s0.wakeOnLan.enable=true;
-    firewall.allowedTCPPorts = [22 44];
+    firewall.allowedTCPPorts = [22 44 2137];
     firewall.allowedUDPPorts = [];
     firewall.enable = true;
 
@@ -78,11 +78,11 @@
 
   # Select internationalisation properties.
   # i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
+  console = {
   #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
+    keyMap = "pl";
   #   useXkbConfig = true; # use xkb.options in tty.
-  # };
+  };
 
 
   services = {
@@ -149,9 +149,14 @@
   };
 
 
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    #spotify
+    #obsidian
+    protonup
+
 
     #inputs.nixvim.packages.${system}.default
     inputs.fokquote.packages.${system}.default
@@ -193,10 +198,14 @@
     gtk3
     qt6ct
 
+
     nasm
     gcc
     rustc
     cargo
+    ghc
+    zig
+
 
     ncurses
 
@@ -217,7 +226,7 @@
       esac
 
     '')
-    
+        
 
     #(pkgs.writeShellScriptBin "theme_update" /*bash*/ ''
     #  cp /etc/nixos/nixos/wallpaper/pool/$(ls /etc/nixos/nixos/wallpaper/pool | shuf -n 1) /etc/nixos/nixos/wallpaper/base.jpg
@@ -226,6 +235,12 @@
 
 
   ];
+
+  environment.sessionVariables = {
+    MOZ_ENABLE_WAYLAND = 1;
+    STEAM_EXTRA_COMPAT_TOOLS_PATHS =
+      "\${HOME}/.steam/root/compatibilitytools.d";
+  };
   environment = {
     variables = {
       EDITOR = "nvim";
