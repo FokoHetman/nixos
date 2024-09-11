@@ -11,8 +11,7 @@
 
 
 
-    #nathan.url = "github:poollovernathan/nixos";
-    nathan.url = "path:/etc/nixos/nathan/nixos";
+    nathan.url = "github:poollovernathan/nixos";
 
     stylix.url = "github:danth/stylix";
     ags.url = "github:Aylur/ags";
@@ -48,15 +47,35 @@
   in {
     nixosConfigurations = {
       inherit system pkgs;
-      ${hostname} = nixpkgs.lib.nixosSystem {
+      "fokopc" = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs;};
 	modules = [
 	  {_module.args = {inherit username timezone inputs hostname;};}
-	  ./nixos/configuration.nix
+	  ./fokopc/nixos/configuration.nix
           home-manager.nixosModules.default
           inputs.stylix.nixosModules.stylix
           (inputs.nathan.mkTailnet {})
           (inputs.nathan.nixosModules.nathan)
+	];
+      };
+      "fokopi" = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs;};
+	modules = [
+	  {_module.args = {inherit username timezone inputs hostname;};}
+	  ./fokopi/nixos/configuration.nix
+          home-manager.nixosModules.default
+          inputs.stylix.nixosModules.stylix
+          (inputs.nathan.mkTailnet {})
+	];
+      };
+      "fokoserver" = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs;};
+	modules = [
+	  {_module.args = {inherit username timezone inputs hostname;};}
+	  ./fokoserver/nixos/configuration.nix
+          home-manager.nixosModules.default
+          inputs.stylix.nixosModules.stylix
+          (inputs.nathan.mkTailnet {})
 	];
       };
     };
