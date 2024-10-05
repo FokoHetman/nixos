@@ -164,6 +164,9 @@
     inputs.chess.packages.${system}.default
     inputs.fokutils.packages.${system}.default
 
+    alsa-lib
+
+
     sops
 
     unzip
@@ -278,11 +281,11 @@
       #PermitRootLogin = "prohibit-password"; # "yes", "without-password", "prohibit-password", "forced-commands-only", "no"
     };
   };
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+
+
+
+
+
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you

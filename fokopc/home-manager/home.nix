@@ -138,6 +138,13 @@
   
   xdg.configFile."lf/icons".source = ./icons;
   programs = {
+    tmux = {
+      enable = true;
+      clock24 = true;
+      plugins = [
+
+      ];
+    };
     lf = {
       enable = true;
       settings = {
@@ -275,6 +282,14 @@
 	tab_bar_style = "powerline";
 	tab_powerline_style = "slanted";
 	tab_title_template = "{title}{' :{}:'.format(num_windows) if num_windows > 1 else ''}";
+
+	#cursor = "#ff8758";
+	#cursor_text_color = "#444";
+	/*cursor_shape = "beam";
+	cursor_beam_thickness = 2;
+	cursor_underline_thickness = 2;
+	cursor_blink_interval = -1;
+	cursor_stop_blinking_after = 15;*/
       };
     };
 
