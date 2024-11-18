@@ -34,5 +34,11 @@
       desktop = 1.0;
       terminal = 1.0;
     };
+    fonts = {
+      monospace = {
+        package = pkgs.fira-code;
+        name = "Fira Code Mono";
+      };
+    };
   };
 }

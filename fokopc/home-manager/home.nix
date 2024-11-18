@@ -134,10 +134,21 @@
     ];
   };
 
+  gtk.enable = true;
+  qt.enable = true;
+  
+
   fonts.fontconfig.enable = true;
   
   xdg.configFile."lf/icons".source = ./icons;
   programs = {
+    emacs = {
+      enable = true;
+      package = pkgs.emacs;
+      extraConfig = ''
+	(setq standard-indent 2)
+      '';
+    };
     tmux = {
       enable = true;
       clock24 = true;
@@ -334,8 +345,17 @@
       enable = true;
       bashrcExtra = ''
         export FIGNORE=.lock
+	fok-quote
+       '';
+/*
+	_nixos()
+	{
+	  local cur=${COMP_WORDS[COMP_CWORD]}
+	  COMPREPLY=( $(compgen -W "sw test edit up" -- $cur) )
+	}
+	complete -F _nixos nixos
         fok-quote
-      '';
+*/
       historySize = 10000;
       historyControl = ["ignoreboth"];
       enableCompletion=true;
@@ -379,11 +399,11 @@
         rounding = 15;
         active_opacity = 1.0;
         inactive_opacity = 0.98;
-        shadow_range = 1;
+        /*shadow_range = 1;
         shadow_render_power = 1;
         "col.shadow" = lib.mkForce "rgb(${config.stylix.base16Scheme.base0D})";
         shadow_offset = "1 1";
-
+*/
         blur = {
           enabled = true;
           size = 3;

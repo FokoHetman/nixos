@@ -20,10 +20,15 @@
   sops.secrets.shrimp = { };
 
 
+
   nixpkgs.config.allowUnfree = true;
   
-  nix.settings = {
-    experimental-features = [ "nix-command" "flakes" ];
+  nix = {
+    nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+    settings = {
+      experimental-features = [ "nix-command" "flakes" ];
+    };
+    settings.secret-key-files = "/etc/nix/private-key";
   };
 
 
@@ -93,10 +98,13 @@
       videoDrivers = ["nvidia"];
     };
     upower.enable=true;
-    displayManager.sddm = {
-      enable = true;
-      wayland = {
+    displayManager = {
+      sddm = {
+	theme = "${import ./submodules/sddm.nix { inherit pkgs; }}";
         enable = true;
+        wayland = {
+          enable = true;
+        };
       };
     };
     blueman.enable = true;
@@ -174,13 +182,14 @@
     bluez
     qemu
     blockbench
-    blender
     godot_4
     vlc
     libvlc
     
 
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    bat
+
     nmap
     wget
     git
@@ -195,7 +204,7 @@
     wf-recorder
     libnotify
 
-    imagemagick7
+    imagemagick
     dunst
     
     xdg-desktop-portal
@@ -217,6 +226,7 @@
     
     pulseaudio
 
+    nixd
 
     
     (pkgs.writeShellScriptBin "nixos" /*bash*/ ''
@@ -225,7 +235,7 @@
         sw      ) sudo nixos-rebuild switch;;
         test      ) sudo nixos-rebuild test;;
         edit    ) sudo lf /etc/nixos;;
-	up	) sudo nix flake update /etc/nixos;;
+	up	) sudo nix flake update --flake /etc/nixos;;
         *       ) echo "Bad Usage";;
       esac
 

@@ -214,6 +214,28 @@ const Bar = (/** @type {number} */ monitor) => Widget.Window({
     }),
 })
 
+
+
+
+/* DESKTOP
+
+function Fokquote() {
+    const label = Widget.Label();
+    const fokquote = Widget.Button({
+            on_clicked: () => label.label = Utils.exec("fok-quote"),
+            child: Widget.Label(`refresh`),
+            class_name: activeId.as(i => `${i === id ? "focused" : ""}`),
+        });
+
+    return Widget.Box({
+        class_name: "fokquote",
+        children: [fokquote, label],
+    })
+}
+
+
+// END
+*/
 App.config({
     windows: [Bar(0)],
 })
