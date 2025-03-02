@@ -11,10 +11,12 @@
       submodules/secrets.nix
       submodules/networking.nix
       submodules/theme.nix
+      "hosts/${hostname}/default.nix"
       inputs.sops-nix.nixosModules.sops
     ];
 
-  sops.defaultSopsFile = ../../secrets/secrets.yaml;
+
+  sops.defaultSopsFile = ./secrets/secrets.yaml;
   sops.defaultSopsFormat = "yaml";
   sops.age.keyFile = "/home/${username}/.config/sops/age/keys.txt";
   sops.secrets.shrimp = { };
@@ -22,7 +24,7 @@
 
 
   nixpkgs.config.allowUnfree = true;
-  
+  nixpkgs.config.cudaSupport = true;
   nix = {
     nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     settings = {
@@ -60,9 +62,33 @@
 
 
   # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.supportedFilesystems = ["ntfs"];
+  boot = {
+    loader = {
+      grub = {
+        enable = true;
+        useOSProber = true;
+        device = "nodev";
+        efiSupport = true;
+      };
+      efi = {
+        canTouchEfiVariables = true;
+        efiSysMountPoint = "/boot";
+      };
+    };
+    supportedFilesystems = ["ntfs"];
+  };
+
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-uuid/b7a4d864-4427-45e6-8e37-5f0897b708bb";
+      fsType = "ext4";
+    };
+    "/boot" = {
+      device = "/dev/disk/by-uuid/BC85-C80C";
+      fsType = "vfat";
+    };
+  };
+
 
   networking= {
     hostName = "${hostname}";
@@ -89,7 +115,10 @@
   #   useXkbConfig = true; # use xkb.options in tty.
   };
 
-
+  systemd.services.nvidia-control-devices = {
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig.ExecStart = "${pkgs.linuxPackages.nvidia_x11.bin}/bin/nvidia-smi";
+  };
   services = {
     xserver = {
       enable = true;
@@ -109,10 +138,10 @@
     };
     blueman.enable = true;
     printing.enable = true;
-    ollama = {
+    /*ollama = {
       enable = true;
       acceleration = "cuda";
-    };
+    };*/
   };
 
 
@@ -147,7 +176,8 @@
   home-manager = {
     extraSpecialArgs = { inherit inputs username; };
     users = {
-      nathan.catppuccin.enable = lib.mkForce false;
+      nathan.stylix.enable = false;
+      nathan.catppuccin.enable = lib.mkForce false;		# stylix sucks
       "${username}" = import ./../home-manager/home.nix;
     };
     backupFileExtension = "backup";
@@ -166,11 +196,12 @@
     #obsidian
     protonup
 
-
     #inputs.nixvim.packages.${system}.default
     inputs.fokquote.packages.${system}.default
     inputs.chess.packages.${system}.default
     inputs.fokutils.packages.${system}.default
+    inputs.fokshell.packages.${system}.default
+
 
     alsa-lib
 
@@ -180,12 +211,7 @@
     unzip
     neofetch
     bluez
-    qemu
-    blockbench
-    godot_4
-    vlc
-    libvlc
-    
+        
 
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     bat
@@ -195,6 +221,8 @@
     git
     curl
     zip
+
+    
 
     grim
     slurp
@@ -207,9 +235,7 @@
     imagemagick
     dunst
     
-    xdg-desktop-portal
-    gtk3
-    qt6ct
+    
 
 
     nasm

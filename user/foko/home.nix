@@ -11,7 +11,7 @@
     overlays = [
       (self: super:
       {
-	vencord = super.vencord.overrideAttrs(prev: rec {
+	/*vencord = super.vencord.overrideAttrs(prev: rec {
 	  src = super.fetchFromGitHub {
 	    owner = "FokoHetman";
 	    repo = "Vencord";
@@ -29,7 +29,7 @@
 	  };
 	  #withMiddleClickScroll = true;
 	#vesktop.override {withMiddleClickScroll = true;} ;
-	});
+	});*/
       })
     ];
     config = {
@@ -37,11 +37,24 @@
       allowUnfreePredicate = _: true;
     };
   };
+
   home = {
     username = "${username}";
     homeDirectory = "/home/${username}";
+    #fonts.packages = with pkgs; [
+    #  nerd-fonts.fira-code
+    #  nerd-fonts.droid-sans-mono
+    #];
     packages = with pkgs; [
+      #jetbrains.idea-community #pls install pluginss here
+      #(jetbrains.plugins.addPlugins jetbrains.idea-community ["minecraft-dev"])
       obsidian
+
+      kando
+
+      wayvnc
+
+      hashcat
 
 
       (vesktop.override {withMiddleClickScroll = true;/* withSystemVencord = true;*/})
@@ -49,7 +62,7 @@
       krita
       prismlauncher
 
-      dolphin
+      nemo
       fastfetch
 
       drawio
@@ -63,7 +76,9 @@
 
       inputs.nixvim.packages.${pkgs.system}.default
 
-      (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
+      #(nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
+      nerd-fonts.fira-code
+      nerd-fonts.droid-sans-mono
     
     (pkgs.writeShellScriptBin "recorder" /*bash*/ ''
       #! /usr/bin/env nix-shell
@@ -288,24 +303,24 @@
       };
       settings = {
         confirm_os_window_close = 0;
-	tab_bar_min_tabs = 1;
-	tab_bar_edge = "bottom";
-	tab_bar_style = "powerline";
-	tab_powerline_style = "slanted";
-	tab_title_template = "{title}{' :{}:'.format(num_windows) if num_windows > 1 else ''}";
+        tab_bar_min_tabs = 1;
+        tab_bar_edge = "bottom";
+        tab_bar_style = "powerline";
+        tab_powerline_style = "slanted";
+        tab_title_template = "{title}{' :{}:'.format(num_windows) if num_windows > 1 else ''}";
 
-	#cursor = "#ff8758";
-	#cursor_text_color = "#444";
-	/*cursor_shape = "beam";
-	cursor_beam_thickness = 2;
-	cursor_underline_thickness = 2;
-	cursor_blink_interval = -1;
-	cursor_stop_blinking_after = 15;*/
+        #cursor = "#ff8758";
+        #cursor_text_color = "#444";
+        /*cursor_shape = "beam";
+        cursor_beam_thickness = 2;
+        cursor_underline_thickness = 2;
+        cursor_blink_interval = -1;
+        cursor_stop_blinking_after = 15;*/
       };
     };
 
     wofi.enable = true;
-    firefox = {
+    librewolf = {
       enable = true;
       profiles.yurii = {
         search = {
@@ -344,8 +359,8 @@
     bash = {
       enable = true;
       bashrcExtra = ''
-        export FIGNORE=.lock
-	fok-quote
+      export FIGNORE=.lock
+	    fok-quote
        '';
 /*
 	_nixos()
@@ -365,7 +380,7 @@
         la = "lsd -a";
         lla = "lsd -al";
         ls = "lsd";
-	tree = "lsd --tree";
+	      tree = "lsd --tree";
       };
 
     };
@@ -378,7 +393,7 @@
       #inputs.hyprland-plugins.packages.${pkgs.stdenv.hostPlatform.system}.hyprwinwrap
       #inputs.hyprland-plugins.packages.${pkgs.stdenv.hostPlatform.system}.hyprtrails
     ];
-  #  package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
   #  systemd.enable = true;
     xwayland.enable = true;
 
@@ -427,15 +442,27 @@
         "QT_QPA_PLATFORMTHEME,qt5ct"
       ];
 
-      "exec-once" = "ags";
+      exec-once = [
+	"ags"
+	"kando"
+      ];
 
       "$mod" = "SUPER";
-      "$browser" = "firefox";
+      "$browser" = "librewolf";
       "$terminal" = "kitty";#"alacritty";
-      "$fileManager" = "dolphin";
+      "$fileManager" = "nemo";
       "$discord" = "vesktop";
       "$menu" = "wofi --show drun --show-icons";
 
+
+      windowrule = [
+	"noblur, kando"
+	"opaque, kando"
+	"size 100% 100%, kando"
+	"noborder, kando"
+	"float, kando"
+	"pin, kando"
+      ];
       bind = [
         "$mod, F, exec, $browser"
         "$mod, Q, exec, $terminal"
@@ -477,6 +504,9 @@
         "$mod SHIFT, 8, movetoworkspace, 8"
         "$mod SHIFT, 9, movetoworkspace, 9"
         "$mod SHIFT, 0, movetoworkspace, 10"
+        "ALT, Tab, cyclenext"
+        "ALT, Tab, bringactivetotop"
+	"$mod, Tab, global, kando:hetmanat"
 
         ", Print, exec, grim -g \"$(slurp)\" - | wl-copy"
       ];

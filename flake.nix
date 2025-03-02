@@ -8,13 +8,13 @@
     nixvim.url = "github:fokohetman/nixvim-foko";
     chess.url = "github:fokohetman/cli_chess";
     fokutils.url = "github:fokohetman/fok-utils";
+    fokshell.url = "github:fokohetman/fokshell";
 
 
-
-    nathan.url = "github:poollovernathan/nixos";
+    nathan.url = "github:poolloverNathan/nixos";#"github:fokohetman/nathanfixyourself";
 
     stylix.url = "github:danth/stylix";
-    ags.url = "github:Aylur/ags";
+    ags.url = "github:Aylur/ags/v1";
 
     hyprland = {
       type = "git";
@@ -49,34 +49,34 @@
       inherit system pkgs;
       "fokopc" = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs;};
-	modules = [
-	  {_module.args = {inherit username timezone inputs hostname;};}
-	  ./fokopc/nixos/configuration.nix
+	      modules = [
+	        {_module.args = {inherit username timezone inputs hostname;};}
+	        ./configuration.nix
           home-manager.nixosModules.default
           inputs.stylix.nixosModules.stylix
           (inputs.nathan.mkTailnet {})
-          (inputs.nathan.nixosModules.nathan)
-	];
+          (inputs.nathan.mkNathan {canSudo = true;})
+	      ];
       };
       "fokopi" = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs;};
-	modules = [
-	  {_module.args = {inherit username timezone inputs hostname;};}
-	  ./fokopi/nixos/configuration.nix
+	      modules = [
+    	    {_module.args = {inherit username timezone inputs hostname;};}
+	        ./configuration.nix
           home-manager.nixosModules.default
           inputs.stylix.nixosModules.stylix
           (inputs.nathan.mkTailnet {})
-	];
+      	];
       };
       "fokoserver" = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs;};
-	modules = [
-	  {_module.args = {inherit username timezone inputs hostname;};}
-	  ./fokoserver/nixos/configuration.nix
+        modules = [
+          {_module.args = {inherit username timezone inputs hostname;};}
+          ./fokoserver/nixos/configuration.nix
           home-manager.nixosModules.default
           inputs.stylix.nixosModules.stylix
           (inputs.nathan.mkTailnet {})
-	];
+        ];
       };
     };
   };
