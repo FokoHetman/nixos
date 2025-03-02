@@ -48,9 +48,9 @@
     nixosConfigurations = {
       inherit system pkgs;
       "fokopc" = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs;};
+        specialArgs = { inherit inputs hostname;};
 	      modules = [
-	        {_module.args = {inherit username timezone inputs hostname;};}
+	        {_module.args = {inherit username timezone inputs;};}
 	        ./configuration.nix
           home-manager.nixosModules.default
           inputs.stylix.nixosModules.stylix
@@ -68,7 +68,7 @@
           (inputs.nathan.mkTailnet {})
       	];
       };
-      "fokoserver" = nixpkgs.lib.nixosSystem {
+      /*"fokoserver" = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs;};
         modules = [
           {_module.args = {inherit username timezone inputs hostname;};}
@@ -77,7 +77,7 @@
           inputs.stylix.nixosModules.stylix
           (inputs.nathan.mkTailnet {})
         ];
-      };
+      };*/
     };
   };
 }

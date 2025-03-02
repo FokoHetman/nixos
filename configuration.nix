@@ -10,7 +10,7 @@
       submodules/secrets.nix
       submodules/networking.nix
       submodules/theme.nix
-      hosts/fokopc/default.nix
+      (./hosts + "/${hostname}")
       inputs.sops-nix.nixosModules.sops
     ];
 
