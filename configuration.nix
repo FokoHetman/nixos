@@ -7,11 +7,10 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      submodules/hardware-configuration.nix
       submodules/secrets.nix
       submodules/networking.nix
       submodules/theme.nix
-      "hosts/${hostname}/default.nix"
+      hosts/fokopc/default.nix
       inputs.sops-nix.nixosModules.sops
     ];
 
@@ -178,7 +177,7 @@
     users = {
       nathan.stylix.enable = false;
       nathan.catppuccin.enable = lib.mkForce false;		# stylix sucks
-      "${username}" = import ./../home-manager/home.nix;
+      "${username}" = import ./user/${username}/home.nix;
     };
     backupFileExtension = "backup";
   };
