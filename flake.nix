@@ -11,6 +11,11 @@
     fokshell.url = "github:fokohetman/fokshell";
 
 
+    nvf.url = "github:notashelf/nvf";
+
+    nur.url = github:nix-community/nur;
+    nur.inputs.nixpkgs.follows = "nixpkgs";
+
     nathan.url = "github:poolloverNathan/nixos";#"github:fokohetman/nathanfixyourself";
 
     stylix.url = "github:danth/stylix";
@@ -39,12 +44,22 @@
     pkgs = nixpkgs.legacyPackages.${system};
 
     # UNCOMMON / USER DEPENDENT
-    hostname = "fokopi";
+    hostname = "fokopc";
     username = "foko";
     timezone = "Europe/Warsaw";
 
     inherit (self) outputs;
   in {
+
+    packages."${system}".default = 
+    (inputs.nvf.lib.neovimConfiguration {
+      pkgs = pkgs;
+      modules = [ ./submodules/nvf-configuration.nix ];
+    }).neovim;
+
+
+
+
     nixosConfigurations = {
       inherit system pkgs;
       "fokopc" = nixpkgs.lib.nixosSystem {

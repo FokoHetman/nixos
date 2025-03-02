@@ -56,13 +56,20 @@
 
 
   environment.defaultPackages = with pkgs; [
+
+    zathura
+
     cudatoolkit
     qemu
+
     blockbench
     godot_4
+
     vlc
     libvlc
+
     wineWowPackages.waylandFull
+
     xdg-desktop-portal
     gtk3
     qt6ct

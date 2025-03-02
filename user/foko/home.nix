@@ -38,6 +38,14 @@
     };
   };
 
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      "application/pdf" = "org.pwmt.zathura.desktop";
+    };
+  };
+
+
   home = {
     username = "${username}";
     homeDirectory = "/home/${username}";
@@ -320,15 +328,28 @@
     };
 
     wofi.enable = true;
-    librewolf = {
+    /*firefox = { */librewolf = {
       enable = true;
       profiles.yurii = {
+	containers.school = {
+          color = "red";
+          icon = "fruit";
+        };
+        /*extensions = with (inputs.nur.overlay pkgs pkgs).nur.repos.rycee.firefox-addons; [
+          firefox-color
+          sidebery
+          sponsorblock
+          stylus
+          tampermonkey
+          ublock-origin
+          # wakatime
+        ];*/
+
         search = {
             force = true;
             default = "DuckDuckGo";
             order = [ "DuckDuckGo" "Google" ];
         };
-        #search.privateDefault = "DuckDuckGo";
         search.engines = {
           "Nix Packages" = {
             urls = [{
