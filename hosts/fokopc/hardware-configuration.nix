@@ -13,7 +13,7 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
+  /*fileSystems."/" =
     { device = "/dev/disk/by-uuid/b7a4d864-4427-45e6-8e37-5f0897b708bb";
       fsType = "ext4";
     };
@@ -22,7 +22,44 @@
     { device = "/dev/disk/by-uuid/BC85-C80C";
       fsType = "vfat";
       options = [ "fmask=0022" "dmask=0022" ];
+    };*/
+
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-uuid/b7a4d864-4427-45e6-8e37-5f0897b708bb";
+      fsType = "ext4";
     };
+    "/boot" = {
+      device = "/dev/disk/by-uuid/BC85-C80C";
+      fsType = "vfat";
+      options = [ "fmask=0022" "dmask=0022" ];
+    };
+  };
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
+
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+
+
+  hardware.nvidia = {
+    modesetting.enable=true;
+    powerManagement.enable = false;
+
+    powerManagement.finegrained=false;
+
+    open=false;
+    nvidiaSettings=true;
+
+    package = config.boot.kernelPackages.nvidiaPackages.beta;
+  };
+
+
+
+
+
 
   swapDevices = [ ];
 
@@ -36,6 +73,4 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-
-  hardware.graphics.enable = true;
 }

@@ -34,32 +34,6 @@
 
 
 
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-  };
-
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true;
-
-
-  hardware.nvidia = {
-    modesetting.enable=true;
-    powerManagement.enable = false;
-
-    powerManagement.finegrained=false;
-
-    open=false;
-    nvidiaSettings=true;
-
-    package = config.boot.kernelPackages.nvidiaPackages.beta;
-  };
-
-
-
-
-
-
   # Use the systemd-boot EFI boot loader.
   boot = {
     loader = {
@@ -77,24 +51,14 @@
     supportedFilesystems = ["ntfs"];
   };
 
-  fileSystems = {
-    "/" = {
-      device = "/dev/disk/by-uuid/b7a4d864-4427-45e6-8e37-5f0897b708bb";
-      fsType = "ext4";
-    };
-    "/boot" = {
-      device = "/dev/disk/by-uuid/BC85-C80C";
-      fsType = "vfat";
-    };
-  };
 
 
-  networking= {
+  networking = {
     hostName = "${hostname}";
     wireless = {
       enable = true;
     };
-    interfaces.enp5s0.wakeOnLan.enable=true;
+    
     firewall.allowedTCPPorts = [22 44 2137];
     firewall.allowedUDPPorts = [];
     firewall.enable = true;
@@ -114,47 +78,8 @@
   #   useXkbConfig = true; # use xkb.options in tty.
   };
 
-  systemd.services.nvidia-control-devices = {
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig.ExecStart = "${pkgs.linuxPackages.nvidia_x11.bin}/bin/nvidia-smi";
-  };
-  services = {
-    xserver = {
-      enable = true;
-      xkb.layout = "pl";
-      xkb.options = "eurosign:e,caps:escape";
-      videoDrivers = ["nvidia"];
-    };
-    upower.enable=true;
-    displayManager = {
-      sddm = {
-	theme = "${import ./submodules/sddm.nix { inherit pkgs; }}";
-        enable = true;
-        wayland = {
-          enable = true;
-        };
-      };
-    };
-    blueman.enable = true;
-    printing.enable = true;
-    /*ollama = {
-      enable = true;
-      acceleration = "cuda";
-    };*/
-  };
+  
 
-
-  programs = {
-    hyprland = {
-      enable=true;
-      package = inputs.hyprland.packages."${pkgs.system}".hyprland;
-    };
-    steam = {
-      enable = true;
-      gamescopeSession.enable = true;
-    };
-    gamemode.enable = true;
-  };
   #hardware.pulseaudio.enable = true;
   security.rtkit.enable = true;
 
