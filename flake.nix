@@ -39,7 +39,7 @@
     pkgs = nixpkgs.legacyPackages.${system};
 
     # UNCOMMON / USER DEPENDENT
-    hostname = "fokopc";
+    hostname = "fokopi";
     username = "foko";
     timezone = "Europe/Warsaw";
 
@@ -59,9 +59,9 @@
 	      ];
       };
       "fokopi" = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs;};
+        specialArgs = { inherit inputs hostname;};
 	      modules = [
-    	    {_module.args = {inherit username timezone inputs hostname;};}
+    	    {_module.args = {inherit username timezone inputs;};}
 	        ./configuration.nix
           home-manager.nixosModules.default
           inputs.stylix.nixosModules.stylix
