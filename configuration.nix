@@ -120,7 +120,13 @@
     #obsidian
     protonup
 
-    #inputs.nixvim.packages.${system}.default
+
+    (inputs.nvf.lib.neovimConfiguration {
+      pkgs = pkgs;
+      modules = [ ./submodules/nvf-configuration.nix ];
+    }).neovim
+
+    #neovim#inputs.nixvim.packages.${system}.default
     inputs.fokquote.packages.${system}.default
     inputs.chess.packages.${system}.default
     inputs.fokutils.packages.${system}.default
@@ -136,7 +142,7 @@
     neofetch
     bluez
         
-
+    
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     bat
 

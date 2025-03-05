@@ -58,6 +58,7 @@
   environment.defaultPackages = with pkgs; [
 
     zathura
+    texliveMedium
 
     cudatoolkit
     qemu

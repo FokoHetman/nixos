@@ -10,10 +10,9 @@
     fokutils.url = "github:fokohetman/fok-utils";
     fokshell.url = "github:fokohetman/fokshell";
 
+    nvf.url = "github:NotAShelf/nvf";
 
-    nvf.url = "github:notashelf/nvf";
-
-    nur.url = github:nix-community/nur;
+    nur.url = "github:nix-community/nur";
     nur.inputs.nixpkgs.follows = "nixpkgs";
 
     nathan.url = "github:poolloverNathan/nixos";#"github:fokohetman/nathanfixyourself";
@@ -51,11 +50,11 @@
     inherit (self) outputs;
   in {
 
-    packages."${system}".default = 
+    /*packages."${system}".default = 
     (inputs.nvf.lib.neovimConfiguration {
       pkgs = pkgs;
       modules = [ ./submodules/nvf-configuration.nix ];
-    }).neovim;
+    }).neovim;*/
 
 
 
