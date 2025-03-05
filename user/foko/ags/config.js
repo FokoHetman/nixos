@@ -229,17 +229,16 @@ const Bar = (/** @type {number} */ monitor) => Widget.Window({
 })
 
 
-/*
-function AppBar_Down(){
+function AppBar_Up(){
   return Widget.Box({
     vertical: true,
-    vpack: "end",
+    vpack: "start",
     spacing: global_spacing,
     children: [
-
     ],
   })
 }
+
 
 function AppBar_Center(){
   return Widget.Box({
@@ -252,44 +251,39 @@ function AppBar_Center(){
   })
 }
 
-function AppBar_Up(){
+
+function AppBar_Down(){
   return Widget.Box({
     vertical: true,
-    vpack: "start",
+    vpack: "end",
     spacing: global_spacing,
     children: [
+      Widget.Icon({icon: './icons/sovietnobg.png', size: 30})
     ],
   })
 }
 
-*/
-/*const AppBar = (monitor) => Widget.Window({
+
+const AppBar = (monitor) => Widget.Window({
     monitor,
     name: `app_bar${monitor}`,
-    anchor: ['top', 'left', 'bottom'],
+    anchor: ['left', 'top', 'bottom'],
     exclusivity: 'exclusive',
     layer: 'top',
     child: Widget.CenterBox({
         vertical: true,
-        start_widget: AppBar_Down(),/*Widget.Label({
-            hpack: 'center',
-            label: 'Welcome to AGS!',
-        }),
+        start_widget: AppBar_Up(),
         center_widget: AppBar_Center(),
-        end_widget: AppBar_Up(), /*Widget.Label({
-            hpack: 'center',
-            label: time.bind(),
-        }),
-    }),
-})*/
-/* DESKTOP
+        end_widget: AppBar_Down(),
+    })
+})
+/*DESKTOP
 
 function Fokquote() {
     const label = Widget.Label();
     const fokquote = Widget.Button({
             on_clicked: () => label.label = Utils.exec("fok-quote"),
             child: Widget.Label(`refresh`),
-            class_name: activeId.as(i => `${i === id ? "focused" : ""}`),
         });
 
     return Widget.Box({
@@ -297,10 +291,17 @@ function Fokquote() {
         children: [fokquote, label],
     })
 }
-
+const Fokquote_win = (monitor) => Widget.Window({
+  monitor,
+  name: `fok_quote${monitor}`,
+  anchor: ['right', 'bottom'],
+  layer: 'bottom',
+  child: Fokquote(),
+})
+*/
 
 // END
-*/
+
 App.config({
-    windows: [NotificationPopups(), Bar(0), applauncher],
+    windows: [NotificationPopups(), Bar(0), AppBar(0)],
 })
