@@ -258,7 +258,7 @@ function AppBar_Down(){
     vpack: "end",
     spacing: global_spacing,
     children: [
-      Widget.Icon({icon: './icons/sovietnobg.png', size: 30})
+      Widget.Icon({icon: '/home/foko/.config/ags/icons/sovietnobg.png', size: 30})
     ],
   })
 }
