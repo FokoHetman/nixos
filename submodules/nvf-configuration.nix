@@ -80,8 +80,9 @@
     };
     autocomplete.nvim-cmp.enable = true;
     lsp.enable = true;
-
     mini.tabline.enable = true;
+
+
 
     startPlugins = [
       pkgs.vimPlugins.vimtex
