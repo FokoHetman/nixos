@@ -1,3 +1,17 @@
+import { NotificationPopups } from "./notificationPopups.js"
+import { applauncher } from "./applauncher.js"
+
+Utils.timeout(100, () => Utils.notify({
+    summary: "Notification Popup Example",
+    iconName: "info-symbolic",
+    body: "Lorem ipsum dolor sit amet, qui minim labore adipisicing "
+        + "minim sint cillum sint consectetur cupidatat.",
+    actions: {
+        "Cool": () => print("pressed Cool"),
+    },
+}))
+
+
 const global_spacing = 8;
 
 
@@ -215,8 +229,59 @@ const Bar = (/** @type {number} */ monitor) => Widget.Window({
 })
 
 
+/*
+function AppBar_Down(){
+  return Widget.Box({
+    vertical: true,
+    vpack: "end",
+    spacing: global_spacing,
+    children: [
 
+    ],
+  })
+}
 
+function AppBar_Center(){
+  return Widget.Box({
+    vertical: true,
+    vpack: "center",
+    spacing: global_spacing,
+    children: [
+
+    ],
+  })
+}
+
+function AppBar_Up(){
+  return Widget.Box({
+    vertical: true,
+    vpack: "start",
+    spacing: global_spacing,
+    children: [
+    ],
+  })
+}
+
+*/
+/*const AppBar = (monitor) => Widget.Window({
+    monitor,
+    name: `app_bar${monitor}`,
+    anchor: ['top', 'left', 'bottom'],
+    exclusivity: 'exclusive',
+    layer: 'top',
+    child: Widget.CenterBox({
+        vertical: true,
+        start_widget: AppBar_Down(),/*Widget.Label({
+            hpack: 'center',
+            label: 'Welcome to AGS!',
+        }),
+        center_widget: AppBar_Center(),
+        end_widget: AppBar_Up(), /*Widget.Label({
+            hpack: 'center',
+            label: time.bind(),
+        }),
+    }),
+})*/
 /* DESKTOP
 
 function Fokquote() {
@@ -237,5 +302,5 @@ function Fokquote() {
 // END
 */
 App.config({
-    windows: [Bar(0)],
+    windows: [NotificationPopups(), Bar(0), applauncher],
 })

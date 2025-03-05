@@ -82,7 +82,7 @@
 
       tree
 
-      inputs.nixvim.packages.${pkgs.system}.default
+      #inputs.nixvim.packages.${pkgs.system}.default
 
       #(nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
       nerd-fonts.fira-code
