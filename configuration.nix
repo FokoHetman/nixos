@@ -2,7 +2,7 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, hostname, username, timezone, inputs, ... }:
+{ config, lib, pkgs, hostname, username, timezone, inputs, nvim, ... }:
 
 {
   imports =
@@ -27,6 +27,7 @@
   nix = {
     nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     settings = {
+      trusted-users = ["@wheel"];
       experimental-features = [ "nix-command" "flakes" ];
     };
     settings.secret-key-files = "/etc/nix/private-key";
@@ -116,16 +117,15 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    nvim
+
+
     #spotify
     #obsidian
     protonup
 
 
-    (inputs.nvf.lib.neovimConfiguration {
-      pkgs = pkgs;
-      modules = [ ./submodules/nvf-configuration.nix ];
-    }).neovim
-
+    
     #neovim#inputs.nixvim.packages.${system}.default
     inputs.fokquote.packages.${system}.default
     inputs.chess.packages.${system}.default
@@ -183,7 +183,23 @@
     pulseaudio
 
     nixd
-
+    
+    (pkgs.writeShellScriptBin "foko-git" /*bash*/ ''
+      #! ${pkgs.bash}/bin/bash
+      case $1 in 
+        register  ) ${pkgs.passh}/bin/passh -pgit ssh git@fokopi -t "gitserver newuser $2; exit";;
+        newrepo   ) ${pkgs.passh}/bin/passh -pgit ssh git@fokopi -t "gitserver newrepo $2/$3; exit";;
+        addbanner ) scp $4 git@fokopi:$2/$3/banner.png; exit;;
+        describe  ) ${pkgs.passh}/bin/passh -pgit ssh git@fokopi -t "echo \"$4;$5;$6\" > $2/$3/description; exit";;
+        attach    ) shift && scp $@ foko@fokopi:FokWeb/src/static/dynamic/ && echo "attached at ROOT/static/dynamic/";;
+        *         ) echo "Bad Usage
+                      register [username]
+                      newrepo [username] [reponame]
+                      addbanner [username] [reponame] [file]
+                      describe [username] [reponame] [name] [desc] [tags [tag:color]]
+                      attach [files]";;
+        esac
+    '')
     
     (pkgs.writeShellScriptBin "nixos" /*bash*/ ''
       #! {pkgs.bash}/bin/bash

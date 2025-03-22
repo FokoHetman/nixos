@@ -73,10 +73,12 @@ function Notification(n) {
         },
         Widget.Box(
             {
+                css: "border-radius: 15px;background-color: rgb(40,40,40);",
                 class_name: `notification ${n.urgency}`,
                 vertical: true,
             },
-            Widget.Box([
+            Widget.Box(
+              [
                 icon,
                 Widget.Box(
                     { vertical: true },
@@ -114,7 +116,7 @@ export function NotificationPopups(monitor = 0) {
         class_name: "notification-popups",
         anchor: ["top", "right"],
         child: Widget.Box({
-            css: "min-width: 2px; min-height: 2px;",
+            css: "min-width: 250px;min-height: 125px;",
             class_name: "notifications",
             vertical: true,
             child: list,
