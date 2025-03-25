@@ -10,18 +10,30 @@
       submodules/secrets.nix
       submodules/networking.nix
       submodules/theme.nix
+      submodules/discord.nix
       (./hosts + "/${hostname}")
       inputs.sops-nix.nixosModules.sops
     ];
 
-
   sops.defaultSopsFile = ./secrets/secrets.yaml;
   sops.defaultSopsFormat = "yaml";
   sops.age.keyFile = "/home/${username}/.config/sops/age/keys.txt";
-  sops.secrets.shrimp = { };
+  sops.secrets.shrimp = { owner = username; };
+  sops.secrets.ds_token = { owner = username; };
 
-
-
+  discord = {
+    enable = true;
+    token_path = config.sops.secrets.ds_token.path;
+    servers."Test" = {
+      categories."Text" = {
+        channels = {
+          "general" = {};
+          "memes" = {};
+        };
+      };
+    };
+  };
+  
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.cudaSupport = true;
   nix = {

@@ -165,6 +165,45 @@
   
   xdg.configFile."lf/icons".source = ./icons;
   programs = {
+    hyprlock = {
+      enable = true;
+      settings = {
+        general = {
+          disable_loading_bar = true;
+          #grace = 300;
+          hide_cursor = false;
+        };
+
+        /*background = [
+          {
+            path = "screenshot";
+            blur_passes = 3;
+            blur_size = 8;
+          }
+        ];
+
+        */input-field = lib.mkForce [
+          {
+            size = "200, 50";
+            position = "0, -80";
+            monitor = "";
+            dots_center = true;
+            fade_on_empty = false;
+            font_color = "rgb(202, 211, 245)";
+            inner_color = "rgb(91, 96, 120)";
+            outer_color = "rgb(24, 25, 38)";
+            outline_thickness = 5;
+            placeholder_text = "<span foreground=\"##cad3f5\">Password...</span>";
+            shadow_passes = 2;
+          }
+        ];
+        auth.pam = {
+          enabled = true;
+          module = "su";
+        };
+      };
+    };
+
     emacs = {
       enable = true;
       package = pkgs.emacs;
@@ -347,8 +386,8 @@
 
         search = {
             force = true;
-            default = "DuckDuckGo";
-            order = [ "DuckDuckGo" "Google" ];
+            default = "ddg";
+            order = [ "ddg" "google" ];
         };
         search.engines = {
           "Nix Packages" = {
@@ -406,7 +445,6 @@
 
     };
   };
-
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -477,12 +515,12 @@
 
 
       windowrule = [
-	"noblur, kando"
-	"opaque, kando"
-	"size 100% 100%, kando"
-	"noborder, kando"
-	"float, kando"
-	"pin, kando"
+        "noblur, class:kando,title:Kando"
+        "opaque, class:kando,title:Kando"
+        "size 100% 100%, class:kando,title:Kando"
+        "noborder, class:kando,title:Kando"
+        "float, class:kando,title:Kando"
+        "pin, class:kando,title:Kando"
       ];
       bind = [
         "$mod, F, exec, $browser"
@@ -530,6 +568,8 @@
 	"$mod, Tab, global, kando:hetmanat"
 
         ", Print, exec, grim -g \"$(slurp)\" - | wl-copy"
+
+        "$mod, L, exec, hyprlock"
       ];
     };
   };
