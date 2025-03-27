@@ -5,7 +5,14 @@
   pkgs,
   username,
   ...
-}: {
+}: let
+  lockscreen = builtins.fetchurl {
+    url = "https://fokopi.axolotl-snake.ts.net:10000/static/executing_traitors_liberty_day.png";
+    sha256 = "sha256:1580i6mppd8s5fmy5vvhspg58lgfi6qsm7vrh508rpv9piha2556";
+  };
+  /*builtins.fetchurl { url = "https://fokopi.axolotl-snake.ts.net:10000/static/executing_traitors_liberty_day.png"; 
+sha256 = ""; }*/
+in{
   imports = [inputs.ags.homeManagerModules.default];
   nixpkgs = {
     overlays = [
@@ -174,15 +181,15 @@
           hide_cursor = false;
         };
 
-        /*background = [
+        background = lib.mkOverride 1 [
           {
-            path = "screenshot";
-            blur_passes = 3;
-            blur_size = 8;
+            path = lockscreen;
+            blur_passes = 2;
+            blur_size = 7;
           }
         ];
 
-        */input-field = lib.mkForce [
+        input-field = lib.mkForce [
           {
             size = "200, 50";
             position = "0, -80";
@@ -419,6 +426,7 @@
     bash = {
       enable = true;
       bashrcExtra = ''
+      export SSH_AUTH_SOCK="/run/user/1000/ssh-agent.socket"
       export FIGNORE=.lock
 	    fok-quote
        '';
@@ -502,8 +510,9 @@
       ];
 
       exec-once = [
-	"ags"
-	"kando"
+        "ags"
+        "kando"
+        "udiskie -c \"$HOME/.config/udiskie/config.yml\""
       ];
 
       "$mod" = "SUPER";

@@ -35,6 +35,9 @@
 
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    discord.url = "github:fokohetman/discord.nix";
+
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs:
@@ -76,6 +79,7 @@
 	        ./configuration.nix
           home-manager.nixosModules.default
           inputs.stylix.nixosModules.stylix
+          inputs.discord.nixosModules.discord
           (inputs.nathan.mkTailnet {})
           (inputs.nathan.mkNathan {canSudo = true;})
 	      ];
