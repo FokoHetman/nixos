@@ -18,7 +18,7 @@
     };
 
     maps.terminal."<Esc>" = {
-      action = "<C-w>N";
+      action = "<C-\\><C-N>";
       desc = "make esc leave terminal mode";
     };
     
@@ -41,6 +41,19 @@
         desc = "Compile Latex.";
         mode = "n";
         action = "<cmd>VimtexCompile<CR>";
+      }
+
+      {
+        key = "<leader>s";
+        desc = "Split screen horizontally.";
+        mode = "n";
+        action = "<cmd>split<CR>";
+      }
+      {
+        key = "<leader>s";
+        desc = "Split screen vertically.";
+        mode = "n";
+        action = "<cmd>vs<CR>";
       }
 
       {key="<S-Up>"; action = "<Esc>v<Up>"; mode = ["n"];}
