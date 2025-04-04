@@ -50,7 +50,7 @@
         action = "<cmd>split<CR>";
       }
       {
-        key = "<leader>s";
+        key = "<leader>w";
         desc = "Split screen vertically.";
         mode = "n";
         action = "<cmd>vs<CR>";
