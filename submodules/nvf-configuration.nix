@@ -16,8 +16,14 @@
       shiftwidth = 2;
       expandtab = true;
     };
+
+    maps.terminal."<Esc>" = {
+      action = "<C-w>N";
+      desc = "make esc leave terminal mode";
+    };
     
     keymaps = [
+      
       {
         key = "<C-j>";
         desc = "Launch terminal in new buffer.";
@@ -36,6 +42,8 @@
         mode = "n";
         action = "<cmd>VimtexCompile<CR>";
       }
+
+      {key="<Esc>"
       {key="<S-Up>"; action = "<Esc>v<Up>"; mode = ["n"];}
       {key="<S-Down>"; action = "<Esc>v<Down>"; mode = ["n"];}
       {key="<S-Left>"; action = "<Esc>v<Left>"; mode = ["n"];}

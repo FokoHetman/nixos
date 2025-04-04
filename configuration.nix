@@ -28,14 +28,29 @@
     servers."TheTest" = {
       categories."Text" = {
         channels = {
-          "general" = {};
-          "memes" = {};
+          "memes" = {
+           permissions.roles."memer".sendMessages = false;
+          };
+        };
+        permissions = {
+          roles."silly".sendMessages = false;
+          roles."silly".viewChannel = true;
+          roles."everyone".viewChannel = false;
         };
       };
       categories."Text2" = {
         channels = {
-          "general" = {};
-          "memes" = {};
+          "general" = {
+            permissions.roles."everyone".sendMessages = true;
+          };
+          "gallery" = {
+            permissions.roles."silly".sendMessages = false;
+            permissions.roles."memer".viewChannel = true;
+          };
+        };
+        permissions = {
+          roles."memer".viewChannel = false;
+          roles."silly".sendMessages = true;
         };
       };
     };
