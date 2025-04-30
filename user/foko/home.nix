@@ -378,12 +378,6 @@ in{
         name = "FiraCode Nerd Font Reg";
         size = 12;
       };
-      symbol_map = let
-        mappings = [
-          "U+E100-U+E15E"
-        ];
-      in
-        (builtins.concatStringsSep "," mappings) + " RainWorldSymbols";
       settings = {
         confirm_os_window_close = 0;
         tab_bar_min_tabs = 1;
@@ -392,6 +386,12 @@ in{
         tab_powerline_style = "slanted";
         tab_title_template = "{title}{' :{}:'.format(num_windows) if num_windows > 1 else ''}";
 
+        symbol_map = let
+          mappings = [
+            "U+E100-U+E160"
+          ];
+        in
+          (builtins.concatStringsSep "," mappings) + " RainWorldSymbols";
         #cursor = "#ff8758";
         #cursor_text_color = "#444";
         /*cursor_shape = "beam";

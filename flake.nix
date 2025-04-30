@@ -84,7 +84,7 @@
       "fokopc" = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs hostname;};
 	      modules = [
-	        {_module.args = {inherit username timezone inputs nvim rainworld-font;};}
+	        {_module.args = {inherit username timezone inputs nvim fonts;};}
 	        ./configuration.nix
           home-manager.nixosModules.default
           inputs.stylix.nixosModules.stylix
@@ -96,7 +96,7 @@
       "fokopi" = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs hostname;};
 	      modules = [
-    	    {_module.args = {inherit username timezone inputs rainworld-font;};}
+    	    {_module.args = {inherit username timezone inputs fonts;};}
 	        ./configuration.nix
           home-manager.nixosModules.default
           inputs.stylix.nixosModules.stylix
