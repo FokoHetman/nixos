@@ -66,7 +66,16 @@
       pkgs = pkgs;
       modules = [ ./submodules/nvf-configuration.nix ];
     }).neovim;
-
+    fonts.rainworld = pkgs.stdenvNoCC.mkDerivation {
+      name = "rainworld-font";
+      dontConfigue = true;
+      src = ./fonts/rainworld;
+      installPhase = ''
+        mkdir -p $out/share/fonts
+        cp -R $src $out/share/fonts/opentype/
+      '';
+      meta = { description = "A [rainworld font](https://www.reddit.com/r/rainworld/comments/1bei8sy/i_created_a_fully_functional_typeface_for_every/#lightbox) mapped to use private use area"; };
+    };
 
 
 
@@ -75,7 +84,7 @@
       "fokopc" = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs hostname;};
 	      modules = [
-	        {_module.args = {inherit username timezone inputs nvim;};}
+	        {_module.args = {inherit username timezone inputs nvim rainworld-font;};}
 	        ./configuration.nix
           home-manager.nixosModules.default
           inputs.stylix.nixosModules.stylix
@@ -87,7 +96,7 @@
       "fokopi" = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs hostname;};
 	      modules = [
-    	    {_module.args = {inherit username timezone inputs;};}
+    	    {_module.args = {inherit username timezone inputs rainworld-font;};}
 	        ./configuration.nix
           home-manager.nixosModules.default
           inputs.stylix.nixosModules.stylix

@@ -7,7 +7,7 @@
   ...
 }: let
   lockscreen = builtins.fetchurl {
-    url = "https://fokopi.axolotl-snake.ts.net:10000/static/executing_traitors_liberty_day.png";
+    url = "https://raw.githubusercontent.com/FokoHetman/FokWebserver/refs/heads/master/src/static/executing_traitors_liberty_day.png";
     sha256 = "sha256:1580i6mppd8s5fmy5vvhspg58lgfi6qsm7vrh508rpv9piha2556";
   };
   /*builtins.fetchurl { url = "https://fokopi.axolotl-snake.ts.net:10000/static/executing_traitors_liberty_day.png"; 
@@ -378,6 +378,12 @@ in{
         name = "FiraCode Nerd Font Reg";
         size = 12;
       };
+      symbol_map = let
+        mappings = [
+          "U+E100-U+E15E"
+        ];
+      in
+        (builtins.concatStringsSep "," mappings) + " RainWorldSymbols";
       settings = {
         confirm_os_window_close = 0;
         tab_bar_min_tabs = 1;
@@ -396,7 +402,12 @@ in{
       };
     };
 
-    wofi.enable = true;
+    wofi = {
+      enable = true;
+      settings = {
+        allow_markup = true;
+      };
+    };
     /*firefox = { */librewolf = {
       enable = true;
       profiles.yurii = {
@@ -479,11 +490,14 @@ in{
 
   wayland.windowManager.hyprland = {
     enable = true;
+    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+
     plugins = [
-      #inputs.hyprland-plugins.packages.${pkgs.stdenv.hostPlatform.system}.hyprwinwrap
+      inputs.hyprland-plugins.packages.${pkgs.stdenv.hostPlatform.system}.hyprwinwrap
       #inputs.hyprland-plugins.packages.${pkgs.stdenv.hostPlatform.system}.hyprtrails
     ];
-    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    #extraConfig = '' plugin = ${inputs.hyprland-plugins.packages.${pkgs.system}.hyprwinwrap}/lib/libhyprwinwrap.so '';
   #  systemd.enable = true;
     xwayland.enable = true;
 
@@ -510,6 +524,7 @@ in{
         shadow_offset = "1 1";
 */
         blur = {
+          new_optimizations = false;
           enabled = true;
           size = 3;
           passes = 1;
@@ -519,7 +534,7 @@ in{
 
       plugin = {
         hyprwinwrap = {
-          class = "kitty-bg";
+          class = "lwpwlp";
         };
       };
 
@@ -536,6 +551,7 @@ in{
         "ags"
         "kando"
         "udiskie -c \"$HOME/.config/udiskie/config.yml\""
+        "nix run /home/foko/Builds/wallpaper/flake#lwp"
       ];
 
       "$mod" = "SUPER";
@@ -553,6 +569,11 @@ in{
         "noborder, class:kando,title:Kando"
         "float, class:kando,title:Kando"
         "pin, class:kando,title:Kando"
+        #"pin, class:^.*lwp.*$"
+      ];
+      bindm = [
+        "$mod, mouse:272, movewindow"
+        "$mod, mouse:273, resizewindow"
       ];
       bind = [
         "$mod, F, exec, $browser"
@@ -603,6 +624,12 @@ in{
 
         "$mod, L, exec, hyprlock"
       ];
+    };
+  };
+  
+  home.file = {
+    ".config/udiskie/config.yml" = {
+      source = config.lib.file.mkOutOfStoreSymlink ./dotfiles/udiskie.yml;
     };
   };
 

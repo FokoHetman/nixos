@@ -2,7 +2,7 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, hostname, username, timezone, inputs, nvim, ... }:
+{ config, lib, pkgs, hostname, username, timezone, inputs, nvim, fonts, ... }:
 
 {
   imports =
@@ -22,14 +22,39 @@
   sops.secrets.ds_token = { owner = username; };
 
 
-  discord = {
+  /*discord = {
     enable = true;
     token_path = config.sops.secrets.ds_token.path;
+    servers."Development" = {
+      categories."Praetorians" = {
+        channels = {
+          "general" = {};
+          "git-logs" = {permissions.roles."praetorians_access".sendMessages = false;};
+        };
+        permissions.roles."everyone".viewChannel = false;
+        permissions.roles."praetorians_access".viewChannel = true;
+      };
+      categories."chessdb" = {
+        channels = {
+          "general" = {permissions.sync=true;};
+          "git-logs" = {
+            permissions.roles."everyone".viewChannel = false;
+            permissions.roles."chessdb_access".sendMessages = false;
+          };
+        };
+        permissions.roles."everyone".viewChannel = false;
+        permissions.roles."chessdb_access".viewChannel = true;
+      };
+    };
     servers."TheTest" = {
+      roles = {
+
+      };
       categories."Text" = {
         channels = {
+          "general" = {permissions.sync = true;};
           "memes" = {
-           permissions.roles."memer".sendMessages = false;
+            permissions.roles."memer".sendMessages = false;
           };
         };
         permissions = {
@@ -42,10 +67,12 @@
         channels = {
           "general" = {
             permissions.roles."everyone".sendMessages = true;
+            permissions.sync = true;
           };
           "gallery" = {
             permissions.roles."silly".sendMessages = false;
             permissions.roles."memer".viewChannel = true;
+            permissions.sync = false;
           };
         };
         permissions = {
@@ -54,101 +81,9 @@
         };
       };
     };
-  };
-
-  /* UDEV */
-  services.udisks2.enable = true;
-  services.udev.packages = [
-    (pkgs.writeTextFile {
-      name = "ssh-keys";
-      text = ''
-         ACTION=="add", ATTRS{idVendor}=="13fe", ATTRS{idProduct}=="4300", NAME=fokokeys
-      '';
-      destination = "/etc/udev/rules.d/66-keys.rules";
-    })
-  ];
-  system.activationScripts."udiskie-activation".text = ''
-echo "udiskie config"
-if [ ! -f /home/${username}/.config/udiskie/config.yml ]; then 
-  echo "writing config.."
-  echo -e '
-program_options:
-  tray: true
-  menu: nested
-  notify: true
-device_config:
-  - device_file: /dev/loop*
-    ignore: true
-ignore_device:
-  - id_uuid: BC76714876710504
-  ' > /home/${username}/.config/udiskie/config.yml
-fi
-echo "finished"
-'';
+  };*/
 
 
-  systemd.services.sshkeys = let 
-    keys = pkgs.writeShellScriptBin "fokokeys" ''
-set -e
-
-KEYS=(id_rsa id_ed25519)
-
-SSH_ADD=${pkgs.openssh}/bin/ssh-add
-USB_LABEL=fokokeys
-USB_MOUNT=/run/media/${username}/$USB_LABEL
-UMOUNT_BIN=${pkgs.udiskie}/bin/udiskie-umount
-
-
-
-
-for key in "''\${KEYS[@]}"; do
-  $SSH_ADD $USB_MOUNT/$key
-  echo "Added $key to ssh-agent!"
-done
-#${pkgs.libnotify}/bin/notify-send "Added $SSH_KEY to ssh-agent!"
-
-$UMOUNT_BIN $USB_MOUNT
-    '';
-  in {
-    enable = true;
-    description="SSH Keys loaded from USB";
-    requires = ["run-media-${username}-fokokeys.mount"];
-    after = ["run-media-${username}-fokokeys.mount"];
-    confinement.packages = [pkgs.dbus];
-    environment = {
-      SSH_AUTH_SOCK="/run/user/1000/ssh-agent.socket";
-      SSH_ASKPASS="${pkgs.x11_ssh_askpass}/libexec/x11-ssh-askpass";
-      DISPLAY=":0";
-    };
-    serviceConfig = {
-      User = "foko";
-      ExecStart = "${keys}/bin/fokokeys";
-    };
-    
-    wantedBy = ["run-media-${username}-fokokeys.mount"];
-  };
-
-  systemd.user.services.ssh-agent = {
-    enable = true;
-    description="The SSH Agent";
-    environment = {
-      DISPLAY = ":0";
-      SSH_AUTH_SOCK="%t/ssh-agent.socket";
-    };
-    serviceConfig = {
-      Type="simple";
-      ExecStart="${pkgs.openssh}/bin/ssh-agent -D -a $SSH_AUTH_SOCK";
-    };
-    wantedBy=["default.target"];
-  };
-
-
-
-
-  
-
-
-  
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.cudaSupport = true;
   nix = {
@@ -244,7 +179,9 @@ $UMOUNT_BIN $USB_MOUNT
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    inputs.hyprland.packages.${system}.hyprland
     nvim
+    fonts.rainworld
 
     
     #spotify
@@ -385,11 +322,11 @@ $UMOUNT_BIN $USB_MOUNT
     enable = true;
     ports = [ 22 ];
     settings = {
-      PasswordAuthentication = true;
+      PasswordAuthentication = false;
       AllowUsers = null; # Allows all users by default. Can be [ "user1" "user2" ]
       #UseDns = true;
       X11Forwarding = true;
-      #PermitRootLogin = "prohibit-password"; # "yes", "without-password", "prohibit-password", "forced-commands-only", "no"
+      PermitRootLogin = "no"; # "yes", "without-password", "prohibit-password", "forced-commands-only", "no"
     };
   };
 
