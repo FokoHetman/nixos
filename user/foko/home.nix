@@ -462,8 +462,11 @@ in{
       bashrcExtra = ''
       export SSH_AUTH_SOCK="/run/user/1000/ssh-agent.socket"
       export FIGNORE=.lock
-	    fok-quote
-       '';
+	    if [[ $- == *i* ]]
+      then
+        fok-quote
+      fi
+      '';
 /*
 	_nixos()
 	{

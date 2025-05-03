@@ -5,13 +5,11 @@
     ../../submodules/keymanagement.nix
   ];
 
-
   services = {
     xserver = {
       enable = true;
       xkb.layout = "pl";
       xkb.options = "eurosign:e,caps:escape";
-      videoDrivers = ["nvidia"];
     };
     upower.enable=true;
     displayManager = {
@@ -60,23 +58,10 @@
 
 
 
-  systemd.services.nvidia-control-devices = {
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig.ExecStart = "${pkgs.linuxPackages.nvidia_x11.bin}/bin/nvidia-smi";
-  };
-  networking.interfaces.enp5s0.wakeOnLan.enable=true;
-
-
   environment.defaultPackages = with pkgs; [
 
     zathura
     texliveMedium
-
-    cudatoolkit
-    qemu
-
-    blockbench
-    #godot_4
 
     vlc
     libvlc
