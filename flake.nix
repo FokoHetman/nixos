@@ -66,16 +66,21 @@
       pkgs = pkgs;
       modules = [ ./submodules/nvf-configuration.nix ];
     }).neovim;
-    fonts.rainworld = pkgs.stdenvNoCC.mkDerivation {
+    fonts.rainworld = pkgs.callPackage({ pkgs }: pkgs.stdenv.mkDerivation {
       name = "rainworld-font";
-      dontConfigue = true;
+      dontConfigure = true;
       src = ./fonts/rainworld;
       installPhase = ''
-        mkdir -p $out/share/fonts
-        cp -R $src $out/share/fonts/opentype/
+        runHook preInstall
+
+        install -Dm644 $src/*.ttf -t $out/share/fonts/opentype
+
+        runHook postInstall
+        #mkdir -p $out/share/fonts
+        #cp -R $src $out/share/fonts/opentype/
       '';
       meta = { description = "A [rainworld font](https://www.reddit.com/r/rainworld/comments/1bei8sy/i_created_a_fully_functional_typeface_for_every/#lightbox) mapped to use private use area"; };
-    };
+    }) { inherit pkgs; };
 
 
 

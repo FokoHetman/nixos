@@ -175,13 +175,20 @@
   };
 
 
+  fonts = {
+    fontDir.enable = true;
+    enableGhostscriptFonts = true;
+    packages = with pkgs; [
+
+    ] ++ lib.attrsets.attrValues fonts;
+  };
+
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     inputs.hyprland.packages.${system}.hyprland
     nvim
-    fonts.rainworld
 
     
     #spotify

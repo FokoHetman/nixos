@@ -4,28 +4,58 @@
   vim = {
     vimAlias = true;
     viAlias = true;
+    globals = {
+      mapleader = " ";
+      maplocalleader = ".";
+    };
     #package = inputs.nixvim.packages.${pkgs.system}.default;
+
+    /* THEME */
 
     theme = {
       enable = true;
       name = "catppuccin";
       style = "mocha";
     };
-    options = {
-      tabstop = 2;
-      shiftwidth = 2;
-      expandtab = true;
-    };
 
+    /* END THEME */
+
+    /* KEBINDS */
     maps.terminal."<Esc>" = {
       action = "<C-\\><C-N>";
-      desc = "make esc leave terminal mode";
+      desc = "Make esc leave terminal mode.";
     };
     
     keymaps = [
-      
+      /*{
+        key = "<k4>";
+        desc = "TmuxNavigateLeft";
+        mode = "n";
+        action = "<C-U>TmuxNavigateLeft<CR>";
+      }
+      {
+        key = "<k5>";
+        desc = "TmuxNavigateDown";
+        mode = "n";
+        action = "<C-U>TmuxNavigateLeft<CR>";
+      }
+      {
+        key = "<k6>";
+        desc = "TmuxNavigateRight";
+        mode = "n";
+        action = "<C-U>TmuxNavigateLeft<CR>";
+      }
+      {
+        key = "<k8>";
+        desc = "TmuxNavigateUp";
+        mode = "n";
+        action = "<C-U>TmuxNavigateLeft<CR>";
+      }*/
+
+
       {
         key = "<C-j>";
+        unique = true;
         desc = "Launch terminal in new buffer.";
         mode = "n";
         action = "<cmd>term<CR>";
@@ -64,8 +94,9 @@
       {action = "<cmd>bnext<CR>"; key="<C-Right>"; mode = "n";}
       {action = "<cmd>bprev<CR>"; key="<C-Left>"; mode = "n";}
     ];
+    /* END KEYBINDS */
 
-
+    /* LANGUAGE */
     languages = {
       enableLSP = true;
       enableTreesitter = true;
@@ -83,7 +114,15 @@
       lua.enable = true;
       ts.enable = true;
     };
+    /* END LANGUAGE */
 
+
+    /* OPTIONS */
+    options = {
+      tabstop = 2;
+      shiftwidth = 2;
+      expandtab = true;
+    };
     presence.neocord = {
       enable = true;
       setupOpts = {
@@ -101,11 +140,78 @@
     autocomplete.nvim-cmp.enable = true;
     lsp.enable = true;
     mini.tabline.enable = true;
+    mini.starter = {
+      enable = true;
+      setupOpts = {
+        header = builtins.readFile ../assets/header.txt;
+        footer = "                                                                                            ";
+      };
+    };
+    /* END OPTIONS */
 
 
+    /* NOTES */
+    notes.neorg = {
+      enable = true;
+      treesitter.enable = true;
+      setupOpts = {
+        load = {
+          "core.defaults".enable = true;
+          "core.completion".config.engine = "nvim-cmp";
+          "core.concealer".config = {
+            folds = true;
+            init_open_folds = "auto";
+          };
+          "core.dirman".config = {
+            workspaces = {
+              notes = "~/Projects/Notes";
+              #blog = "~/projects/blog";
+              #dotfiles = "~/projects/dotfiles";
+            };
+            index = "index.norg";
+          };
+          "core.esupports.metagen" = {
+            timezone = "local";
+            type = "auto";
+            update_date = true;
+          };
+          "core.export".config.export_dir = "${builtins.getEnv "PWD"}";
+          "core.export.markdown".config.extensions = "all";
+          # "core.integrations.image".enable = false;
+          # "core.latex.renderer" = {
+          #   enable = false;
+          #   config = {
+          #     conceal = true;
+          #     render_on_enter = true;
+          #     renderer = "core.integrations.image";
+          #   };
+          # };
+          "core.presenter".config.zen_mode = "zen-mode";
+          "core.summary" = {};
+        };
+      };
+    };
 
-    startPlugins = [
-      pkgs.vimPlugins.vimtex
+    /* additional plugins */
+    extraPlugins = with pkgs.vimPlugins; {
+      nabla.package = nabla-nvim;
+      nvim-treesitter.package = (nvim-treesitter.withPlugins (
+          plugins: with pkgs.tree-sitter-grammars; [
+            tree-sitter-c
+            tree-sitter-cpp
+            tree-sitter-html
+            tree-sitter-latex
+            tree-sitter-lua
+            tree-sitter-nix
+            tree-sitter-python
+            tree-sitter-rust
+            tree-sitter-toml
+          ]
+        ));
+    };
+
+    startPlugins = with pkgs.vimPlugins; [
+      vimtex
     ];
     lazy.plugins.vimtex = {
       enabled = true;
