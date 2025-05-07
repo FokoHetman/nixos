@@ -196,6 +196,7 @@
     protonup
 
     udiskie
+    gnupg
 
 
     
