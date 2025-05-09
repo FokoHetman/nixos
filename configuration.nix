@@ -178,6 +178,10 @@
     config = ./assets/xmonad/src/Main.hs;
     enableConfiguredRecompile = true;
   };
+  programs.i3lock = {
+    enable = true;
+    package = pkgs.i3lock-fancy-rapid;
+  };
 
   home-manager = {
     extraSpecialArgs = { inherit inputs username; };
@@ -207,6 +211,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     xmobar
+    xdotool
     #haskellPackages.xmobar
     inputs.hyprland.packages.${system}.hyprland
     nvim
@@ -276,6 +281,7 @@
     ffmpeg
     
     pulseaudio
+    alsa-utils
 
     nixd
     

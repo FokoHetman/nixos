@@ -6,6 +6,7 @@ import XMonad.Actions.GroupNavigation
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Util.Run(spawnPipe, hPutStrLn)
+import XMonad.Util.ClickableWorkspaces
 
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.StatusBar
@@ -19,10 +20,11 @@ import qualified XMonad.StackSet as W
 
 main :: IO ()
 
-main = do 
-  mySB <- statusBarPipe "xmobar /etc/xmobar/xmobar.hs" (pure bar) --if this works (config), you can move to withSB
+mySB = statusBarProp "xmobar /etc/xmobar/xmobar.hs" (clickablePP bar)
+main = do
+  --mySB <- statusBarPipe "xmobar /etc/xmobar/xmobar.hs" (pure bar) --if this works (config), you can move to withSB
   xmonad . ewmhFullscreen . ewmh 
-    . withSB mySB
+    . withEasySB mySB defToggleStrutsKey
     $ docks $ conf
 
 
@@ -31,6 +33,10 @@ conf = def
     terminal    = "kitty",
     manageHook  = manageDocks <+> management,
     layoutHook  = avoidStruts $ layoutHook def
+--    logHook = dynamicLogWithPP bar
+--      { ppOutput = \x -> hPutStrLn mySB
+--
+--      }
   } 
   `additionalKeysP`
     [ ("<Print>", spawn "scrot --select -e 'xclip -selection clipboard -t image/png -i $f'"),
@@ -38,9 +44,10 @@ conf = def
       ("M-t", spawn "vesktop"),
       ("M-r", spawn "rofi -show drun -show-icons"),
       ("M-x", restart "/run/current-system/sw/bin/xmonad" True),
-      ("M-q", spawn $ terminal def),
+      ("M-q", spawn $ terminal conf),
       ("M-c", kill),
-      ("M1-<Tab>", windows W.focusDown)
+      ("M1-<Tab>", windows W.focusDown),
+      ("M-C-l", spawn "i3lock 20 pixel")
       --("M-c", 
     ]
 
@@ -52,29 +59,38 @@ management = composeAll
 
 
 
-bar:: PP
+bar :: PP
 bar = def 
-  { ppSep             = magenta " * ",
+  { ppSep             = sep " * ",
     ppTitleSanitize   = xmobarStrip,
-    ppCurrent         = wrap " " "" . xmobarBorder "Top" "#8be9fd" 2,
-    ppHidden          = white . wrap " " "",
+    ppCurrent         = wrap (active "[") (active "]") . active . xmobarBorder "Top" "#8be9fd" 2,
+    ppHidden          = inactive . wrap " " " ",
     ppUrgent          = red . wrap (yellow "!") (yellow "!"),
     ppOrder           = \[ws, l, _, wins] -> [ws, l, wins],
     ppExtras          = [logTitles formatFocused formatUnfocused]
   }
   where
-    formatFocused   = wrap (white    "[") (white    "]") . magenta . ppWindow
-    formatUnfocused = wrap (lowWhite "[") (lowWhite "]") . blue    . ppWindow
+    formatFocused   = wrap (white    "[") (white    "]") . focused . ppWindow
+    formatUnfocused = wrap (lowWhite "[") (lowWhite "]") . unfocused    . ppWindow
 
     -- | Windows should have *some* title, which should not not exceed a
     -- sane length.
     ppWindow :: String -> String
     ppWindow = xmobarRaw . (\w -> if null w then "untitled" else w) . shorten 30
 
-    blue, lowWhite, magenta, red, white, yellow :: String -> String
-    magenta  = xmobarColor "#ff79c6" ""
-    blue     = xmobarColor "#bd93f9" ""
+    blue, lowWhite, magenta, red, white, green, yellow :: String -> String
+    magenta  = xmobarColor "#B16286" ""
+    blue     = xmobarColor "#458588" ""
     white    = xmobarColor "#f8f8f2" ""
-    yellow   = xmobarColor "#f1fa8c" ""
-    red      = xmobarColor "#ff5555" ""
+    yellow   = xmobarColor "#D79921" ""
+    red      = xmobarColor "#CC241D" ""
     lowWhite = xmobarColor "#bbbbbb" ""
+    green    = xmobarColor "#98971A" ""
+
+    sep = magenta
+
+    active = green
+    inactive = lowWhite
+
+    focused = active
+    unfocused = yellow

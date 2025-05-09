@@ -1,8 +1,11 @@
 Config { overrideRedirect = False
-       , font     = "xft:iosevka-9"
-       , bgColor  = "#5f5f5f"
-       , fgColor  = "#f8f8f2"
-       , position = TopW L 90
+       , font     = "FiraCode Medium 9"
+       , bgColor  = "#282828"
+       , fgColor  = "#ffffff"
+       , position = TopH 24
+       --, border = BottomB
+       --, borderColor = "#000000"
+       --, iconRoot = "/etc/xmobar/icons"
        , commands = [ Run Weather "EGPF"
                         [ "--template", "<weather> <tempC>°C"
                         , "-L", "0"
@@ -26,10 +29,11 @@ Config { overrideRedirect = False
                     , Run Memory ["--template", "Mem: <usedratio>%"] 10
                     , Run Swap [] 10
                     , Run Date "%a %Y-%m-%d <fc=#8be9fd>%H:%M</fc>" "date" 10
-                    , Run XMonadLog
+                    , Run UnsafeXMonadLog
                     ]
        , sepChar  = "%"
        , alignSep = "}{"
-       , template = "%XMonadLog% }{ %alsa:default:Master% | %cpu% | %memory% * %swap% | %EGPF% | %date% "
+       , template = "%UnsafeXMonadLog% }{ %alsa:default:Master% | %cpu% | %memory% <*> %swap% | %EGPF% | %date%  "
+       , additionalFonts = [ "RainWorldSymbols"]
        }
 
