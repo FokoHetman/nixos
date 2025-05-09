@@ -32,7 +32,10 @@
     };
 
     sops-nix.url = "github:Mic92/sops-nix";
-
+    
+    kmonad.url = "git+https://github.com/kmonad/kmonad?submodules=1&dir=nix";
+    xmonad-contrib.url = "github:xmonad/xmonad-contrib";
+    
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -63,8 +66,8 @@
       inherit uid canSudo;
     };
     nvim = (inputs.nvf.lib.neovimConfiguration {
-      pkgs = pkgs;
-      modules = [ ./submodules/nvf-configuration.nix ];
+      inherit pkgs;
+      modules = [./submodules/nvf-configuration.nix];
     }).neovim;
     fonts.rainworld = pkgs.callPackage({ pkgs }: pkgs.stdenv.mkDerivation {
       name = "rainworld-font";
@@ -96,7 +99,7 @@
           inputs.discord.nixosModules.discord
           (inputs.nathan.mkTailnet {})
           (inputs.nathan.mkNathan {canSudo = true;})
-	      ];
+	      ] ++ inputs.xmonad-contrib.nixosModules;
       };
       "fokopi" = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs hostname;};

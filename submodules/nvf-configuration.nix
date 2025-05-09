@@ -212,6 +212,7 @@
 
     startPlugins = with pkgs.vimPlugins; [
       vimtex
+      haskell-tools-nvim
     ];
     lazy.plugins.vimtex = {
       enabled = true;

@@ -158,8 +158,27 @@
         
       ];
     };
-
   };
+
+  environment.etc.xmobar.source = ./assets/xmonad/src/xmobar;
+
+  services.xserver.displayManager.sessionCommands = ''
+    nix run nixpkgs#xcompmgr &
+  '';
+  services.xserver.windowManager.xmonad = {
+    enable = true;
+    enableContribAndExtras = true;
+    extraPackages = haskellPackages: [
+      (pkgs.xmobar)
+      haskellPackages.dbus
+      #haskellPackages.xmobar
+      haskellPackages.List
+      haskellPackages.monad-logger
+    ];
+    config = ./assets/xmonad/src/Main.hs;
+    enableConfiguredRecompile = true;
+  };
+
   home-manager = {
     extraSpecialArgs = { inherit inputs username; };
     users = {
@@ -187,6 +206,8 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    xmobar
+    #haskellPackages.xmobar
     inputs.hyprland.packages.${system}.hyprland
     nvim
 
@@ -226,8 +247,8 @@
     curl
     zip
 
-    
-
+    xclip
+    scrot
     grim
     slurp
     fuzzel
