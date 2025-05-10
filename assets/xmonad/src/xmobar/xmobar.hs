@@ -26,6 +26,7 @@ Config { overrideRedirect = False
                         , "--"
                         , "--on", ""
                         ]
+                    , Run Com "playerctl" ["metadata", "title"] "playing" 50
                     , Run Memory ["--template", "Mem: <usedratio>%"] 10
                     , Run Swap [] 10
                     , Run Date "%a %Y-%m-%d <fc=#8be9fd>%H:%M</fc>" "date" 10
@@ -33,7 +34,7 @@ Config { overrideRedirect = False
                     ]
        , sepChar  = "%"
        , alignSep = "}{"
-       , template = "%UnsafeXMonadLog% }{ %alsa:default:Master% | %cpu% | %memory% <*> %swap% | %EGPF% | %date%  "
+       , template = "%UnsafeXMonadLog% }{  [ %playing% <action=playerctl play-pause button=play></action> ]  %alsa:default:Master% | %cpu% | %memory% <*> %swap% | %EGPF% | %date%  "
        , additionalFonts = [ "RainWorldSymbols"]
        }
 

@@ -213,6 +213,8 @@
     xmobar
     xdotool
     #haskellPackages.xmobar
+    playerctl
+
     inputs.hyprland.packages.${system}.hyprland
     nvim
 
