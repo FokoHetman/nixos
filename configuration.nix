@@ -160,34 +160,10 @@
     };
   };
 
-  environment.etc.xmobar.source = ./assets/xmonad/src/xmobar;
-
-  services.xserver.displayManager.sessionCommands = ''
-    nix run nixpkgs#xcompmgr &
-  '';
-  services.xserver.windowManager.xmonad = {
-    enable = true;
-    enableContribAndExtras = true;
-    extraPackages = haskellPackages: [
-      (pkgs.xmobar)
-      haskellPackages.dbus
-      #haskellPackages.xmobar
-      haskellPackages.List
-      haskellPackages.monad-logger
-    ];
-    config = ./assets/xmonad/src/Main.hs;
-    enableConfiguredRecompile = true;
-  };
-  programs.i3lock = {
-    enable = true;
-    package = pkgs.i3lock-fancy-rapid;
-  };
 
   home-manager = {
     extraSpecialArgs = { inherit inputs username; };
     users = {
-      nathan.stylix.enable = false;
-      nathan.catppuccin.enable = lib.mkForce false;		# stylix sucks
       "${username}" = import ./user/${username}/home.nix;
     };
     backupFileExtension = "backup";

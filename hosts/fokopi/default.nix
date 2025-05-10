@@ -8,7 +8,7 @@
   
   services.blueman.enable = true;
 
-
+  home-manager.users.nathan.stylix.enable = false;
   users.users = {
     root = {
     };

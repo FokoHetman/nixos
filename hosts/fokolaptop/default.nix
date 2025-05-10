@@ -3,6 +3,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../submodules/keymanagement.nix
+    ../../submodules/xmonad.nix
   ];
 
   services = {

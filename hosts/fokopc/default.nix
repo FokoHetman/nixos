@@ -3,8 +3,8 @@
   imports = [
     ./hardware-configuration.nix
     ../../submodules/keymanagement.nix
+    ../../submodules/xmonad.nix
   ];
-
 
   services = {
     xserver = {
@@ -46,7 +46,7 @@
   };
 
 
-
+  home-manager.users.nathan.stylix.enable = false;
   users.users = {
     foko = {
       openssh.authorizedKeys.keys = [
