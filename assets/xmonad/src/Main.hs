@@ -1,17 +1,18 @@
 import XMonad
 
-import XMonad.Util.EZConfig
+import XMonad.Util.EZConfig 
 import XMonad.Util.Ungrab
+import XMonad.Util.ClickableWorkspaces
+import XMonad.Util.Loggers
+import XMonad.Util.SpawnOnce (spawnOnce)
 import XMonad.Actions.GroupNavigation
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
-import XMonad.Util.Run(spawnPipe, hPutStrLn)
-import XMonad.Util.ClickableWorkspaces
+import XMonad.Util.Run (spawnPipe, hPutStrLn)
 
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
-import XMonad.Util.Loggers
 import XMonad.Hooks.ManageHelpers
 
 import XMonad.Hooks.ManageDocks (avoidStruts, docks)
@@ -32,7 +33,8 @@ conf = def
   { modMask     = mod4Mask, 
     terminal    = "kitty",
     manageHook  = manageDocks <+> management,
-    layoutHook  = avoidStruts $ layoutHook def
+    layoutHook  = avoidStruts $ layoutHook def,
+    startupHook = startup
 --    logHook = dynamicLogWithPP bar
 --      { ppOutput = \x -> hPutStrLn mySB
 --
@@ -51,9 +53,15 @@ conf = def
       --("M-c", 
     ]
 
+startup :: X ()
+startup = do 
+  spawnOnce "udiskie -c \"$HOME/.config/udiskie/config.yml\""
+  --spawnOnce "lwp"
+  spawnOnce "xcompmgr"
+
 management :: ManageHook
 management = composeAll
-    [ className =? "xmobar" --> doFloat
+    [ className =? "lwpwlp" --> doIgnore
     , isDialog            --> doFloat
     ]
 

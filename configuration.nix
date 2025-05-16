@@ -122,8 +122,8 @@
       enable = true;
     };
     
-    firewall.allowedTCPPorts = [22 44 2137];
-    firewall.allowedUDPPorts = [];
+    firewall.allowedTCPPorts = [22 25 44 2137 5900];
+    firewall.allowedUDPPorts = [5900];
     firewall.enable = true;
 
     #proxy.default = "http://user:password@proxy:port/";
@@ -187,6 +187,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     xmobar
+    xcompmgr
     xdotool
     #haskellPackages.xmobar
     playerctl

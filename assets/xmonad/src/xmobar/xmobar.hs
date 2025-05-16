@@ -3,6 +3,7 @@ Config { overrideRedirect = False
        , bgColor  = "#282828"
        , fgColor  = "#ffffff"
        , position = TopH 24
+       , lowerOnStart = False
        --, border = BottomB
        --, borderColor = "#000000"
        --, iconRoot = "/etc/xmobar/icons"
@@ -34,7 +35,7 @@ Config { overrideRedirect = False
                     ]
        , sepChar  = "%"
        , alignSep = "}{"
-       , template = "%UnsafeXMonadLog% }{  [ %playing% <action=playerctl play-pause button=play></action> ]  %alsa:default:Master% | %cpu% | %memory% <*> %swap% | %EGPF% | %date%  "
+       , template = "%UnsafeXMonadLog% <fc=#ddbf27> </fc> }<action=playerctl play-pause button=play>[ %playing%  ]</action>{ <fc=#9edd27> </fc> %alsa:default:Master% | %cpu% | %memory% <*> %swap% | %EGPF% | %date% <fc=#dd3d27> </fc>"
        , additionalFonts = [ "RainWorldSymbols"]
        }
 

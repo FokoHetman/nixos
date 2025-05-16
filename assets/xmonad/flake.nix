@@ -11,9 +11,8 @@
     {
       formatter = pkgs.alejandra;
       devShells.default = pkgs.mkShell {
-        buildInputs = with pkgs; [haskell-language-server];
+        buildInputs = with pkgs; [haskell-language-server cabal-install haskellPackages.xmonad];
         shellhook = ''
-          sudo nvim src
         '';
       };
     });

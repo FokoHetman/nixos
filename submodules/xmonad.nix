@@ -2,9 +2,9 @@
 {
   environment.etc.xmobar.source = ../assets/xmonad/src/xmobar;
 
-  services.xserver.displayManager.sessionCommands = ''
+  /*services.xserver.displayManager.sessionCommands = ''
     ${pkgs.xcompmgr}/bin/xcompmgr &
-  '';
+  '';*/
   services.xserver.windowManager.xmonad = {
     enable = true;
     enableContribAndExtras = true;
