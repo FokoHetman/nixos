@@ -75,13 +75,8 @@
     cudatoolkit
     qemu
 
-    blockbench
-    #godot_4
-
     vlc
     libvlc
-
-    wineWowPackages.waylandFull
 
     xdg-desktop-portal
     gtk3

@@ -21,7 +21,7 @@ import qualified XMonad.StackSet as W
 
 main :: IO ()
 
-mySB = statusBarProp "xmobar /etc/xmobar/xmobar.hs" (clickablePP bar)
+mySB = statusBarProp "xmobar" (clickablePP bar)
 main = do
   --mySB <- statusBarPipe "xmobar /etc/xmobar/xmobar.hs" (pure bar) --if this works (config), you can move to withSB
   xmonad . ewmhFullscreen . ewmh 
@@ -55,13 +55,13 @@ conf = def
 
 startup :: X ()
 startup = do 
+  spawnOnce "lwpwlp"
   spawnOnce "udiskie -c \"$HOME/.config/udiskie/config.yml\""
-  --spawnOnce "lwp"
   spawnOnce "xcompmgr"
 
 management :: ManageHook
 management = composeAll
-    [ className =? "lwpwlp" --> doIgnore
+    [ className =? "lwpwlp" --> doLower
     , isDialog            --> doFloat
     ]
 

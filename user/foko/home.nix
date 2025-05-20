@@ -4,6 +4,7 @@
   config,
   pkgs,
   username,
+  fonts,
   ...
 }: let
   lockscreen = builtins.fetchurl {
@@ -67,13 +68,14 @@ in{
 
       kando
 
+      (inputs.blackmarket.legacyPackages.${pkgs.system}.fokohetman.lwp)
+
       wayvnc
 
       hashcat
 
 
       (vesktop.override {withMiddleClickScroll = true;/* withSystemVencord = true;*/})
-      #vencord
       krita
       prismlauncher
 
@@ -81,11 +83,7 @@ in{
       fastfetch
 
       drawio
-      freecad
-
       lsd
-
-      mangohud
 
       tree
 
@@ -94,7 +92,7 @@ in{
       #(nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
       nerd-fonts.fira-code
       nerd-fonts.droid-sans-mono
-    
+      (fonts.rainworld)
     (pkgs.writeShellScriptBin "recorder" /*bash*/ ''
       #! /usr/bin/env nix-shell
       #! nix-shell -i bash -p bash
@@ -724,9 +722,17 @@ in{
     };
   };
   
+  home.sessionVariables = {
+    STEAM_EXTRA_COMPAT_TOOLS_PATHS =
+      "\\\${HOME}/.steam/root/compatibilitytools.d";
+  };
+
   home.file = {
     ".config/udiskie/config.yml" = {
-      source = config.lib.file.mkOutOfStoreSymlink ./dotfiles/udiskie.yml;
+      source = ./dotfiles/udiskie.yml;
+    };
+    ".config/lwp" = {
+      source = ./dotfiles/lwp;
     };
   };
 

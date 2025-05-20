@@ -1,0 +1,13 @@
+2025-05-20 20:49:25 INFO: Starting Layered WallPaper
+2025-05-20 20:49:25 INFO: Loading app config
+2025-05-20 20:49:25 INFO: Initializing SDL
+2025-05-20 20:49:25 INFO: Initializing monitors
+2025-05-20 20:49:25 INFO: Scanner found 1 monitor(s)
+2025-05-20 20:49:25 INFO: Initializing monitor 0...
+2025-05-20 20:49:25 INFO: Wallpaper: rainworld-ascension
+2025-05-20 20:49:25 INFO: Bounds: 0 0 2560x1440
+2025-05-20 20:49:25 INFO: Wallpaper destination bounds: 0 0 2560x1440
+2025-05-20 20:49:26 INFO: Initializing wallpaper rainworld-ascension...
+2025-05-20 20:49:26 INFO: Layers count: 3
+2025-05-20 20:49:26 INFO: Repeat X Y: 0 0
+2025-05-20 20:49:26 INFO: Starting wallpaper loop

@@ -162,9 +162,10 @@
 
 
   home-manager = {
-    extraSpecialArgs = { inherit inputs username; };
+    extraSpecialArgs = { inherit inputs username fonts; };
     users = {
       "${username}" = import ./user/${username}/home.nix;
+      nathan.catppuccin.enable = lib.mkForce false; # now it breaks because of catppuccin desync lmfao
     };
     backupFileExtension = "backup";
   };

@@ -41,6 +41,8 @@
 
     discord.url = "github:fokohetman/discord.nix";
 
+    blackmarket.url = "git+ssh://git@fokopi/~/blackmarket";
+
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs:
