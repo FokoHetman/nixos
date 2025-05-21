@@ -29,13 +29,12 @@
       packages = with pkgs; [
         
       ];
+      openssh.authorizedKeys.keys = [
+
+      ] ++ pubKeys;
     };
 
   };
-  
-  users.users.${username}.openssh.authorizedKeys.keys = [
-
-  ] ++ pubKeys;
   services.openssh = {
     enable = true;
     ports = [ 22 2136 ];
