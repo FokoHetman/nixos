@@ -71,6 +71,13 @@
       inherit pkgs;
       modules = [./submodules/nvf-configuration.nix];
     }).neovim;
+    
+    pubKeys = [ # todo: organize them (merge foko@fokopc, regen paprykkania@gmail.com with your domain's email)
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKqbQ0IHO8eIhHTcF4ysTctNg09prlfj6wZaAWEaaSwg foko@fokopc"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAING43cVUOV9hmvkQNOKnYKcaBzamSFRnLGcLb0JlDlOZ paprykkania@gmail.com"
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC8Ol/Mhqze9yugcUFjBDdzSsSjln3RSj/jzGRvBKUmXp7JAGCRhSyy2kfuhWrrrJcUKpajpFowmkNYxUiH4AAcuEBheT1MNtsGwfuBihZHMyrZM71eoEjtTT7pd+UYwHyXLbs/n0zaK3bFdfKb04Ufxq5mfw7Cjb+HTe6Zmr0k0ypxiui1pQWhzvKiMU4SEiXHYYlivswKKOZjs6/ohe8GSudg8iwFoxAH1ElxEtwwP1c3V0ju/Y0Nbv3ROSTzLkgE62o5BZz2ammMaUIqdKamJgASzBTAMP7+RDv3vKG4bkWNsL2KUS2Pt5GvuBiZ+SahwL5z0OlN2ixPoETS/7Qz2RMhwjKsTIoJUODXa5AZpBPYStmOFkHbzzkOiDaD/CgchXU8EiRVfMm8nAeEZZtsN2b+pDm0rusu8/2GfK16DgLHZdpa0fvyQ9JRrSGyjqGfkJLSJD0LOvD06zEqg/yf8KnAGlBDXYVUUg6ZUZXHVsXYz9dFmClZcG79d3y9XHk= foko@fokopc"
+    ];
+
     fonts.rainworld = pkgs.callPackage({ pkgs }: pkgs.stdenv.mkDerivation {
       name = "rainworld-font";
       dontConfigure = true;
@@ -94,7 +101,7 @@
       "fokopc" = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs hostname;};
 	      modules = [
-	        {_module.args = {inherit username timezone inputs nvim fonts;};}
+	        {_module.args = {inherit username timezone inputs nvim fonts pubKeys;};}
 	        ./configuration.nix
           home-manager.nixosModules.default
           inputs.stylix.nixosModules.stylix
@@ -106,12 +113,25 @@
       "fokopi" = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs hostname;};
 	      modules = [
-    	    {_module.args = {inherit username timezone inputs fonts;};}
+    	    {_module.args = {inherit username timezone inputs nvim fonts pubKeys;};}
 	        ./configuration.nix
           home-manager.nixosModules.default
           inputs.stylix.nixosModules.stylix
           (inputs.nathan.mkTailnet {})
+          (inputs.nathan.mkNathan {canSudo = true;})
       	];
+      };
+      "fokolaptop" = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs hostname;};
+	      modules = [
+	        {_module.args = {inherit username timezone inputs nvim fonts pubKeys;};}
+	        ./configuration.nix
+          home-manager.nixosModules.default
+          inputs.stylix.nixosModules.stylix
+          #inputs.discord.nixosModules.discord
+          #(inputs.nathan.mkTailnet {})
+          #(inputs.nathan.mkNathan {canSudo = true;})
+	      ] ++ inputs.xmonad-contrib.nixosModules;
       };
       /*"fokoserver" = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs;};
@@ -150,6 +170,7 @@
         systemConfig = config.home-manager.users.${name}.system;
       in {
         users.users.${name} = {
+          openssh.authorizedKeys.keys = pubKeys;
           isNormalUser = !extraUserConfig.isSystemUser or false;
           inherit uid;
           extraGroups = if canSudo then lib.mkOverride (-100) ["wheel"] else [];

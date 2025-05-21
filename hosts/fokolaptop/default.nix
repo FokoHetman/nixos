@@ -1,4 +1,4 @@
-{config, lib, pkgs, inputs, username, ...}:
+{config, lib, pkgs, inputs, username, pubKeys, ...}:
 {
   imports = [
     ./hardware-configuration.nix
@@ -52,7 +52,18 @@
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAING43cVUOV9hmvkQNOKnYKcaBzamSFRnLGcLb0JlDlOZ paprykkania@gmail.com"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFs8Toyc7bQ9n6LV7czYtpCj6Ki5hItivcuWY21+iPfo nathan@nathanpc"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILYuSLogAXOTv1yZsaj2QuplHQ7Io5SYr6oALRtsnM1n u0_a246@localhost"
-      ];
+      ] ++ pubKeys;
+    };
+  };
+  services.openssh = {
+    enable = true;
+    ports = [ 22 ];
+    settings = {
+      PasswordAuthentication = false;
+      AllowUsers = null; # Allows all users by default. Can be [ "user1" "user2" ]
+      #UseDns = true;
+      X11Forwarding = true;
+      PermitRootLogin = "no"; # "yes", "without-password", "prohibit-password", "forced-commands-only", "no"
     };
   };
 

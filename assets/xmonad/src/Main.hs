@@ -55,7 +55,7 @@ conf = def
 
 startup :: X ()
 startup = do 
-  spawnOnce "lwpwlp"
+  --spawnOnce "lwpwlp" -- it's quite unoptimised  I'd say
   spawnOnce "udiskie -c \"$HOME/.config/udiskie/config.yml\""
   spawnOnce "xcompmgr"
 

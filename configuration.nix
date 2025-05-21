@@ -2,7 +2,7 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, hostname, username, timezone, inputs, nvim, fonts, ... }:
+{ config, lib, pkgs, hostname, username, timezone, inputs, nvim, fonts, pubKeys, ... }:
 
 {
   imports =
@@ -165,7 +165,6 @@
     extraSpecialArgs = { inherit inputs username fonts; };
     users = {
       "${username}" = import ./user/${username}/home.nix;
-      nathan.catppuccin.enable = lib.mkForce false; # now it breaks because of catppuccin desync lmfao
     };
     backupFileExtension = "backup";
   };
@@ -312,13 +311,13 @@
     variables = {
       EDITOR = "nvim";
     };
-    shellAliases = {
+    /*shellAliases = {
       ll = "colorls -l";
       ".." = "cd ..";
       la = "colorls -a";
       lla = "colorls -la";
       ls = "colorls";
-    };
+    };*/
   };
 
 
@@ -332,18 +331,6 @@
 
   # List services that you want to enable:
 
-  # Enable the OpenSSH daemon.
-  services.openssh = {
-    enable = true;
-    ports = [ 22 ];
-    settings = {
-      PasswordAuthentication = false;
-      AllowUsers = null; # Allows all users by default. Can be [ "user1" "user2" ]
-      #UseDns = true;
-      X11Forwarding = true;
-      PermitRootLogin = "no"; # "yes", "without-password", "prohibit-password", "forced-commands-only", "no"
-    };
-  };
 
 
 

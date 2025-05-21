@@ -1,6 +1,7 @@
-{config, lib, pkgs, ...}: {
+{config, lib, pkgs, username, pubKeys, ...}: {
   imports = [
     ./hardware-configuration.nix
+    ../../submodules/nathan-overrides.nix
   ];
   boot.loader.grub.enable = false;
   boot.loader.generic-extlinux-compatible.enable = true;
@@ -8,7 +9,6 @@
   
   services.blueman.enable = true;
 
-  home-manager.users.nathan.stylix.enable = false;
   users.users = {
     root = {
     };
@@ -20,7 +20,7 @@
             newuser ) mkdir $2;;
             newrepo) git --bare init $2;;
           esac
-'')
+        '')
       ];
     };
     ${username} = {
@@ -32,6 +32,24 @@
     };
 
   };
+  
+  users.users.${username}.openssh.authorizedKeys.keys = [
 
-
+  ] ++ pubKeys;
+  services.openssh = {
+    enable = true;
+    ports = [ 22 2136 ];
+    settings = {
+      PasswordAuthentication = false;
+      AllowUsers = null; # Allows all users by default. Can be [ "user1" "user2" ]
+      #UseDns = true;
+      #X11Forwarding = true;
+      PermitRootLogin = "no"; # "yes", "without-password", "prohibit-password", "forced-commands-only", "no"
+      Match = ''
+        LocalPort=22
+          PasswordAuthentication yes
+        Match all
+      '';
+    };
+  };
 }
