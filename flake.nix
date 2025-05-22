@@ -51,7 +51,7 @@
     pkgs = nixpkgs.legacyPackages.${system};
 
     # UNCOMMON / USER DEPENDENT
-    hostname = "fokopc";
+    hostname = "fokopc"; #moved to nixosConfigurations
     username = "foko";
     timezone = "Europe/Warsaw";
 
@@ -72,7 +72,8 @@
       modules = [./submodules/nvf-configuration.nix];
     }).neovim;
     
-    pubKeys = [ # todo: organize them (merge foko@fokopc, regen paprykkania@gmail.com with your domain's email)
+    pubKeys = [ # todo: organize them (merge foko@fokopc, regen paprykkania@gmail.com with your domain's email), configure fokopi's key properly
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPY/5ogOaBGG4kTwf5njUmQHLffcsgMBstS4Be/ym0Ky foko@fokopi"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKqbQ0IHO8eIhHTcF4ysTctNg09prlfj6wZaAWEaaSwg foko@fokopc"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAING43cVUOV9hmvkQNOKnYKcaBzamSFRnLGcLb0JlDlOZ paprykkania@gmail.com"
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC8Ol/Mhqze9yugcUFjBDdzSsSjln3RSj/jzGRvBKUmXp7JAGCRhSyy2kfuhWrrrJcUKpajpFowmkNYxUiH4AAcuEBheT1MNtsGwfuBihZHMyrZM71eoEjtTT7pd+UYwHyXLbs/n0zaK3bFdfKb04Ufxq5mfw7Cjb+HTe6Zmr0k0ypxiui1pQWhzvKiMU4SEiXHYYlivswKKOZjs6/ohe8GSudg8iwFoxAH1ElxEtwwP1c3V0ju/Y0Nbv3ROSTzLkgE62o5BZz2ammMaUIqdKamJgASzBTAMP7+RDv3vKG4bkWNsL2KUS2Pt5GvuBiZ+SahwL5z0OlN2ixPoETS/7Qz2RMhwjKsTIoJUODXa5AZpBPYStmOFkHbzzkOiDaD/CgchXU8EiRVfMm8nAeEZZtsN2b+pDm0rusu8/2GfK16DgLHZdpa0fvyQ9JRrSGyjqGfkJLSJD0LOvD06zEqg/yf8KnAGlBDXYVUUg6ZUZXHVsXYz9dFmClZcG79d3y9XHk= foko@fokopc"
@@ -97,7 +98,7 @@
 
 
     nixosConfigurations = {
-      inherit system pkgs;
+      #inherit system pkgs;
       "fokopc" = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs hostname;};
 	      modules = [
@@ -112,16 +113,21 @@
       };
       "fokopi" = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs hostname;};
-	      modules = [
+        modules = [
     	    {_module.args = {inherit username timezone inputs nvim fonts pubKeys;};}
 	        ./configuration.nix
           home-manager.nixosModules.default
           inputs.stylix.nixosModules.stylix
           (inputs.nathan.mkTailnet {})
           (inputs.nathan.mkNathan {canSudo = true;})
+          {
+            nixpkgs.hostPlatform  = "aarch64-linux";
+            nixpkgs.buildPlatform = "x86_64-linux";
+          }
       	];
       };
       "fokolaptop" = nixpkgs.lib.nixosSystem {
+        hostname = "fokolaptop";
         specialArgs = { inherit inputs hostname;};
 	      modules = [
 	        {_module.args = {inherit username timezone inputs nvim fonts pubKeys;};}
