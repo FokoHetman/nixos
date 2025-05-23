@@ -32,7 +32,9 @@
     };*/
   };
 
-
+  environment.systemPackages = with pkgs; [
+    inputs.hyprland.packages.${system}.hyprland
+  ];
 
   programs = {
     hyprland = {

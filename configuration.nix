@@ -33,6 +33,8 @@
 	  supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
 	  mandatoryFeatures = [ ];
 	}] else [];
+
+  nix.settings.extra-platforms = config.boot.binfmt.emulatedSystems;
 	nix.distributedBuilds = true;
 	# optional, useful when the builder has a faster internet connection than yours
 	nix.extraOptions = ''
@@ -101,8 +103,10 @@
   };*/
 
 
-  nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.cudaSupport = true;
+  nixpkgs.config = if hostname!="fokopi" then {
+    allowUnfree = true;
+    cudaSupport = true;
+  } else {};
   nix = {
     nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     settings = {
@@ -209,7 +213,7 @@
     #haskellPackages.xmobar
     playerctl
 
-    inputs.hyprland.packages.${system}.hyprland
+    
     nvim
 
     

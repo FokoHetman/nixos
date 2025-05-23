@@ -111,8 +111,10 @@
           (inputs.nathan.mkNathan {canSudo = true;})
 	      ] ++ inputs.xmonad-contrib.nixosModules;
       };
-      "fokopi" = nixpkgs.lib.nixosSystem {
+      "fokopi" = let hostname = "fokopi";
+      in nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs hostname;};
+        pkgs = import nixpkgs { system = "aarch64-linux"; config.allowUnfree = true;};
         modules = [
     	    {_module.args = {inherit username timezone inputs nvim fonts pubKeys;};}
 	        ./configuration.nix
