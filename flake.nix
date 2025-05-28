@@ -161,7 +161,7 @@
       };*/
     };
     nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
-      pkgs = import nixpkgs { system = "aarch64-linux"; config.allowUnfree = true;};
+      pkgs = pkgsAarch;};
       extraSpecialArgs = {
         inherit inputs;
       };
