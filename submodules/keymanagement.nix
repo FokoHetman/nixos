@@ -37,14 +37,11 @@ USB_LABEL=fokokeys
 USB_MOUNT=/run/media/${username}/$USB_LABEL
 UMOUNT_BIN=${pkgs.udiskie}/bin/udiskie-umount
 
-${pkgs.xorg.xhost}/bin/xhost +SI:localuser:$(whoami)
-
 for key in "''\${KEYS[@]}"; do
   $SSH_ADD $USB_MOUNT/$key
   echo "Added $key to ssh-agent!"
   ${notify}/bin/notify "Imported $key identities!"
 done
-${pkgs.xorg.xhost}/bin/xhost -SI:localuser:$(whoami)
 
 $UMOUNT_BIN $USB_MOUNT
 
@@ -61,6 +58,7 @@ $UMOUNT_BIN $USB_MOUNT
       SSH_AUTH_SOCK="/run/user/1000/ssh-agent.socket";
       SSH_ASKPASS="${pkgs.x11_ssh_askpass}/libexec/x11-ssh-askpass";
       DISPLAY=":0";
+      XAUTHORITY="~/.Xauthority";
     };
     serviceConfig = {
       User = "foko";

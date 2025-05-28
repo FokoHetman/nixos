@@ -22,6 +22,9 @@
           esac
         '')
       ];
+      openssh.authorizedKeys.keys = [
+
+      ] ++ pubKeys;
     };
     ${username} = {
       isNormalUser = true;
@@ -35,6 +38,11 @@
     };
 
   };
+  environment.systemPackages = with pkgs; [
+    (pkgs.writeShellScriptBin "wakethefokup" ''
+      ${pkgs.wakeonlan}/bin/wakeonlan 74:56:3c:1b:d0:90 -i 169.254.255.255
+    '')
+  ];
   services.openssh = {
     enable = true;
     ports = [ 22 2136 ];
@@ -49,6 +57,7 @@
           PasswordAuthentication yes
         Match all
       '';
+      AuthorizedKeysFile = "~/.ssh/submitted_authorized_keys";
     };
   };
 }

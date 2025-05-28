@@ -41,14 +41,22 @@
 
     discord.url = "github:fokohetman/discord.nix";
 
+    nix-on-droid = {
+      url = "github:nix-community/nix-on-droid/release-24.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     blackmarket.url = "git+ssh://git@fokopi/~/blackmarket";
+
 
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, nix-on-droid, ... }@inputs:
     let
     system = "x86_64-linux";
+    aarch = "aarch64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
+    pkgsAarch = import nixpkgs { system = aarch; config.allowUnfree = true;};
 
     # UNCOMMON / USER DEPENDENT
     hostname = "fokopc"; #moved to nixosConfigurations
@@ -67,7 +75,7 @@
       name = "foko";
       inherit uid canSudo;
     };
-    nvim = (inputs.nvf.lib.neovimConfiguration {
+    nvim = {pkgs}: (inputs.nvf.lib.neovimConfiguration {
       inherit pkgs;
       modules = [./submodules/nvf-configuration.nix];
     }).neovim;
@@ -102,7 +110,7 @@
       "fokopc" = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs hostname;};
 	      modules = [
-	        {_module.args = {inherit username timezone inputs nvim fonts pubKeys;};}
+	        {_module.args = {inherit username timezone inputs fonts pubKeys; nvim = nvim {inherit pkgs;};};}
 	        ./configuration.nix
           home-manager.nixosModules.default
           inputs.stylix.nixosModules.stylix
@@ -116,7 +124,7 @@
         specialArgs = { inherit inputs hostname;};
         pkgs = import nixpkgs { system = "aarch64-linux"; config.allowUnfree = true;};
         modules = [
-    	    {_module.args = {inherit username timezone inputs nvim fonts pubKeys;};}
+    	    {_module.args = {inherit username timezone inputs fonts pubKeys; nvim = nvim {pkgs = pkgsAarch;};};}
 	        ./configuration.nix
           home-manager.nixosModules.default
           inputs.stylix.nixosModules.stylix
@@ -132,7 +140,7 @@
         hostname = "fokolaptop";
         specialArgs = { inherit inputs hostname;};
 	      modules = [
-	        {_module.args = {inherit username timezone inputs nvim fonts pubKeys;};}
+	        {_module.args = {inherit username timezone inputs fonts pubKeys; nvim = nvim {inherit pkgs;};};}
 	        ./configuration.nix
           home-manager.nixosModules.default
           inputs.stylix.nixosModules.stylix
@@ -151,6 +159,19 @@
           (inputs.nathan.mkTailnet {})
         ];
       };*/
+    };
+    nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
+      pkgs = import nixpkgs { system = "aarch64-linux"; config.allowUnfree = true;};
+      extraSpecialArgs = {
+        inherit inputs;
+      };
+      modules = [
+        {_module.args = {inherit inputs;};}
+        #inputs.discord.nixosModules.discord
+        inputs.stylix.nixOnDroidModules.stylix
+        ./configuration.nix
+        ./hosts/fokophone
+      ];
     };
 
     # Thanks github:PoolloverNathan/nixos 

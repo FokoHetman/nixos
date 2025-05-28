@@ -68,9 +68,10 @@ in{
 
       kando
 
-      (inputs.blackmarket.legacyPackages.${pkgs.system}.fokohetman.lwp)
 
-      wayvnc
+      (inputs.blackmarket.legacyPackages.${pkgs.system}.fokohetman.lwp)
+      xorg.xhost
+
 
       hashcat
 

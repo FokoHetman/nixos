@@ -10,6 +10,8 @@ import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Util.Run (spawnPipe, hPutStrLn)
 
+import qualified Data.Map as M
+
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
@@ -49,15 +51,21 @@ conf = def
       ("M-q", spawn $ terminal conf),
       ("M-c", kill),
       ("M1-<Tab>", windows W.focusDown),
-      ("M-C-l", spawn "i3lock 20 pixel")
+      ("M-C-l", spawn "i3lock 20 pixel"),
+      ("M-v", withFocused toggleFloat)
       --("M-c", 
     ]
+    where
+      toggleFloat w = windows (\s -> if M.member w (W.floating s)
+        then W.sink w s
+        else (W.float w (W.RationalRect (1/3) (1/4) (1/2) (4/5)) s))
 
 startup :: X ()
 startup = do 
   --spawnOnce "lwpwlp" -- it's quite unoptimised  I'd say
   spawnOnce "udiskie -c \"$HOME/.config/udiskie/config.yml\""
   spawnOnce "xcompmgr"
+  spawnOnce "xhost +SI:localuser:$(whoami)"
 
 management :: ManageHook
 management = composeAll
