@@ -161,7 +161,7 @@
       };*/
     };
     nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
-      pkgs = pkgsAarch;};
+      pkgs = pkgsAarch;
       extraSpecialArgs = {
         inherit inputs;
       };
