@@ -735,6 +735,11 @@ in{
     ".config/lwp" = {
       source = ./dotfiles/lwp;
     };
+    ".ghci" = {
+      text = ''
+        :set prompt "\955> "
+      '';
+    };
   };
 
 

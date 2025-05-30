@@ -2,6 +2,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../submodules/nathan-overrides.nix
+    ../../submodules/nginx.nix
   ];
   boot.loader.grub.enable = lib.mkForce false;
   boot.loader.generic-extlinux-compatible.enable = true;
@@ -9,7 +10,9 @@
   
   services.blueman.enable = true;
 
+  home-manager.users."${username}" = import ../../user/${username}/home-mini.nix;
   users.users = {
+    jakub = {isNormalUser = true;};
     root = {
     };
     git = {

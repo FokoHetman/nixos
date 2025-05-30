@@ -48,7 +48,7 @@
     gamemode.enable = true;
   };
 
-
+  home-manager.users."${username}" = import ../../user/${username}/home.nix;
   users.groups.builder = {};
   users.users = {
     foko = {

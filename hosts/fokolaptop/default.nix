@@ -48,7 +48,7 @@
   };
 
 
-
+  home-manager.users."${username}" = import ../../user/${username}/home.nix;
   users.users = {
     foko = {
       openssh.authorizedKeys.keys = [

@@ -136,8 +136,8 @@
           }
       	];
       };
-      "fokolaptop" = nixpkgs.lib.nixosSystem {
-        hostname = "fokolaptop";
+      "fokolaptop" = let hostname = "fokolaptop"; 
+      in nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs hostname;};
 	      modules = [
 	        {_module.args = {inherit username timezone inputs fonts pubKeys; nvim = nvim {inherit pkgs;};};}
