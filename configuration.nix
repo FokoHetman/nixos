@@ -11,6 +11,7 @@
       submodules/networking.nix
       submodules/theme.nix
       #submodules/discord.nix
+      submodules/rainworld.nix
       (./hosts + "/${hostname}")
       inputs.sops-nix.nixosModules.sops
     ];
@@ -20,7 +21,10 @@
   sops.age.keyFile = "/home/${username}/.config/sops/age/keys.txt";
   sops.secrets.shrimp = { owner = username; };
   sops.secrets.ds_token = { owner = username; };
-
+  sops.secrets.fok = {};
+  sops.secrets.steam_key = { owner = username; };
+  sops.secrets.steam_id  = { owner = username; };
+  
   nix.buildMachines = if hostname != "fokopc" then [ {
 	  hostName = "fokopc";
     #system = "x86_64-linux";
@@ -40,7 +44,13 @@
 	nix.extraOptions = ''
 	  builders-use-substitutes = true
 	'';
+  nix.registry.blackmarket.flake = inputs.blackmarket;
 
+  rainworld = {
+    enable = true;
+    steamkey_path = config.sops.secrets.steam_key.path;
+    steamid_path = config.sops.secrets.steam_id.path;
+  };
   /*discord = {
     enable = true;
     token_path = config.sops.secrets.ds_token.path;
@@ -143,7 +153,7 @@
       enable = true;
     };
     
-    firewall.allowedTCPPorts = [22 25 44 2137 5900];
+    firewall.allowedTCPPorts = [22 25 44 80 2137 5900 8000 8080];
     firewall.allowedUDPPorts = [5900];
     firewall.enable = true;
 
@@ -168,13 +178,13 @@
   security.rtkit.enable = true;
 
 
-
+  users.groups.fok.gid = 2137;
   users.users = {
     root = {
     };
     ${username} = {
       isNormalUser = true;
-      extraGroups = [ "wheel" ];
+      extraGroups = [ "wheel" "fok" "dialout" ];
       packages = with pkgs; [
         
       ];
@@ -184,9 +194,6 @@
 
   home-manager = {
     extraSpecialArgs = { inherit inputs username fonts; };
-    users = {
-      "${username}" = import ./user/${username}/home.nix;
-    };
     backupFileExtension = "backup";
   };
   xdg.portal = {
@@ -207,6 +214,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    feedbackd
     xmobar
     xcompmgr
     xdotool

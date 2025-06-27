@@ -42,12 +42,16 @@
     discord.url = "github:fokohetman/discord.nix";
 
     nix-on-droid = {
-      url = "github:nix-community/nix-on-droid/release-24.05";
+      url = "github:nix-community/nix-on-droid";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    blackmarket.url = "git+ssh://git@fokopi/~/blackmarket";
+    blackmarket.url = "git+ssh://git@hetman.at/~/blackmarket";
 
+    mobile-nixos = {
+      url = "github:nixos/mobile-nixos"; # least stable mirror
+      flake = false;
+    };
 
   };
 
@@ -80,11 +84,8 @@
       modules = [./submodules/nvf-configuration.nix];
     }).neovim;
     
-    pubKeys = [ # todo: organize them (merge foko@fokopc, regen paprykkania@gmail.com with your domain's email), configure fokopi's key properly
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPY/5ogOaBGG4kTwf5njUmQHLffcsgMBstS4Be/ym0Ky foko@fokopi"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKqbQ0IHO8eIhHTcF4ysTctNg09prlfj6wZaAWEaaSwg foko@fokopc"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAING43cVUOV9hmvkQNOKnYKcaBzamSFRnLGcLb0JlDlOZ paprykkania@gmail.com"
-      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC8Ol/Mhqze9yugcUFjBDdzSsSjln3RSj/jzGRvBKUmXp7JAGCRhSyy2kfuhWrrrJcUKpajpFowmkNYxUiH4AAcuEBheT1MNtsGwfuBihZHMyrZM71eoEjtTT7pd+UYwHyXLbs/n0zaK3bFdfKb04Ufxq5mfw7Cjb+HTe6Zmr0k0ypxiui1pQWhzvKiMU4SEiXHYYlivswKKOZjs6/ohe8GSudg8iwFoxAH1ElxEtwwP1c3V0ju/Y0Nbv3ROSTzLkgE62o5BZz2ammMaUIqdKamJgASzBTAMP7+RDv3vKG4bkWNsL2KUS2Pt5GvuBiZ+SahwL5z0OlN2ixPoETS/7Qz2RMhwjKsTIoJUODXa5AZpBPYStmOFkHbzzkOiDaD/CgchXU8EiRVfMm8nAeEZZtsN2b+pDm0rusu8/2GfK16DgLHZdpa0fvyQ9JRrSGyjqGfkJLSJD0LOvD06zEqg/yf8KnAGlBDXYVUUg6ZUZXHVsXYz9dFmClZcG79d3y9XHk= foko@fokopc"
+    pubKeys = [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCjpL3XBTmxH6biR7rwIviQcA5q3WygfLriAv6+fLA566Bg7kmfHso3lXEm9zIf//EM+np15venbyg35kwf7jDbyPr80QrdQJFQacKL4KAWxj739uPdS5XCdwF2Lf4yHcOncdPz5vupgcQM7qlF/U3Xt2HoqXfb+7nnFZPgwiJ6xP81FltEQmhQRrj0vwK4aVu4VyZ2/7PqmAnbmo42OVYpkTcIjmFpOfnXpw/m3VqoLiNyDPra4LkhzL+umWEUqBtwqkZMG5rP/HNMll7u3AoCfbVwFJg4cjjUYy/uDE8PAZP9xrWQva6kCqH6YR4iUJpKXUMtQRqg1z+/e/QkjtehFnrwd4HOLK1+LBGgbQ4j7duyfblR5yKEYP3C8mGEKB5yqo3si26nzPxUzZvjT7XAoG02KypGHUeeZ9hJ7NbXdxaycmvRsRj4OSoXmexo1r6qY8RckPzAsqpdrDWFcoeePVcRR6Yc3P5dc7NDzXh0FQ55VViQTLqlDgdtETdPd17Vqa1RIFNr/sn0VMJJnXqno3ViEUl8b2LvRQBWKKJWy+oymTwnT3bxN9BFHpbEKK5zzOd4H8/qo7UtUBrCtr2WzSxnnmLQWwRguw9ysfkWdjMChNCwU4GjSBYy/VBkoO4sH9Phf1RNMRvoA6el4lRPn56qhIOeVKX+V0IzMeOoBw== foko@hetman.at"
     ];
 
     fonts.rainworld = pkgs.callPackage({ pkgs }: pkgs.stdenv.mkDerivation {
@@ -136,6 +137,17 @@
           }
       	];
       };
+      "fokophone" = let hostname= "fokophone";
+      in nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = { inherit inputs;};
+        modules = [
+          (import "${inputs.mobile-nixos}/lib/configuration.nix" {device="pine64-pinephone";})
+          {_module.args = {inherit username timezone inputs hostname;};}
+          ./hosts/fokopine/configuration.nix
+          (inputs.mobile-nixos + /examples/phosh/phosh.nix)
+        ];
+      };
       "fokolaptop" = let hostname = "fokolaptop"; 
       in nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs hostname;};
@@ -160,16 +172,16 @@
         ];
       };*/
     };
-    nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
-      pkgs = pkgsAarch;
+    nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration rec {
+      pkgs = import nixpkgs { system = "aarch64-linux"; };
       extraSpecialArgs = {
         inherit inputs;
       };
       modules = [
-        {_module.args = {inherit inputs;};}
+        {_module.args = {inherit inputs; nvim = nvim {inherit pkgs;};};}
         #inputs.discord.nixosModules.discord
-        inputs.stylix.nixOnDroidModules.stylix
-        ./configuration.nix
+        #inputs.stylix.nixOnDroidModules.stylix
+        #./configuration.nix
         ./hosts/fokophone
       ];
     };

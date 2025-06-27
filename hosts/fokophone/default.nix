@@ -1,4 +1,4 @@
-{config, lib, pkgs, input, ...}:
+{config, lib, pkgs, input, nvim, ...}:
   let
   sshdTmpDirectory = "${config.user.home}/sshd-tmp";
   sshdDirectory = "${config.user.home}/sshd";
@@ -46,4 +46,8 @@ in
     foreground =  "#EBDBB2";
   };
 
+  environment.packages = with pkgs; [
+    nvim
+    tmux
+  ];
 }
