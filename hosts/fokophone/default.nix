@@ -2,7 +2,7 @@
   let
   sshdTmpDirectory = "${config.user.home}/sshd-tmp";
   sshdDirectory = "${config.user.home}/sshd";
-  pathToPubKey = "${config.user.home}/.ssh/ssh_host_rsa_key.pub";
+  pathToPubKey = "${config.user.home}/keys/id_rsa.pub";
   port = 8022;
 in
 {
@@ -24,6 +24,26 @@ in
     fi
   '';
   nix.extraOptions = ''
-    experimental-features = nix-command flakes
+          experimental-features = ${
+            builtins.concatStringsSep " " [
+              "nix-command"
+              "flakes"
+              "recursive-nix"
+            ]
+          }
+    builders = ${
+      # TODO: <https://nix.dev/manual/nix/2.18/advanced-topics/distributed-builds>
+      builtins.concatStringsSep " ; " [
+        "ssh-ng://hetman.at:2136               x86_64-linux,aarch64-linux - 16 6 benchmark,big-parallel,kvm,nixos-test -"
+      ]
+    }
+      builders-use-substitutes = true
+      warn-dirty = false
   '';
+  terminal.colors = {
+    cursor = "#FFFFFF";
+    background = "#282828";
+    foreground =  "#EBDBB2";
+  };
+
 }

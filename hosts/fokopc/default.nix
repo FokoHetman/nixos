@@ -9,6 +9,9 @@
 
   services = {
     xserver = {
+      displayManager.sessionCommands = "${pkgs.xorg.xmodmap}/bin/xmodmap ${pkgs.writeText "xbk-layout" ''
+        keysym e = e E ę
+      ''}";
       enable = true;
       xkb.layout = "pl";
       xkb.options = "eurosign:e,caps:escape";
@@ -53,18 +56,14 @@
   users.users = {
     foko = {
       openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAING43cVUOV9hmvkQNOKnYKcaBzamSFRnLGcLb0JlDlOZ paprykkania@gmail.com"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFs8Toyc7bQ9n6LV7czYtpCj6Ki5hItivcuWY21+iPfo nathan@nathanpc"
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILYuSLogAXOTv1yZsaj2QuplHQ7Io5SYr6oALRtsnM1n u0_a246@localhost"
       ] ++ pubKeys;
     };
     builder = {
       group = "builder";
       isNormalUser = true;
       openssh.authorizedKeys.keys =  [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAING43cVUOV9hmvkQNOKnYKcaBzamSFRnLGcLb0JlDlOZ paprykkania@gmail.com"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFs8Toyc7bQ9n6LV7czYtpCj6Ki5hItivcuWY21+iPfo nathan@nathanpc"
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILYuSLogAXOTv1yZsaj2QuplHQ7Io5SYr6oALRtsnM1n u0_a246@localhost"
       ] ++ pubKeys;
     };
   };
@@ -87,7 +86,7 @@
     wantedBy = [ "multi-user.target" ];
     serviceConfig.ExecStart = "${pkgs.linuxPackages.nvidia_x11.bin}/bin/nvidia-smi";
   };
-  networking.interfaces.enp5s0.wakeOnLan.enable=true;
+  networking.interfaces.enp6s0.wakeOnLan.enable=true;
 
 
   environment.defaultPackages = with pkgs; [

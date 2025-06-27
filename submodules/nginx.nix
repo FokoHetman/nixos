@@ -1,13 +1,7 @@
 {
-  networking.upnp.nginx = {
-    description = "Nginx port mapping";
-    ports = [80 443];
-    ignore = true;
-    bindsTo = "nginx.service";
-  };
   services.nginx = {
-    enable = true;
-    recommendedProxySettings = true;
+    enable = false;
+    /*recommendedProxySettings = true;
     recommendedTlsSettings = true;
     virtualHosts = {
       "hetman.at" = {
@@ -30,14 +24,14 @@
         addSSL = true;
         enableACME = true;
         locations."/" = {
-          proxyPass = "http://git.localhost:2137";
+          proxyPass = "http://git.127.0.0.1:2137";
           proxyWebsockets = true;
         };
       };
-    };
+    };*/
   };
-  security.acme = {
+  /*security.acme = {
     acceptTerms = true;
     defaults.email = "foko@hetman.at";
-  };
+  };*/
 }

@@ -34,6 +34,13 @@
       fsType = "vfat";
       options = [ "fmask=0022" "dmask=0022" ];
     };
+    # ...
+    "/nix" = {
+      device = "/dev/disk/by-label/nix";
+      fsType = "ext4";
+      neededForBoot = true;
+      options = [ "noatime" ];
+    };
   };
   hardware.graphics = {
     enable = true;

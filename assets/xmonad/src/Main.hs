@@ -1,5 +1,8 @@
 import XMonad
 
+import XMonad.Util.NamedScratchpad
+import XMonad.ManageHook
+
 import XMonad.Util.EZConfig 
 import XMonad.Util.Ungrab
 import XMonad.Util.ClickableWorkspaces
@@ -19,7 +22,17 @@ import XMonad.Hooks.ManageHelpers
 
 import XMonad.Hooks.ManageDocks (avoidStruts, docks)
 
+import Data.Semigroup
+import XMonad.Hooks.DynamicProperty
+
 import qualified XMonad.StackSet as W
+
+import XMonad.Actions.GridSelect
+
+import Data.Tree
+import qualified XMonad.Actions.TreeSelect as TS
+import XMonad.Hooks.WorkspaceHistory
+
 
 main :: IO ()
 
@@ -30,29 +43,108 @@ main = do
     . withEasySB mySB defToggleStrutsKey
     $ docks $ conf
 
+term :: String
+term = "kitty"
+
+
+
+myWorkspaces :: Forest String
+myWorkspaces = [ Node "etc" []
+               , Node "www" []
+               , Node "dev" -- for all your programming needs
+                    [
+                      Node "tmp"    [] -- documentation
+                    ]
+               , Node "art" []
+               , Node "misc" 
+                    [
+                        Node "1" []
+                      , Node "2" []
+                      , Node "3" []
+                    ]
+               ]
+
+
+treeselectAction :: TS.TSConfig (X ()) -> X ()
+treeselectAction a = TS.treeselectAction a
+   [ Node (TS.TSNode "Hello"    "displays hello"      (spawn "xmessage hello!")) []
+   , Node (TS.TSNode "Shutdown" "Poweroff the system" (spawn "shutdown")) []
+   , Node (TS.TSNode "Brightness" "Sets screen brightness using xbacklight" (return ()))
+       [ Node (TS.TSNode "Bright" "FULL POWER!!"            (spawn "xbacklight -set 100")) []
+       , Node (TS.TSNode "Normal" "Normal Brightness (50%)" (spawn "xbacklight -set 50"))  []
+       , Node (TS.TSNode "Dim"    "Quite dark"              (spawn "xbacklight -set 10"))  []
+       ]
+   ]
+
+myTSConfig = TS.TSConfig { TS.ts_hidechildren = True
+                           , TS.ts_background   = 0x282828
+                           , TS.ts_font         = "xft:Sans-16"
+                           , TS.ts_node         = (0xff000000, 0xff50d0db)
+                           , TS.ts_nodealt      = (0xff000000, 0xff10b8d6)
+                           , TS.ts_highlight    = (0xffffffff, 0xffff0000)
+                           , TS.ts_extra        = 0xff000000
+                           , TS.ts_node_width   = 200
+                           , TS.ts_node_height  = 30
+                           , TS.ts_originX      = 0
+                           , TS.ts_originY      = 0
+                           , TS.ts_indent       = 80
+                           , TS.ts_navigate     = TS.defaultNavigation
+                           }
+
+
+commonApps = ["kitty","blender","krita","drawio","godot4.4","prismlauncher", "obs", "zathura", "nix run nixpkgs#legcord"]
+
+
+scratchpads = [
+    NS "term" (term ++ " --class term") findTerm manageNotes,
+    NS "notes" spawnNotes findNotes manageNotes,
+    NS "nixos" spawnNixosEdit findNixosEdit manageNotes
+              ] 
+              where 
+              role = stringProperty "WM_WINDOW_ROLE"
+              
+              findTerm = resource =? "term"
+              findNotes = resource =? "notepad"
+              findNixosEdit = resource =? "nixos"
+
+              spawnNotes = term ++ " --class notepad nvim -c \":Neorg workspace notes\""
+              spawnNixosEdit = term ++ " --class nixos /etc/nixos"
+              manageNotes = customFloating $ W.RationalRect (1/12) (1/12) (5/6) (5/6)
+
 
 conf = def 
-  { modMask     = mod4Mask, 
-    terminal    = "kitty",
-    manageHook  = manageDocks <+> management,
-    layoutHook  = avoidStruts $ layoutHook def,
-    startupHook = startup
+  { modMask     = mod4Mask 
+    , terminal    = term
+    , manageHook  = manageDocks <+> namedScratchpadManageHook scratchpads <+> management
+    , layoutHook  = avoidStruts $ layoutHook def
+    , startupHook = startup
+    , workspaces = TS.toWorkspaces myWorkspaces
+    , logHook = workspaceHistoryHook
+
+    --handleEventHook = myHandleEventHook
+
 --    logHook = dynamicLogWithPP bar
 --      { ppOutput = \x -> hPutStrLn mySB
 --
 --      }
   } 
   `additionalKeysP`
-    [ ("<Print>", spawn "scrot --select -e 'xclip -selection clipboard -t image/png -i $f'"),
-      ("M-f", spawn "librewolf"),
-      ("M-t", spawn "vesktop"),
-      ("M-r", spawn "rofi -show drun -show-icons"),
-      ("M-x", restart "/run/current-system/sw/bin/xmonad" True),
-      ("M-q", spawn $ terminal conf),
-      ("M-c", kill),
-      ("M1-<Tab>", windows W.focusDown),
-      ("M-C-l", spawn "i3lock 20 pixel"),
-      ("M-v", withFocused toggleFloat)
+    [ ("<Print>", spawn "scrot --select -e 'xclip -selection clipboard -t image/png -i $f'")
+      , ("M-f", spawn "librewolf")
+      --, ("M-t", spawn "vesktop")
+      , ("M-r", spawn "rofi -show drun -show-icons")
+      , ("M-x", restart "/run/current-system/sw/bin/xmonad" True)
+      , ("M-q", spawn $ terminal conf)
+      , ("M-c", kill)
+      , ("M1-<Tab>", windows W.focusDown)
+      , ("M-C-l", spawn "i3lock 20 pixel")
+      , ("M-v", withFocused toggleFloat)
+      , ("M-n", namedScratchpadAction scratchpads "notes")
+      , ("M-e", namedScratchpadAction scratchpads "term")
+      , ("M-C-e", namedScratchpadAction scratchpads "nixos")
+      , ("M-t", spawnSelected def commonApps)
+      , ("M-<Tab>", TS.treeselectWorkspace myTSConfig myWorkspaces W.greedyView)
+      , ("M-z", treeselectAction myTSConfig)
       --("M-c", 
     ]
     where
@@ -66,6 +158,9 @@ startup = do
   spawnOnce "udiskie -c \"$HOME/.config/udiskie/config.yml\""
   spawnOnce "xcompmgr"
   spawnOnce "xhost +SI:localuser:$(whoami)"
+
+
+
 
 management :: ManageHook
 management = composeAll

@@ -88,6 +88,8 @@ in{
 
       tree
 
+      godot_4
+
       #inputs.nixvim.packages.${pkgs.system}.default
 
       #(nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
@@ -355,7 +357,7 @@ in{
       configDir = ./ags;
       extraPackages = with pkgs; [
         gtksourceview
-        webkitgtk
+        webkitgtk_6_0
         accountsservice
       ];
     };
@@ -732,8 +734,8 @@ in{
     ".config/udiskie/config.yml" = {
       source = ./dotfiles/udiskie.yml;
     };
-    ".config/lwp" = {
-      source = ./dotfiles/lwp;
+    ".config/lwp/wallpapers" = {
+      source = ./dotfiles/lwp/wallpapers;
     };
     ".ghci" = {
       text = ''

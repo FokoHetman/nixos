@@ -107,6 +107,7 @@
       rust.enable = true;
       haskell.enable = true;
       nix.enable = true;
+      zig.enable = true;
 
       assembly.enable = true;
       clang.enable = true;
@@ -140,13 +141,17 @@
     autocomplete.nvim-cmp.enable = true;
     lsp.enable = true;
     mini.tabline.enable = true;
-    mini.starter = {
+    
+    /* moved to extraPlugins */
+    /*mini.starter = let 
+      headerFile = "../assets/header.txt";
+    in {
       enable = true;
       setupOpts = {
-        header = builtins.readFile ../assets/header.txt;
-        footer = "                                                                                            ";
+        #inherit header;
+        #footer = "                                                                                            ";
       };
-    };
+    };*/
     /* END OPTIONS */
 
 
@@ -154,6 +159,7 @@
     notes.neorg = {
       enable = true;
       treesitter.enable = true;
+      treesitter.norgPackage = pkgs.tree-sitter-grammars.tree-sitter-norg;
       setupOpts = {
         load = {
           "core.defaults".enable = true;
@@ -208,6 +214,44 @@
             tree-sitter-toml
           ]
         ));
+      mini-starter = let 
+        headerFile = ../assets/header.txt;
+      in {
+        package = mini-starter;
+        setup = ''
+local template = ""
+local file = io.open("${headerFile}")
+if file then
+  template = file:read("*all") or ""
+  file:close()
+end
+local glyph_line = ""
+
+local file = io.open("/tmp/glyphs.txt", "r")
+if file then
+  glyph_line = file:read("*l") or ""
+  file:close()
+end
+
+-- Manually split UTF-8 characters
+local glyphs = {}
+for char in glyph_line:gmatch("[\194-\244][\128-\191]*") do
+  table.insert(glyphs, char)
+end
+
+local glyph_index = 1
+local output_line = template:gsub("A", function()
+  local char = glyphs[glyph_index]
+  glyph_index = glyph_index + 1
+  return char or " "
+end)
+
+require("mini.starter").setup({
+  header = output_line,
+  footer = "                                                                                            ",
+})
+        '';
+      };
     };
 
     startPlugins = with pkgs.vimPlugins; [
