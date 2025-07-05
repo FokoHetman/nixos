@@ -69,6 +69,8 @@ in{
       kando
 
 
+
+
       (inputs.blackmarket.legacyPackages.${pkgs.system}.fokohetman.lwp)
       xorg.xhost
 
@@ -96,6 +98,14 @@ in{
       nerd-fonts.fira-code
       nerd-fonts.droid-sans-mono
       (fonts.rainworld)
+
+      (pkgs.writeShellScriptBin "xmobar-voice-control" /*bash*/ ''
+        case "$1" in
+          1) amixer set Master toggle ;;
+          4) amixer set Master $2%+   ;;
+          5) amixer set Master $2%-   ;;
+        esac
+      '')
     (pkgs.writeShellScriptBin "recorder" /*bash*/ ''
       #! /usr/bin/env nix-shell
       #! nix-shell -i bash -p bash

@@ -35,7 +35,7 @@ Config { overrideRedirect = False
                     ]
        , sepChar  = "%"
        , alignSep = "}{"
-       , template = "%UnsafeXMonadLog% <fc=#ddbf27> </fc> }<action=playerctl play-pause button=play>[ %playing%  ]</action>{ <fc=#9edd27> </fc> %alsa:default:Master% | %cpu% | %memory% <*> %swap% | %EGPF% | %date% <fc=#dd3d27> </fc>"
+       , template = "%UnsafeXMonadLog% <fc=#ddbf27> </fc> }<action=playerctl play-pause button=play>[ %playing%  ]</action>{ <fc=#9edd27> </fc> <action=xmobar-voice-control %button% 5>%alsa:default:Master%</action> | %cpu% | %memory% <*> %swap% | %EGPF% | %date% <fc=#dd3d27> </fc>"
        , additionalFonts = [ "RainWorldSymbols"]
        }
 

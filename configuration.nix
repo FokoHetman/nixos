@@ -210,6 +210,13 @@
     ] ++ lib.attrsets.attrValues fonts;
   };
 
+  services.pcscd.enable = true;
+  programs.gnupg.agent = {
+    enable = true;
+    pinentryPackage = pkgs.pinentry-curses;
+    enableSSHSupport = true;
+  };
+
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -230,7 +237,8 @@
     protonup
 
     udiskie
-    gnupg
+    #gnupg
+    pinentry-curses
 
 
     

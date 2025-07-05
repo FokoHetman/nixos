@@ -26,7 +26,7 @@
         '')
       ];
       openssh.authorizedKeys.keys = [
-
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFs8Toyc7bQ9n6LV7czYtpCj6Ki5hItivcuWY21+iPfo nathan@nathanpc"
       ] ++ pubKeys;
     };
     ${username} = {
@@ -36,7 +36,7 @@
         
       ];
       openssh.authorizedKeys.keys = [
-
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFs8Toyc7bQ9n6LV7czYtpCj6Ki5hItivcuWY21+iPfo nathan@nathanpc"
       ] ++ pubKeys;
     };
 
