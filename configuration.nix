@@ -14,6 +14,8 @@
       submodules/rainworld.nix
       (./hosts + "/${hostname}")
       inputs.sops-nix.nixosModules.sops
+      inputs.nix-index-database.nixosModules.nix-index
+      { programs.nix-index-database.comma.enable = true; }
     ];
 
   sops.defaultSopsFile = ./secrets/secrets.yaml;

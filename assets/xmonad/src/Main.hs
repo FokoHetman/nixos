@@ -49,7 +49,9 @@ term = "kitty"
 
 
 myWorkspaces :: Forest String
-myWorkspaces = [ Node "etc" []
+myWorkspaces = mWorkspaces
+
+mWorkspaces = [ Node "etc" []
                , Node "www" []
                , Node "dev" -- for all your programming needs
                     [
@@ -67,24 +69,25 @@ myWorkspaces = [ Node "etc" []
 
 treeselectAction :: TS.TSConfig (X ()) -> X ()
 treeselectAction a = TS.treeselectAction a
-   [ Node (TS.TSNode "Hello"    "displays hello"      (spawn "xmessage hello!")) []
-   , Node (TS.TSNode "Shutdown" "Poweroff the system" (spawn "shutdown")) []
-   , Node (TS.TSNode "Brightness" "Sets screen brightness using xbacklight" (return ()))
-       [ Node (TS.TSNode "Bright" "FULL POWER!!"            (spawn "xbacklight -set 100")) []
-       , Node (TS.TSNode "Normal" "Normal Brightness (50%)" (spawn "xbacklight -set 50"))  []
-       , Node (TS.TSNode "Dim"    "Quite dark"              (spawn "xbacklight -set 10"))  []
-       ]
+   [ 
+     Node (TS.TSNode "kitty" "kitty"              (spawn term)) []
+   , Node (TS.TSNode "hello"    "displays hello"            (spawn ", xmessage hello!")) []
+   , Node (TS.TSNode "status" "shutdown/reboot" (return())) 
+    [
+        Node (TS.TSNode "shutdown" "Shutdown the system"       (spawn "shutdown now")) []
+      , Node (TS.TSNode "reboot" "Reboot the system" (spawn "reboot")) []
+    ]
    ]
 
 myTSConfig = TS.TSConfig { TS.ts_hidechildren = True
-                           , TS.ts_background   = 0x282828
+                           , TS.ts_background   = 0xc0282828
                            , TS.ts_font         = "xft:Sans-16"
-                           , TS.ts_node         = (0xff000000, 0xff50d0db)
-                           , TS.ts_nodealt      = (0xff000000, 0xff10b8d6)
-                           , TS.ts_highlight    = (0xffffffff, 0xffff0000)
-                           , TS.ts_extra        = 0xff000000
-                           , TS.ts_node_width   = 200
-                           , TS.ts_node_height  = 30
+                           , TS.ts_node         = (0xfffbf1c7, 0xff282828)
+                           , TS.ts_nodealt      = (0xfffbf1c7, 0xff32302f)
+                           , TS.ts_highlight    = (0xfffbf1c7, 0xff90971a)
+                           , TS.ts_extra        = 0xffa89984
+                           , TS.ts_node_width   = 260
+                           , TS.ts_node_height  = 40
                            , TS.ts_originX      = 0
                            , TS.ts_originY      = 0
                            , TS.ts_indent       = 80

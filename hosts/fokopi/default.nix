@@ -1,6 +1,7 @@
 {config, lib, pkgs, username, pubKeys, ...}: {
   imports = [
     ./hardware-configuration.nix
+    ../../submodules/nginx.nix
     ../../submodules/nathan-overrides.nix
     ../../submodules/nginx.nix
   ];
