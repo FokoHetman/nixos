@@ -155,7 +155,7 @@
       enable = true;
     };
     
-    firewall.allowedTCPPorts = [22 25 44 80 2137 5900 8000 8080];
+    firewall.allowedTCPPorts = [22 25 44 80 443 2137 5900 8000 8080];
     firewall.allowedUDPPorts = [5900];
     firewall.enable = true;
 
