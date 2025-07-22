@@ -33,6 +33,7 @@ import Data.Tree
 import qualified XMonad.Actions.TreeSelect as TS
 import XMonad.Hooks.WorkspaceHistory
 
+import XMonad.Actions.SpawnOn
 
 main :: IO ()
 
@@ -43,19 +44,20 @@ main = do
     . withEasySB mySB defToggleStrutsKey
     $ docks $ conf
 
-term :: String
+term, multiplexer, browser, discord :: String
 term = "kitty"
+multiplexer = "tmux"
+browser = "librewolf"
+discord = "nix run nixpkgs#legcord"
 
 
 
 myWorkspaces :: Forest String
-myWorkspaces = mWorkspaces
-
-mWorkspaces = [ Node "etc" []
+myWorkspaces = [ Node "etc" []
                , Node "www" []
-               , Node "dev" -- for all your programming needs
+               , Node "dev"
                     [
-                      Node "tmp"    [] -- documentation
+                      Node "tmp" []
                     ]
                , Node "art" []
                , Node "misc" 
@@ -95,7 +97,7 @@ myTSConfig = TS.TSConfig { TS.ts_hidechildren = True
                            }
 
 
-commonApps = ["kitty","blender","krita","drawio","godot4.4","prismlauncher", "obs", "zathura", "nix run nixpkgs#legcord"]
+commonApps = [term,browser,"blender","krita","drawio","godot4.4","prismlauncher", "obs", "zathura", discord]
 
 
 scratchpads = [
@@ -118,7 +120,7 @@ scratchpads = [
 conf = def 
   { modMask     = mod4Mask 
     , terminal    = term
-    , manageHook  = manageDocks <+> namedScratchpadManageHook scratchpads <+> management
+    , manageHook  = manageDocks <+> namedScratchpadManageHook scratchpads <+> manageSpawn <+> management
     , layoutHook  = avoidStruts $ layoutHook def
     , startupHook = startup
     , workspaces = TS.toWorkspaces myWorkspaces
@@ -133,7 +135,7 @@ conf = def
   } 
   `additionalKeysP`
     [ ("<Print>", spawn "scrot --select -e 'xclip -selection clipboard -t image/png -i $f'")
-      , ("M-f", spawn "librewolf")
+      , ("M-f", spawn browser)
       --, ("M-t", spawn "vesktop")
       , ("M-r", spawn "rofi -show drun -show-icons")
       , ("M-x", restart "/run/current-system/sw/bin/xmonad" True)
@@ -162,6 +164,10 @@ startup = do
   spawnOnce "xcompmgr"
   spawnOnce "xhost +SI:localuser:$(whoami)"
 
+  spawnOn "etc" term
+  spawnOn "www" browser
+  spawnOn "dev" (term ++ " " ++ multiplexer)
+  spawnOn "etc" discord
 
 
 

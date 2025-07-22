@@ -223,6 +223,9 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+
+    (inputs.blackmarket.legacyPackages.${system}.fokohetman.fok)
+
     feedbackd
     xmobar
     xcompmgr
