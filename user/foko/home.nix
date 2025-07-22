@@ -19,25 +19,6 @@ in{
     overlays = [
       (self: super:
       {
-	/*vencord = super.vencord.overrideAttrs(prev: rec {
-	  src = super.fetchFromGitHub {
-	    owner = "FokoHetman";
-	    repo = "Vencord";
-	    rev = "test";
-	    hash = "sha256-YyYDHQ03X+//K/wzpwWHgeoyNxGgIPKtkShCikV/1tk=";
-	  };
-	});
-	vesktop = super.vesktop.overrideAttrs(prev: rec {
-
-	  src = super.fetchFromGitHub {
-	    owner = "FokoHetman";
-	    repo = "Vesktop";
-	    rev = "v1.5.3-patched3";
-	    hash = "sha256-vWwcFlMtfqOQ2M4NuXLy3C57iTC90gvmq0BeBNFQ3SI=";#"sha256-YyYDHQ03X+//K/wzpwWHgeoyNxGgIPKtkShCikV/1tk=";#"sha256-lFuTTtooc3Gs7GADCvFzM5ZcOu+/3KCN3s0s4Aa09n4=";
-	  };
-	  #withMiddleClickScroll = true;
-	#vesktop.override {withMiddleClickScroll = true;} ;
-	});*/
       })
     ];
     config = {
@@ -69,6 +50,16 @@ in{
       kando
 
 
+      (writeShellApplication {
+        name = "ns";
+        runtimeInputs = with pkgs; [
+          fzf
+          nix-search-tv
+        ];
+        # ignore checks since i didn't write this
+        checkPhase = "";
+        text = builtins.readFile "${pkgs.nix-search-tv.src}/nixpkgs.sh";
+      })
 
 
       (inputs.blackmarket.legacyPackages.${pkgs.system}.fokohetman.lwp)
@@ -741,6 +732,9 @@ in{
   };
 
   home.file = {
+    ".config/neofetch/config.conf" = {
+      source = ./dotfiles/neofetch.conf;
+    };
     ".config/udiskie/config.yml" = {
       source = ./dotfiles/udiskie.yml;
     };
