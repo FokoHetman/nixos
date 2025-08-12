@@ -122,7 +122,7 @@
   nix = {
     nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     settings = {
-      trusted-users = ["@wheel"];
+      trusted-users = ["@wheel"] ++ (if hostname=="fokopc" then ["builder"] else []);
       experimental-features = [ "nix-command" "flakes" ];
     };
     settings.secret-key-files = "/etc/nix/private-key";
@@ -155,8 +155,8 @@
       enable = true;
     };
     
-    firewall.allowedTCPPorts = [22 25 44 80 443 2137 5900 8000 8080];
-    firewall.allowedUDPPorts = [5900];
+    firewall.allowedTCPPorts = [22 25 44 80 443 2137 5900 8000 8080 25565];
+    firewall.allowedUDPPorts = [5900 25565];
     firewall.enable = true;
 
     #proxy.default = "http://user:password@proxy:port/";
@@ -227,12 +227,21 @@
     (inputs.blackmarket.legacyPackages.${system}.fokohetman.fok)
 
     feedbackd
-    xmobar
     xcompmgr
     xdotool
     #haskellPackages.xmobar
     playerctl
 
+    pkg-config
+
+    haskellPackages.cabal-install
+    haskellPackages.haskell-language-server
+    haskellPackages.hlint
+    haskellPackages.ghcid
+    haskellPackages.ormolu
+    haskellPackages.implicit-hie
+    haskellPackages.X11
+    #haskell-language-server
     
     nvim
 

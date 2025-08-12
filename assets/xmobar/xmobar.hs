@@ -31,11 +31,12 @@ Config { overrideRedirect = False
                     , Run Memory ["--template", "Mem: <usedratio>%"] 10
                     , Run Swap [] 10
                     , Run Date "%a %Y-%m-%d <fc=#8be9fd>%H:%M</fc>" "date" 10
+                    , Run Kbd [("se", "SE"), ("us", "US")]
                     , Run UnsafeXMonadLog
                     ]
        , sepChar  = "%"
        , alignSep = "}{"
-       , template = "%UnsafeXMonadLog% <fc=#ddbf27> </fc> }<action=playerctl play-pause button=play>[ %playing%  ]</action>{ <fc=#9edd27> </fc> <action=amixer set Master toggle>%alsa:default:Master%</action> | %cpu% | %memory% <*> %swap% | %EGPF% | %date% <fc=#dd3d27> </fc>"
+       , template = "%UnsafeXMonadLog% <fc=#ddbf27> </fc> }<action=playerctl play-pause button=play>[ %playing%  ]</action>{ %kbd% <fc=#9edd27> </fc> <action=amixer set Master toggle>%alsa:default:Master%</action> | %cpu% | %memory% <*> %swap% | %EGPF% | %date% <fc=#dd3d27> </fc>"
        , additionalFonts = [ "RainWorldSymbols"]
        }
 

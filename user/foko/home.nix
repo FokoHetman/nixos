@@ -176,7 +176,7 @@ in{
   programs = {
     xmobar = {
       enable = true;
-      extraConfig = lib.readFile ../../assets/xmonad/src/xmobar/xmobar.hs;
+      extraConfig = lib.readFile ../../assets/xmobar/xmobar.hs;
     };
     hyprlock = {
       enable = true;
@@ -511,7 +511,7 @@ in{
           color = "red";
           icon = "fruit";
         };
-        /*extensions = with (inputs.nur.overlay pkgs pkgs).nur.repos.rycee.firefox-addons; [
+        extensions = with (inputs.nur.overlay pkgs pkgs).nur.repos.rycee.firefox-addons; [
           firefox-color
           sidebery
           sponsorblock
@@ -519,7 +519,7 @@ in{
           tampermonkey
           ublock-origin
           # wakatime
-        ];*/
+        ];
 
         search = {
             force = true;
@@ -561,6 +561,7 @@ in{
 	    if [[ $- == *i* ]]
       then
         fok-quote
+        fok news -lun5
       fi
       '';
 /*
@@ -588,7 +589,7 @@ in{
   };
 
   wayland.windowManager.hyprland = {
-    enable = true;
+    enable = false;
     package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
     portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
 

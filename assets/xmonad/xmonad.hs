@@ -1,39 +1,34 @@
 import XMonad
 
 import XMonad.Util.NamedScratchpad
-import XMonad.ManageHook
 
-import XMonad.Util.EZConfig 
-import XMonad.Util.Ungrab
+import XMonad.Util.EZConfig
 import XMonad.Util.ClickableWorkspaces
 import XMonad.Util.Loggers
 import XMonad.Util.SpawnOnce (spawnOnce)
-import XMonad.Actions.GroupNavigation
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
-import XMonad.Util.Run (spawnPipe, hPutStrLn)
 
 import qualified Data.Map as M
 
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.StatusBar
-import XMonad.Hooks.StatusBar.PP
 import XMonad.Hooks.ManageHelpers
 
-import XMonad.Hooks.ManageDocks (avoidStruts, docks)
-
-import Data.Semigroup
-import XMonad.Hooks.DynamicProperty
-
 import qualified XMonad.StackSet as W
-
 import XMonad.Actions.GridSelect
 
 import Data.Tree
+
 import qualified XMonad.Actions.TreeSelect as TS
 import XMonad.Hooks.WorkspaceHistory
-
 import XMonad.Actions.SpawnOn
+
+
+import Xmobar
+
+import Definitions
+
 
 main :: IO ()
 
@@ -42,7 +37,7 @@ main = do
   --mySB <- statusBarPipe "xmobar /etc/xmobar/xmobar.hs" (pure bar) --if this works (config), you can move to withSB
   xmonad . ewmhFullscreen . ewmh 
     . withEasySB mySB defToggleStrutsKey
-    $ docks $ conf
+    $ docks conf
 
 term, multiplexer, browser, discord :: String
 term = "kitty"
@@ -150,6 +145,7 @@ conf = def
       , ("M-t", spawnSelected def commonApps)
       , ("M-<Tab>", TS.treeselectWorkspace myTSConfig myWorkspaces W.greedyView)
       , ("M-z", treeselectAction myTSConfig)
+      , ("M-M1-<Space>", spawn "layout-sw")
       --("M-c", 
     ]
     where
