@@ -1,4 +1,4 @@
-{config, lib, pkgs, inputs, username, pubKeys, ...}:
+{config, lib, pkgs, inputs, username, pubKeys, mkMonster, ...}:
 {
   imports = [
     ./hardware-configuration.nix
@@ -13,7 +13,7 @@
         keysym e = e E ę
       ''}";
       enable = true;
-      xkb.layout = "pl";
+      #xkb.layout = "pl";
       xkb.options = "eurosign:e,caps:escape";
       videoDrivers = ["nvidia"];
     };
@@ -36,14 +36,14 @@
   };
 
   environment.systemPackages = with pkgs; [
-    inputs.hyprland.packages.${system}.hyprland
+    #inputs.hyprland.packages.${system}.hyprland
   ];
 
   programs = {
-    hyprland = {
+    /*hyprland = {
       enable=true;
       package = inputs.hyprland.packages."${pkgs.system}".hyprland;
-    };
+    };*/
     steam = {
       enable = true;
       gamescopeSession.enable = true;
@@ -90,6 +90,7 @@
 
 
   environment.defaultPackages = with pkgs; [
+    #(mkMonster 196883)
 
     zathura
     texliveMedium

@@ -23,7 +23,7 @@
     stylix.url = "github:danth/stylix";
     ags.url = "github:Aylur/ags/v1";
 
-    hyprland = {
+    /*hyprland = {
       type = "git";
       url = "https://github.com/hyprwm/Hyprland";
       submodules = true;
@@ -32,7 +32,7 @@
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
       inputs.hyprland.follows = "hyprland";
-    };
+    };*/
 
     sops-nix.url = "github:Mic92/sops-nix";
     
@@ -72,6 +72,15 @@
 
     inherit (self) outputs;
   in rec {
+
+    mkMonster = xs: let x = toString xs; in
+      pkgs.runCommandLocal "monster-mass" {} ''
+        mkdir -p $out/bin
+        for i in $(seq 1 ${x}); do
+          echo "echo This is $i th Dimension of THE MONSTER" > $out/bin/monster-$i
+          chmod +x $out/bin/monster-$i
+        done
+      '';
 
     /*packages."${system}".default = 
     (inputs.nvf.lib.neovimConfiguration {
@@ -118,7 +127,7 @@
       "fokopc" = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs hostname;};
 	      modules = [
-	        {_module.args = {inherit username timezone inputs fonts pubKeys; nvim = nvim.packages.x86_64-linux;};}
+	        {_module.args = {inherit mkMonster username timezone inputs fonts pubKeys; nvim = nvim.packages.x86_64-linux;};}
 	        ./configuration.nix
           home-manager.nixosModules.default
           inputs.stylix.nixosModules.stylix

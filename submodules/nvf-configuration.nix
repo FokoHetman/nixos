@@ -200,6 +200,7 @@
 
     /* additional plugins */
     extraPlugins = with pkgs.vimPlugins; {
+      vim-godot.package = vim-godot;
       nabla.package = nabla-nvim;
       nvim-treesitter.package = (nvim-treesitter.withPlugins (
           plugins: with pkgs.tree-sitter-grammars; [
