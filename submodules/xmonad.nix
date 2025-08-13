@@ -17,7 +17,7 @@
         monad-logger
         xmobar
       ];
-      config = ../assets/xmonad/xmonad.hs;
+      #config = ../assets/xmonad/xmonad.hs;
       enableConfiguredRecompile = true;
     };*/
   };
@@ -43,6 +43,7 @@
       case $(setxkbmap -query | grep -oP "(?<=layout:).*" | tr -d [:space:]) in
         pl  ) setxkbmap ru;;
         ru  ) setxkbmap pl;;
+        *   ) setxkbmap pl;; # fallback
       esac
     '')
   ];

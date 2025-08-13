@@ -9,23 +9,28 @@
 
   services = {
     xserver = {
+      /*doesn't work either way ffs
       displayManager.sessionCommands = "${pkgs.xorg.xmodmap}/bin/xmodmap ${pkgs.writeText "xbk-layout" ''
         keysym e = e E ę
-      ''}";
+      ''}";*/
       enable = true;
       #xkb.layout = "pl";
       xkb.options = "eurosign:e,caps:escape";
       videoDrivers = ["nvidia"];
+      displayManager = lib.mkDefault {
+        startx.enable = true;
+        sx.enable = true;
+      };
     };
     upower.enable=true;
     displayManager = {
-      sddm = {
+      /*sddm = {
 	      theme = "${import ../../submodules/sddm.nix { inherit pkgs; }}";
         enable = true;
         wayland = {
           enable = true;
         };
-      };
+      };*/
     };
     blueman.enable = true;
     printing.enable = true;
