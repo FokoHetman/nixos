@@ -4,6 +4,7 @@
     ./hardware-configuration.nix
     ../../submodules/keymanagement.nix
     ../../submodules/xmonad.nix
+    ../../submodules/lambdagreet.nix
     ../../submodules/nathan-overrides.nix
   ];
 
@@ -15,7 +16,7 @@
       ''}";*/
       enable = true;
       #xkb.layout = "pl";
-      xkb.options = "eurosign:e,caps:escape";
+      #xkb.options = "eurosign:e,caps:escape";
       videoDrivers = ["nvidia"];
       displayManager = lib.mkDefault {
         startx.enable = true;

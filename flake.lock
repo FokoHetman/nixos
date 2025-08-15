@@ -220,11 +220,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1753722267,
-        "narHash": "sha256-Pqy+F6LDssLvZR9tEMJoH5zR6+gPZ3xP6EqTJ6weEPU=",
+        "lastModified": 1755298196,
+        "narHash": "sha256-OZ3rfHK6eT+42XzxRItbK6MRF7ZbSd4A17ME6IAz2ng=",
         "ref": "refs/heads/master",
-        "rev": "99110d81b9be8e0a56b93398ed1f921dd9a57980",
-        "revCount": 20,
+        "rev": "73abe80b7296430219442216c56db205ae3a104c",
+        "revCount": 23,
         "type": "git",
         "url": "ssh://git@hetman.at/~/blackmarket"
       },

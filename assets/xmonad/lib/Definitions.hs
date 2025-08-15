@@ -4,6 +4,10 @@ module Definitions where
 import Data.Monoid
 import XMonad
 
+import XMonad.Util.NamedScratchpad
+
+
+import qualified XMonad.StackSet as W
 import Data.Tree
 import qualified XMonad.Actions.TreeSelect as TS
 

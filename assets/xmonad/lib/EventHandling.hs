@@ -14,4 +14,4 @@ import XMonad.Hooks.WindowSwallowing
 -- combine event hooks use mappend or mconcat from Data.Monoid.
 --
 myEventHook :: (Event -> X All)
-myEventHook = swallowEventHook (className =? "Alacritty" <||> className =? "Termite") (return True)
+myEventHook = swallowEventHook (className =? "kitty") (return True)

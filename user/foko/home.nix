@@ -62,7 +62,7 @@ in{
       })
 
 
-      (inputs.blackmarket.legacyPackages.${pkgs.system}.fokohetman.lwp)
+      (inputs.blackmarket.legacyPackages.${pkgs.system}.lwp)
       xorg.xhost
 
 
