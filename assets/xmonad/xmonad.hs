@@ -1,5 +1,5 @@
 import XMonad
-
+import Xmobar
 import XMonad.Util.NamedScratchpad
 
 import XMonad.Util.EZConfig
@@ -25,30 +25,32 @@ import qualified XMonad.Actions.TreeSelect as TS
 import XMonad.Hooks.WorkspaceHistory
 import XMonad.Actions.SpawnOn
 
-
-import Xmobar
-
 import EventHandling
 import Definitions
+import TrueFullscreen
+import StartupHook
+import Layout (myLayout)
 
 
 main :: IO ()
 
-mySB = statusBarProp "xmobar" (clickablePP bar)
+mySB = statusBarProp "custom-xmobar" (clickablePP bar)
 main = do
   --mySB <- statusBarPipe "xmobar /etc/xmobar/xmobar.hs" (pure bar) --if this works (config), you can move to withSB
-  xmonad . ewmhFullscreen . ewmh 
-    . withEasySB mySB defToggleStrutsKey
-    $ docks conf
+  
+  --xmproc <- myXmobar
 
+  xmonad . ewmhFullscreen . ewmh 
+     . withEasySB mySB defToggleStrutsKey
+    $ docks conf
 
 
 conf = def 
   { modMask     = mod4Mask 
     , terminal    = term
     , manageHook  = manageDocks <+> namedScratchpadManageHook scratchpads <+> manageSpawn <+> management
-    , layoutHook  = avoidStruts $ layoutHook def
-    , startupHook = startup
+    , layoutHook  = myLayout
+    , startupHook = myStartupHook
     , workspaces = TS.toWorkspaces myWorkspaces
     , logHook = workspaceHistoryHook
     , handleEventHook = myEventHook
@@ -77,24 +79,13 @@ conf = def
       , ("M-<Tab>", TS.treeselectWorkspace myTSConfig myWorkspaces W.greedyView)
       , ("M-z", treeselectAction myTSConfig)
       , ("M-M1-<Space>", spawn "layout-sw")
+      , ("F11", toggleFullscreen)
       --("M-c", 
     ]
     where
       toggleFloat w = windows (\s -> if M.member w (W.floating s)
         then W.sink w s
         else (W.float w (W.RationalRect (1/3) (1/4) (1/2) (4/5)) s))
-
-startup :: X ()
-startup = do 
-  --spawnOnce "lwpwlp" -- it's quite unoptimised  I'd say
-  spawnOnce "udiskie -c \"$HOME/.config/udiskie/config.yml\""
-  spawnOnce "xcompmgr"
-  spawnOnce "xhost +SI:localuser:$(whoami)"
-
-  spawnOn "etc" term
-  spawnOn "www" browser
-  spawnOn "dev" (term ++ " " ++ multiplexer)
-  spawnOn "etc" discord
 
 
 

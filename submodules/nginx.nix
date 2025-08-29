@@ -36,7 +36,7 @@
         addSSL = true;
         enableACME = true;
         locations."/" = {
-          proxyPass = "http://git.localhost:2137";
+          proxyPass = "http://git.localhost:2137/";
           proxyWebsockets = true;
         };
       };

@@ -23,7 +23,7 @@
     stylix.url = "github:danth/stylix";
     ags.url = "github:Aylur/ags/v1";
 
-    /*hyprland = {
+    hyprland = {
       type = "git";
       url = "https://github.com/hyprwm/Hyprland";
       submodules = true;
@@ -32,7 +32,7 @@
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
       inputs.hyprland.follows = "hyprland";
-    };*/
+    };
 
     sops-nix.url = "github:Mic92/sops-nix";
     
@@ -48,8 +48,10 @@
       url = "github:nix-community/nix-on-droid";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    blackmarket.url = "git+ssh://git@hetman.at/~/blackmarket";
+  
+    blackmarket.type = "git";
+    blackmarket.url = "https://git.hetman.at/blackmarket";
+    blackmarket.inputs.nixpkgs.follows = "nixpkgs";
 
     mobile-nixos = {
       url = "github:nixos/mobile-nixos"; # least stable mirror

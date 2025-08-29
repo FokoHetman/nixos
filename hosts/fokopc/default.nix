@@ -1,4 +1,4 @@
-{config, lib, pkgs, inputs, username, pubKeys, mkMonster, ...}:
+{config, lib, pkgs, inputs, username, pubKeys, fonts, mkMonster, ...}:
 {
   imports = [
     ./hardware-configuration.nix
@@ -8,7 +8,20 @@
     ../../submodules/nathan-overrides.nix
   ];
 
+
+  
+
+
   services = {
+    # it's kinda ass aactually
+    /*kmscon = {
+      enable = true;
+      fonts = [
+        {name="rainworld-font"; package = fonts.rainworld;}
+        {name="Fira Code"; package = pkgs.nerd-fonts.fira-code;}
+        {name="Droid Sans Mono"; package = pkgs.nerd-fonts.droid-sans-mono;}
+      ];
+    };*/
     xserver = {
       /*doesn't work either way ffs
       displayManager.sessionCommands = "${pkgs.xorg.xmodmap}/bin/xmodmap ${pkgs.writeText "xbk-layout" ''

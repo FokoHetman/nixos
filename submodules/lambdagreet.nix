@@ -1,6 +1,6 @@
 {pkgs, inputs, ...}:
 let
-  lambdagreet = inputs.blackmarket.legacyPackages.${pkgs.system}.lambdagreet
+  lambdagreet = inputs.blackmarket.legacyPackages.${pkgs.system}.lambdagreet;
 in
 {
   systemd.services.lambdagreet = {
@@ -10,15 +10,16 @@ in
     before = [ "getty@tty1.service" ];
 
     serviceConfig = {
-      ExecStart = "${lambdagreet}/bin/greeter";
+      ExecStart = "${pkgs.bash}/bin/bash -l -c ${lambdagreet}/bin/greeter";
       StandardInput = "tty";
       StandardOutput = "tty";
+      StandardError = "journal";
       TTYPath = "/dev/tty1";
+      TTYReset = "yes";
+      TTYVHangup = "yes";
       Restart = "always";
+      PAMName = "login";
     };
-
-    user = "root";
   };
-
-  services.getty.enable = false;
+  systemd.services."getty@tty1".enable = false;
 }

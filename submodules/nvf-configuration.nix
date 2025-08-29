@@ -17,6 +17,7 @@
       name = "catppuccin";
       style = "mocha";
     };
+    ui.colorizer.enable = true;
 
     /* END THEME */
 
@@ -25,7 +26,12 @@
       action = "<C-\\><C-N>";
       desc = "Make esc leave terminal mode.";
     };
-    
+
+    diagnostics = {
+      enable = true;
+      config.virtual_text = true;
+      nvim-lint.enable = true;
+    };
     keymaps = [
       /*{
         key = "<k4>";
@@ -84,6 +90,14 @@
         desc = "Split screen vertically.";
         mode = "n";
         action = "<cmd>vs<CR>";
+      }
+
+      {
+        key  = "<leader>r";
+        desc = "Toggle Linter";
+        mode = "n";
+        lua = true;
+        action = ''toggle_lint'';
       }
 
       {key="<S-Up>"; action = "<Esc>v<Up>"; mode = ["n"];}
@@ -281,4 +295,15 @@ require("mini.starter").setup({
       '';
     };
   };
+  vim.luaConfigPre = ''
+    linting = true
+    local toggle_lint = function()
+      linting = not linting
+      if linting then
+        vim.diagnostic.show()
+      else
+        vim.diagnostic.hide()
+      end
+    end
+  '';
 }

@@ -3,6 +3,7 @@ module EventHandling where
 import Data.Monoid
 import XMonad
 import XMonad.Hooks.WindowSwallowing
+import XMonad.Hooks.ScreenCorners (screenCornerEventHook)
 ------------------------------------------------------------------------
 -- Event handling
 
@@ -14,4 +15,4 @@ import XMonad.Hooks.WindowSwallowing
 -- combine event hooks use mappend or mconcat from Data.Monoid.
 --
 myEventHook :: (Event -> X All)
-myEventHook = swallowEventHook (className =? "kitty") (return True)
+myEventHook = screenCornerEventHook <> swallowEventHook (className =? "kitty") (return True)

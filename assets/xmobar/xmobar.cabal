@@ -1,5 +1,5 @@
 cabal-version:      3.0
-name:               xmonadrc
+name:               custom-xmobar
 version:            0.1.0.0
 license:            BSD-3-Clause
 license-file:       LICENSE
@@ -16,40 +16,12 @@ common warnings
     ghc-options: -Wall
 
 
-library
-  exposed-modules:
-    Definitions
-    EventHandling
-    TrueFullscreen
-    Layout
-    StartupHook
---    XMobar
---    KeyBindings
---    TrueFullscreen
---    Layout
---    LogHook
---    MouseBindings
---    StartupHook
---    ManageHook
---    WindowState
-  hs-source-dirs: lib
-  ghc-options: -Wall -rtsopts -with-rtsopts=-V0 -threaded -haddock
-  build-depends: base
-    , xmonad
-    , xmonad-contrib
-    , xmobar
-    , containers
-    , X11
-    , flow
-  default-language: Haskell2010
-
-
-executable xmonad
+executable custom-xmobar
     -- Import common warning flags.
     import:           warnings
 
     -- .hs or .lhs file containing the Main module.
-    main-is:          xmonad.hs
+    main-is:          xmobar.hs
     ghc-options: -Wall -rtsopts -with-rtsopts=-V0 -threaded -haddock
 
     -- Modules included in this executable, other than Main.
@@ -60,12 +32,9 @@ executable xmonad
 
     -- Other library packages from which modules are imported.
     build-depends: base
-                  , xmonad
-                  , xmonad-contrib
                   , xmobar
-                  , xmonadrc
-                  , containers
-                  , flow
+                  , network
+                  , time
     -- Directories containing source files.
     hs-source-dirs: .
 

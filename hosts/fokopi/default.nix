@@ -1,4 +1,4 @@
-{config, lib, pkgs, username, pubKeys, ...}: {
+{config, lib, pkgs, username, pubKeys, inputs, ...}: {
   imports = [
     ./hardware-configuration.nix
     ../../submodules/nginx.nix
@@ -43,6 +43,7 @@
 
   };
   environment.systemPackages = with pkgs; [
+    inputs.blackmarket.legacyPackages.${pkgs.system}.discord_githook
     (pkgs.writeShellScriptBin "wakethefokup" ''
       ${pkgs.wakeonlan}/bin/wakeonlan 74:56:3c:1b:d0:90 -i 169.254.255.255
     '')

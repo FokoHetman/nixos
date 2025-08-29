@@ -1,12 +1,14 @@
 { pkgs, username, ...}:
-{
+let
+  label = "fokokeys";     # modularize this entire module
+in {
   /* UDEV */
   services.udisks2.enable = true;
   services.udev.packages = [
     (pkgs.writeTextFile {
       name = "ssh-keys";
       text = ''
-         ACTION=="add", ATTRS{idVendor}=="13fe", ATTRS{idProduct}=="4300", NAME="fokokeys"
+         ACTION=="add", ATTRS{idVendor}=="13fe", ATTRS{idProduct}=="4300", NAME="${label}"
       '';
       destination = "/etc/udev/rules.d/66-keys.rules";
     })
@@ -26,14 +28,14 @@
             "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$uid/bus" \
             notify-send "$@" || true
         '';
-    keys = pkgs.writeShellScriptBin "fokokeys" ''
+    keys = pkgs.writeShellScriptBin "${label}" ''
 export $(dbus-launch)
 set -e
 
 KEYS=(id_rsa id_ed25519)
 
 SSH_ADD=${pkgs.openssh}/bin/ssh-add
-USB_LABEL=fokokeys
+USB_LABEL=${label}
 USB_MOUNT=/run/media/${username}/$USB_LABEL
 UMOUNT_BIN=${pkgs.udiskie}/bin/udiskie-umount
 
@@ -50,8 +52,8 @@ $UMOUNT_BIN $USB_MOUNT
   in {
     enable = true;
     description="SSH Keys loaded from USB";
-    requires = ["run-media-${username}-fokokeys.mount"];
-    after = ["run-media-${username}-fokokeys.mount"];
+    requires = ["run-media-${username}-${label}.mount"];
+    after = ["run-media-${username}-${label}.mount"];
     confinement.packages = [pkgs.dbus];
     
     environment = {
@@ -62,10 +64,10 @@ $UMOUNT_BIN $USB_MOUNT
     };
     serviceConfig = {
       User = "foko";
-      ExecStart = "${keys}/bin/fokokeys";
+      ExecStart = "${keys}/bin/${label}";
     };
     
-    wantedBy = ["run-media-${username}-fokokeys.mount"];
+    wantedBy = ["run-media-${username}-${label}.mount"];
   };
 
   systemd.user.services.ssh-agent = {

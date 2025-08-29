@@ -28,7 +28,7 @@
   sops.secrets.steam_id  = { owner = username; };
   
   nix.buildMachines = if hostname != "fokopc" then [ {
-	  hostName = "fokopc";
+	  hostName = "hetman.at:2136";
     #system = "x86_64-linux";
     protocol = "ssh-ng";
 	  # if the builder supports building for multiple architectures, 
@@ -123,7 +123,7 @@
     nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     settings = {
       trusted-users = ["@wheel"] ++ (if hostname=="fokopc" then ["builder"] else []);
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [ "nix-command" "flakes" "pipe-operators"];
     };
     settings.secret-key-files = "/etc/nix/private-key";
   };
@@ -186,7 +186,7 @@
     };
     ${username} = {
       isNormalUser = true;
-      extraGroups = [ "wheel" "fok" "dialout" ];
+      extraGroups = [ "wheel" "fok" "dialout" "firejail" ];
       packages = with pkgs; [
         
       ];
@@ -224,7 +224,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
 
-    (inputs.blackmarket.legacyPackages.${system}.fokohetman.fok)
+    (inputs.blackmarket.legacyPackages.${system}.fok)
 
     feedbackd
     xcompmgr

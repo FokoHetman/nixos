@@ -24,6 +24,9 @@ in{
     config = {
       allowUnfree = true;
       allowUnfreePredicate = _: true;
+      permittedInsecurePackages = [
+        "libsoup-2.74.3"
+      ];
     };
   };
 
@@ -49,6 +52,10 @@ in{
 
       kando
 
+      #xmobar
+      #haskellPackages.xmobar
+      
+      orca-slicer
 
       (writeShellApplication {
         name = "ns";
@@ -174,10 +181,10 @@ in{
   
   xdg.configFile."lf/icons".source = ./icons;
   programs = {
-    xmobar = {
+    /*xmobar = {
       enable = true;
       extraConfig = lib.readFile ../../assets/xmobar/xmobar.hs;
-    };
+    };*/
     hyprlock = {
       enable = true;
       settings = {
@@ -589,7 +596,7 @@ in{
   };
 
   wayland.windowManager.hyprland = {
-    enable = false;
+    enable = true;
     package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
     portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
 

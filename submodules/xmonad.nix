@@ -27,8 +27,11 @@
   };
   environment.systemPackages = with pkgs; [
     (pkgs.callPackage ../assets/xmonad {shell=false;})
-
-    xmobar
+    (pkgs.callPackage ../assets/xmobar {shell=false;})
+    #haskellPackages.xmobar
+    haskellPackages.monad-logger
+    haskellPackages.dbus
+    haskellPackages.List
     pango
     xorg.libX11
     xorg.libX11.dev
