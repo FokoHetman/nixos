@@ -12,8 +12,8 @@ import XMonad.Util.NamedScratchpad (namedScratchpadAction)
 myStartupHook :: X ()
 myStartupHook = do 
   --spawnOnce "lwpwlp" -- it's quite unoptimised  I'd say
-  addScreenCorner SCBottom $ namedScratchpadAction scratchpads "notes"
-  spawnOnce "udiskie -c \"$HOME/.config/udiskie/config.yml\""
+  --addScreenCorner SCBottom $ namedScratchpadAction scratchpads "notes"
+  spawnOnce "udiskie"
   spawnOnce "xcompmgr"
   spawnOnce "xhost +SI:localuser:$(whoami)"
 

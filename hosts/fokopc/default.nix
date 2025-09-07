@@ -6,6 +6,7 @@
     ../../submodules/xmonad.nix
     ../../submodules/lambdagreet.nix
     ../../submodules/nathan-overrides.nix
+    ../../submodules/proxychains.nix
   ];
 
 

@@ -22,6 +22,10 @@
     /* END THEME */
 
     /* KEBINDS */
+    clipboard.enable = true;
+    clipboard.providers.xclip.enable = true;
+    clipboard.providers.wl-copy.enable = true;
+    clipboard.registers = "unnamedplus";
     maps.terminal."<Esc>" = {
       action = "<C-\\><C-N>";
       desc = "Make esc leave terminal mode.";
@@ -168,7 +172,10 @@
     };*/
     /* END OPTIONS */
 
-
+    utility.images.image-nvim.enable = true;
+    utility.images.image-nvim.setupOpts.integrations.neorg.enable = true;
+    utility.images.image-nvim.setupOpts.backend = "kitty";
+    utility.images.image-nvim.setupOpts.kitty_method = "normal";
     /* NOTES */
     notes.neorg = {
       enable = true;
@@ -214,6 +221,7 @@
 
     /* additional plugins */
     extraPlugins = with pkgs.vimPlugins; {
+      telescope-undo.package = telescope-undo-nvim;
       vim-godot.package = vim-godot;
       nabla.package = nabla-nvim;
       nvim-treesitter.package = (nvim-treesitter.withPlugins (

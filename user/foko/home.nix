@@ -257,9 +257,13 @@ in{
     tmux = {
       enable = true;
       clock24 = true;
+
       plugins = [
 
       ];
+      extraConfig = ''
+        set -g allow-passthrough on
+      '';
     };
     lf = {
       enable = true;

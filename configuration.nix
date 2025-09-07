@@ -241,6 +241,7 @@
     haskellPackages.ormolu
     haskellPackages.implicit-hie
     haskellPackages.X11
+    texlab
     #haskell-language-server
     
     nvim
@@ -291,6 +292,8 @@
     wl-clipboard
     wf-recorder
     libnotify
+
+    ueberzug
 
     imagemagick
     dunst
