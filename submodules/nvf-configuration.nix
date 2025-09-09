@@ -177,6 +177,7 @@
     utility.images.image-nvim.setupOpts.backend = "kitty";
     utility.images.image-nvim.setupOpts.kitty_method = "normal";
     /* NOTES */
+    #notes.obsidian.enable = true;
     notes.neorg = {
       enable = true;
       treesitter.enable = true;
@@ -223,6 +224,181 @@
     extraPlugins = with pkgs.vimPlugins; {
       telescope-undo.package = telescope-undo-nvim;
       vim-godot.package = vim-godot;
+      obsidian = {
+        package = obsidian-nvim;
+        setup = ''
+vim.o.conceallevel = 2
+vim.o.concealcursor = 'nc'
+require("obsidian").setup {
+  legacy_commands = false,
+  workspaces = {
+    {
+      name = "Master",
+      path = "~/Projects/Vault",
+    }
+  },
+
+  
+  
+  completion = {
+    nvim_cmp = true,
+    blink = false,
+    min_chars = 2,
+    create_new = true,
+  },
+
+
+
+  -- Either 'wiki' or 'markdown'.
+  preferred_link_style = "wiki",
+
+  -- Optional, boolean or a function that takes a filename and returns a boolean.
+  -- `true` indicates that you don't want obsidian.nvim to manage frontmatter.
+  disable_frontmatter = false,
+
+
+  -- Sets how you follow URLs
+  ---@param url string
+  follow_url_func = function(url)
+    vim.ui.open(url)
+    -- vim.ui.open(url, { cmd = { "firefox" } })
+  end,
+
+  -- Sets how you follow images
+  ---@param img string
+  follow_img_func = function(img)
+    vim.ui.open(img)
+    -- vim.ui.open(img, { cmd = { "loupe" } })
+  end,
+
+  ---@class obsidian.config.OpenOpts
+  ---
+  ---Opens the file with current line number
+  ---@field use_advanced_uri? boolean
+  ---
+  ---Function to do the opening, default to vim.ui.open
+  ---@field func? fun(uri: string)
+  open = {
+    use_advanced_uri = false,
+    func = vim.ui.open,
+  },
+
+  picker = {
+    -- Set your preferred picker. Can be one of 'telescope.nvim', 'fzf-lua', 'mini.pick' or 'snacks.pick'.
+    name = "telescope.nvim",
+    -- Optional, configure key mappings for the picker. These are the defaults.
+    -- Not all pickers support all mappings.
+    note_mappings = {
+      -- Create a new note from your query.
+      new = "<C-x>",
+      -- Insert a link to the selected note.
+      insert_link = "<C-l>",
+    },
+    tag_mappings = {
+      -- Add tag(s) to current note.
+      tag_note = "<C-x>",
+      -- Insert a tag at the current location.
+      insert_tag = "<C-l>",
+    },
+  },
+
+  -- Optional, by default, `:ObsidianBacklinks` parses the header under
+  -- the cursor. Setting to `false` will get the backlinks for the current
+  -- note instead. Doesn't affect other link behaviour.
+  backlinks = {
+    parse_headers = true,
+  },
+
+
+  sort_by = "modified",
+  sort_reversed = true,
+
+  -- Set the maximum number of lines to read from notes on disk when performing certain searches.
+  search_max_lines = 1000,
+
+  -- Optional, determines how certain commands open notes. The valid options are:
+  -- 1. "current" (the default) - to always open in the current window
+  -- 2. "vsplit" - only open in a vertical split if a vsplit does not exist.
+  -- 3. "hsplit" - only open in a horizontal split if a hsplit does not exist.
+  -- 4. "vsplit_force" - always open a new vertical split if the file is not in the adjacent vsplit.
+  -- 5. "hsplit_force" - always open a new horizontal split if the file is not in the adjacent hsplit.
+  open_notes_in = "current",
+
+  ui = {
+    enable = true, -- set to false to disable all additional syntax features
+    ignore_conceal_warn = false, -- set to true to disable conceallevel specific warning
+    update_debounce = 200, -- update delay after a text change (in milliseconds)
+    max_file_length = 5000, -- disable UI features for files with more than this many lines
+    -- Define how various check-boxes are displayed
+
+    -- Use bullet marks for non-checkbox lists.
+    bullets = { char = "•", hl_group = "ObsidianBullet" },
+    external_link_icon = { char = "", hl_group = "ObsidianExtLinkIcon" },
+    -- Replace the above with this if you don't have a patched font:
+    -- external_link_icon = { char = "", hl_group = "ObsidianExtLinkIcon" },
+    reference_text = { hl_group = "ObsidianRefText" },
+    highlight_text = { hl_group = "ObsidianHighlightText" },
+    tags = { hl_group = "ObsidianTag" },
+    block_ids = { hl_group = "ObsidianBlockID" },
+    hl_groups = {
+      -- The options are passed directly to `vim.api.nvim_set_hl()`. See `:help nvim_set_hl`.
+      ObsidianTodo = { bold = true, fg = "#f78c6c" },
+      ObsidianDone = { bold = true, fg = "#89ddff" },
+      ObsidianRightArrow = { bold = true, fg = "#f78c6c" },
+      ObsidianTilde = { bold = true, fg = "#ff5370" },
+      ObsidianImportant = { bold = true, fg = "#d73128" },
+      ObsidianBullet = { bold = true, fg = "#89ddff" },
+      ObsidianRefText = { underline = true, fg = "#c792ea" },
+      ObsidianExtLinkIcon = { fg = "#c792ea" },
+      ObsidianTag = { italic = true, fg = "#89ddff" },
+      ObsidianBlockID = { italic = true, fg = "#89ddff" },
+      ObsidianHighlightText = { bg = "#75662e" },
+    },
+  },
+
+  ---@class obsidian.config.AttachmentsOpts
+  ---
+  ---Default folder to save images to, relative to the vault root.
+  ---@field img_folder? string
+  ---
+  ---Default name for pasted images
+  ---@field img_name_func? fun(): string
+  ---
+  ---Default text to insert for pasted images, for customizing, see: https://github.com/obsidian-nvim/obsidian.nvim/wiki/Images
+  ---@field img_text_func? fun(path: obsidian.Path): string
+  ---
+  ---Whether to confirm the paste or not. Defaults to true.
+  ---@field confirm_img_paste? boolean
+  attachments = {
+    img_folder = "assets/imgs",
+    img_name_func = function()
+      return string.format("Pasted image %s", os.date "%Y%m%d%H%M%S")
+    end,
+    confirm_img_paste = true,
+  },
+
+  ---@class obsidian.config.FooterOpts
+  ---
+  ---@field enabled? boolean
+  ---@field format? string
+  ---@field hl_group? string
+  ---@field separator? string|false Set false to disable separator; set an empty string to insert a blank line separator.
+  footer = {
+    enabled = true,
+    format = "{{backlinks}} backlinks  {{properties}} properties  {{words}} words  {{chars}} chars",
+    hl_group = "Comment",
+    separator = string.rep("-", 80),
+  },
+  ---@class obsidian.config.CheckboxOpts
+  ---
+  ---Order of checkbox state chars, e.g. { " ", "x" }
+  ---@field order? string[]
+  checkbox = {
+    order = { " ", "~", "!", ">", "x" },
+  },
+}
+        '';
+      };
       nabla.package = nabla-nvim;
       nvim-treesitter.package = (nvim-treesitter.withPlugins (
           plugins: with pkgs.tree-sitter-grammars; [

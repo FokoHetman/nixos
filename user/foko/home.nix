@@ -11,6 +11,12 @@
     url = "https://raw.githubusercontent.com/FokoHetman/FokWebserver/refs/heads/master/src/static/executing_traitors_liberty_day.png";
     sha256 = "sha256:1580i6mppd8s5fmy5vvhspg58lgfi6qsm7vrh508rpv9piha2556";
   };
+  wallpapers = {
+    "libertyday.png" = {
+      url = "https://raw.githubusercontent.com/FokoHetman/FokWebserver/refs/heads/master/src/static/executing_traitors_liberty_day.png";
+      sha256 = "sha256:1580i6mppd8s5fmy5vvhspg58lgfi6qsm7vrh508rpv9piha2556";
+    };
+  };
   /*builtins.fetchurl { url = "https://fokopi.axolotl-snake.ts.net:10000/static/executing_traitors_liberty_day.png"; 
 sha256 = ""; }*/
 in{
@@ -530,6 +536,7 @@ in{
           tampermonkey
           ublock-origin
           # wakatime
+          vimium
         ];
 
         search = {
@@ -743,7 +750,11 @@ in{
       "\\\${HOME}/.steam/root/compatibilitytools.d";
   };
 
-  home.file = {
+  home.file = let 
+    wallpaperFiles = lib.attrsets.mapAttrs' 
+      (name: value: lib.attrsets.nameValuePair (".config/wallpapers/def/" + name) {source = pkgs.fetchurl { inherit (value) url sha256;};}) 
+      wallpapers;
+  in {
     ".config/neofetch/config.conf" = {
       source = ./dotfiles/neofetch.conf;
     };
@@ -758,7 +769,7 @@ in{
         :set prompt "\955> "
       '';
     };
-  };
+  } // wallpaperFiles;
 
 
   systemd.user.startServices = "sd-switch";

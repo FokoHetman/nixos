@@ -42,6 +42,7 @@
     xorg.libXrender
     xorg.libXinerama
     xorg.libXScrnSaver
+    feh
     (pkgs.writeShellScriptBin "layout-sw" ''
       case $(setxkbmap -query | grep -oP "(?<=layout:).*" | tr -d [:space:]) in
         pl  ) setxkbmap ru;;

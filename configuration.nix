@@ -255,7 +255,7 @@
     #gnupg
     pinentry-curses
 
-
+    ripgrep
     
     #neovim#inputs.nixvim.packages.${system}.default
     inputs.fokquote.packages.${system}.default

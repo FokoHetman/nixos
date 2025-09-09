@@ -12,7 +12,7 @@
     chess.url = "github:fokohetman/cli_chess";
     fokutils.url = "github:fokohetman/fok-utils";
     fokshell.url = "github:fokohetman/fokshell";
-
+    fokshell.inputs.nixpkgs.follows = "nixpkgs";
     nvf.url = "github:NotAShelf/nvf";
 
     nur.url = "github:nix-community/nur";

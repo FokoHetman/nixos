@@ -6,8 +6,6 @@ import XMonad.Actions.SpawnOn
 
 import Definitions
 import XMonad.Hooks.ScreenCorners
-import XMonad.Util.NamedScratchpad (namedScratchpadAction)
-
 
 myStartupHook :: X ()
 myStartupHook = do 

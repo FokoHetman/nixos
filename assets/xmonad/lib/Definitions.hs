@@ -10,6 +10,15 @@ import XMonad.Util.NamedScratchpad
 import qualified XMonad.StackSet as W
 import Data.Tree
 import qualified XMonad.Actions.TreeSelect as TS
+import Data.Word (Word32)
+
+import System.Random
+import System.Directory (getDirectoryContents)
+import XMonad.Prompt.Input
+import XMonad.Prompt (XPConfig(font, bgColor, borderColor, promptBorderWidth))
+import XMonad.Util.Run (runProcessWithInput)
+import Data.Char (isSpace)
+
 
 ------------------------------------------------------------------------
 -- Definitions
@@ -33,12 +42,20 @@ commonApps = [term,browser,"blender","krita","drawio","godot4.4","prismlauncher"
 
 
 
-
 term, multiplexer, browser, discord :: String
 term = "kitty"
 multiplexer = "tmux"
 browser = "librewolf"
 discord = "nix run nixpkgs#legcord"
+
+myFont = "FiraCode"
+
+myBorderWidth :: Word32
+myBorderWidth = 2
+myBorderColor = "#98971A"
+myFocusedBorderColor = "#FB4934"
+
+myBackground = "#282828"
 
 myWorkspaces :: Forest String
 myWorkspaces = [ Node "etc" []
@@ -86,3 +103,31 @@ scratchpads = [
               spawnNotes = term ++ " --class notepad nvim -c \":Neorg workspace notes\""
               spawnNixosEdit = term ++ " --class nixos /etc/nixos"
               manageNotes = customFloating $ W.RationalRect (1/12) (1/12) (5/6) (5/6)
+
+--setRandomWallpaper :: X ()
+--setRandomWallpaper = do
+--  let wallpapers = getDirectoryContents "~/.config/wallpapers"
+--
+--  let roll = uniformR (1, 6)
+--  let rolls = unfoldr (Just . roll)
+--  let pureGen = mkStdGen 42
+--  let wp_index = head $ rolls pureGen
+
+
+myXPConfig :: XPConfig
+myXPConfig = def 
+  {
+      font              = myFont
+    , bgColor           = myBackground
+    , borderColor       = myFocusedBorderColor
+    , promptBorderWidth = 1
+    
+  }
+
+hooglePrompt :: XPConfig -> String -> X ()
+hooglePrompt c ans = inputPrompt c (trim ans) ?+ \input -> do 
+    _ <- runProcessWithInput browser ["hoogle.haskell.org/?hoogle=" ++ input] ""
+    hooglePrompt c ans
+  where 
+    trim = f . f
+      where f = reverse . dropWhile isSpace
