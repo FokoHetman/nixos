@@ -1,6 +1,6 @@
 {pkgs, username, ...}:
 let 
-  label = "sessions";
+  label = "SESSIONS";
 in
 {
   services.udisks2.enable = true;
@@ -14,7 +14,7 @@ in
     })
   ];
 
-  systemd.services.sshkeys = let 
+  systemd.services.sessionizer = let 
     notify = pkgs.writers.writeDashBin "notify" ''
           export PATH=${with pkgs; lib.makeBinPath [ libnotify procps ]}:$PATH
 
@@ -36,17 +36,23 @@ USB_LABEL=${label}
 USB_MOUNT=/run/media/${username}/$USB_LABEL
 UMOUNT_BIN=${pkgs.udiskie}/bin/udiskie-umount
 
-COOKIES_SOURCE=$USB_MOUNT/cookies.sqlite
+SESSION=$USB_MOUNT/cookies.sqlite
 
 PROFILE_DIR=$(mktemp -dt firefox-sessionizer-XXXXXX)
-PROFILE_NAME="sessionized-$(date +%s)"
 mkdir -p "$PROFILE_DIR"
-echo "user_pref(\"browser.shell.checkDefaultBrowser\", false);" > "$PROFILE_DIR/user.js"
-cp "$COOKIES_SOURCE" "$PROFILE_DIR/cookies.sqlite"
-firefox --no-remote --profile "$PROFILE_DIR" &
 
+cp $SESSION $PROFILE_DIR/
+
+echo "user_pref(\"browser.shell.checkDefaultBrowser\", false);" > "$PROFILE_DIR/user.js"
+
+${notify}/bin/notify "Starting a session."
+
+$FIREFOX --no-remote --profile "$PROFILE_DIR" &
 FIREFOX_PID=$!
+
 wait $FIREFOX_PID
+
+${notify}/bin/notify "Session closed."
 
 rm -rf "$PROFILE_DIR"
 

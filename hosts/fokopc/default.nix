@@ -3,6 +3,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../submodules/keymanagement.nix
+    ../../submodules/sessions.nix
     ../../submodules/xmonad.nix
     ../../submodules/lambdagreet.nix
     ../../submodules/nathan-overrides.nix

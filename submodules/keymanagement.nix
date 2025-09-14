@@ -1,6 +1,6 @@
 { pkgs, username, ...}:
 let
-  label = "fokokeys";     # modularize this entire module
+  label = username+"keys";     # modularize this entire module
 in {
   /* UDEV */
   services.udisks2.enable = true;
@@ -63,7 +63,7 @@ $UMOUNT_BIN $USB_MOUNT
       XAUTHORITY="~/.Xauthority";
     };
     serviceConfig = {
-      User = "foko";
+      User = username;
       ExecStart = "${keys}/bin/${label}";
     };
     
