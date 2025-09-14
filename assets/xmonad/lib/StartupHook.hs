@@ -14,6 +14,7 @@ myStartupHook = do
   spawnOnce "udiskie"
   spawnOnce "xcompmgr"
   spawnOnce "xhost +SI:localuser:$(whoami)"
+  spawnOnce "dunst"
 
   spawnOn "etc" term
   spawnOn "www" browser
