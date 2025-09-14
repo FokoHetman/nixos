@@ -13,7 +13,7 @@
     fokutils.url = "github:fokohetman/fok-utils";
     fokshell.url = "github:fokohetman/fokshell";
     fokshell.inputs.nixpkgs.follows = "nixpkgs";
-    nvf.url = "github:NotAShelf/nvf";
+    nvf.url = "github:NotAShelf/nvf/v0.8";
 
     nur.url = "github:nix-community/nur";
     nur.inputs.nixpkgs.follows = "nixpkgs";

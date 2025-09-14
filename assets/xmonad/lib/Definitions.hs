@@ -15,9 +15,10 @@ import Data.Word (Word32)
 import System.Random
 import System.Directory (getDirectoryContents)
 import XMonad.Prompt.Input
-import XMonad.Prompt (XPConfig(font, bgColor, borderColor, promptBorderWidth))
+import XMonad.Prompt (XPConfig(font, bgColor, borderColor, promptBorderWidth, fgColor, position, height, historySize, historyFilter, defaultText, autoComplete, showCompletionOnTab, searchPredicate, alwaysHighlight, maxComplRows), XPPosition (Top))
 import XMonad.Util.Run (runProcessWithInput)
 import Data.Char (isSpace)
+import XMonad.Prelude (isPrefixOf)
 
 
 ------------------------------------------------------------------------
@@ -48,7 +49,7 @@ multiplexer = "tmux"
 browser = "librewolf"
 discord = "nix run nixpkgs#legcord"
 
-myFont = "FiraCode"
+myFont = "xft:FiraCode Medium:size=9"
 
 myBorderWidth :: Word32
 myBorderWidth = 2
@@ -117,17 +118,29 @@ scratchpads = [
 myXPConfig :: XPConfig
 myXPConfig = def 
   {
-      font              = myFont
-    , bgColor           = myBackground
-    , borderColor       = myFocusedBorderColor
-    , promptBorderWidth = 1
+      font                  = myFont
+    , bgColor               = myBackground
+    , fgColor               = "#f2f2f2"
+    , borderColor           = myFocusedBorderColor
+    , promptBorderWidth     = 1
+    , position              = Top
+    , height                = 20 
+    , historySize          = 256
+    , historyFilter         = id
+    , defaultText           = []
+    , autoComplete          = Just 100000
+    , showCompletionOnTab   = False
+    , searchPredicate       = isPrefixOf
+    , alwaysHighlight       = True
+    , maxComplRows          = Nothing
     
   }
 
 hooglePrompt :: XPConfig -> String -> X ()
 hooglePrompt c ans = inputPrompt c (trim ans) ?+ \input -> do 
     _ <- runProcessWithInput browser ["hoogle.haskell.org/?hoogle=" ++ input] ""
-    hooglePrompt c ans
+    --hooglePrompt c ans
+    pure ()
   where 
     trim = f . f
       where f = reverse . dropWhile isSpace

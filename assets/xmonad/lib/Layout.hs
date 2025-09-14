@@ -28,13 +28,11 @@ mySpacing i = spacingRaw False (Border i i i i) True (Border i i i i) True
 mySpacing' :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
 mySpacing' i = spacingRaw True (Border i i i i) True (Border i i i i) True
 
-spacedTall     = renamed [Replace "tall"]
-           $ smartBorders
-           $ limitWindows 12
+spacedTall = renamed [Replace "gtall"] 
+--           $ smartBorders
            $ mySpacing 4 
            $ ResizableTall 1 (3/100) (1/2) []
-tabs     = renamed [Replace "tabs"]
-           $ tabbed shrinkText myTabTheme
+tabs     = renamed [Replace "tabs"] $ tabbed shrinkText myTabTheme
 
 -- setting colors for tabs layout and tabs sublayout.
 myTabTheme = def 

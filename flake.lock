@@ -256,11 +256,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1756405673,
-        "narHash": "sha256-Up7k8mke4mFH1TuHeKyW0FuvgWaS4+AIMTQOhHwhivA=",
+        "lastModified": 1757598775,
+        "narHash": "sha256-6YJE8/16Ily1KiN8CVq7WhL02rjhMDkemZ6R87qoEmo=",
         "ref": "refs/heads/master",
-        "rev": "72532be0625ff8f7b9ec050d23c6a0b435a824a5",
-        "revCount": 29,
+        "rev": "34a9d9bbea3618330ac09d1514a3de8a9c3fa250",
+        "revCount": 30,
         "type": "git",
         "url": "https://git.hetman.at/blackmarket"
       },
@@ -3663,15 +3663,16 @@
         "systems": "systems_22"
       },
       "locked": {
-        "lastModified": 1757095994,
-        "narHash": "sha256-AXwM6/7CuQ39iwBqmc6ZNkVcCdFiK4MFRIGQgU6Mkyk=",
+        "lastModified": 1756899946,
+        "narHash": "sha256-4Dzs+5dAZmtFgs34PLs0qrmf27OL0Mpg8CMNs7muAXY=",
         "owner": "NotAShelf",
         "repo": "nvf",
-        "rev": "fb31022b366ad21951f0352f0cc282cc6a8e9e6f",
+        "rev": "8b98f07862ddbffbfc93bb7507ffae524fcfef5c",
         "type": "github"
       },
       "original": {
         "owner": "NotAShelf",
+        "ref": "v0.8",
         "repo": "nvf",
         "type": "github"
       }

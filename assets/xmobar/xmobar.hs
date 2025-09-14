@@ -73,7 +73,7 @@ config = defaultConfig { overrideRedirect = False
        , bgColor  = "#282828"
        , fgColor  = "#ffffff"
        , position = TopH 24
-       , lowerOnStart = False
+       , lowerOnStart = True
        --, border = BottomB
        --, borderColor = "#000000"
        --, iconRoot = "/etc/xmobar/icons"
