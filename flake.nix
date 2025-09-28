@@ -99,8 +99,8 @@
       inherit uid canSudo;
     };
 
-    xmonad.package = pkgs.callPackage ../assets/xmonad {shell=false;};
-    xmobar.package = pkgs.callPackage ../assets/xmobar {shell=false;};
+    xmonad = (pkgs.callPackage ./assets/xmonad {shell=false;});
+    xmobar = (pkgs.callPackage ./assets/xmobar {shell=false;});
 
     nvim.packages = rec {
       nvimBuilder = pkgs: (inputs.nvf.lib.neovimConfiguration {
