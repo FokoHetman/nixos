@@ -18,6 +18,7 @@
       { programs.nix-index-database.comma.enable = true; }
     ];
 
+
   sops.defaultSopsFile = ./secrets/secrets.yaml;
   sops.defaultSopsFormat = "yaml";
   sops.age.keyFile = "/home/${username}/.config/sops/age/keys.txt";
@@ -186,7 +187,7 @@
     };
     ${username} = {
       isNormalUser = true;
-      extraGroups = [ "wheel" "fok" "dialout" "firejail" ];
+      extraGroups = [ "wheel" "fok" "dialout" "firejail" "tty" ];
       packages = with pkgs; [
         
       ];
@@ -223,13 +224,14 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-
+    nvim
     (inputs.blackmarket.legacyPackages.${system}.fok)
 
+    asciinema_3
+
     feedbackd
-    xcompmgr
-    xdotool
-    #haskellPackages.xmobar
+    
+    xcompmgr xdotool
     playerctl
 
     pkg-config
@@ -242,22 +244,14 @@
     haskellPackages.implicit-hie
     haskellPackages.X11
     texlab
-    #haskell-language-server
-    
-    nvim
-
-    
-    #spotify
-    #obsidian
+  
     protonup
 
     udiskie
-    #gnupg
     pinentry-curses
 
     ripgrep
     
-    #neovim#inputs.nixvim.packages.${system}.default
     inputs.fokquote.packages.${system}.default
     inputs.chess.packages.${system}.default
     inputs.fokutils.packages.${system}.default
@@ -269,53 +263,28 @@
 
     sops
 
-    unzip
     neofetch
     bluez
         
     
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    vim
     bat
 
-    nmap
-    wget
-    git
-    curl
-    zip
-
-    xclip
-    scrot
-    grim
-    slurp
-    fuzzel
+    nmap wget git curl
     
-    wl-clipboard
-    wf-recorder
-    libnotify
+    zip unzip
 
-    ueberzug
+    xclip scrot grim slurp fuzzel libnotify dunst
 
-    imagemagick
-    dunst
+
+    wl-clipboard wf-recorder imagemagick 
+
+    nasm gcc rustc cargo ghc zig
     
-    
-
-
-    nasm
-    gcc
-    rustc
-    cargo
-    ghc
-    zig
-
-
     ncurses
-
     ffmpeg
     
-    pulseaudio
-    alsa-utils
-
+    pulseaudio alsa-utils
     nixd
     
     (pkgs.writeShellScriptBin "foko-git" /*bash*/ ''
@@ -346,14 +315,6 @@
       esac
 
     '')
-        
-
-    #(pkgs.writeShellScriptBin "theme_update" /*bash*/ ''
-    #  cp /etc/nixos/nixos/wallpaper/pool/$(ls /etc/nixos/nixos/wallpaper/pool | shuf -n 1) /etc/nixos/nixos/wallpaper/base.jpg
-    #  nixos-rebuild test
-    #'')
-
-
   ];
 
   environment.sessionVariables = {

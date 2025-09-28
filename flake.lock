@@ -256,11 +256,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1757598775,
-        "narHash": "sha256-6YJE8/16Ily1KiN8CVq7WhL02rjhMDkemZ6R87qoEmo=",
+        "lastModified": 1758379819,
+        "narHash": "sha256-/FaM8NX9NxW5txGDtbAfHzLWncKAYb8VDpo9A6SM66U=",
         "ref": "refs/heads/master",
-        "rev": "34a9d9bbea3618330ac09d1514a3de8a9c3fa250",
-        "revCount": 30,
+        "rev": "8d284face93d890ba93a678394d643d64b025ee1",
+        "revCount": 36,
         "type": "git",
         "url": "https://git.hetman.at/blackmarket"
       },
@@ -3752,6 +3752,26 @@
         "type": "github"
       }
     },
+    "quickshell": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1758273351,
+        "narHash": "sha256-wOv1guIi9THD1NjOtBU2Xh/Avg9xv7nIjsfFSkr1NeQ=",
+        "ref": "refs/heads/master",
+        "rev": "e9a574d919a89602d2868621576b2ccae54a5cb0",
+        "revCount": 675,
+        "type": "git",
+        "url": "https://git.outfoxxed.me/outfoxxed/quickshell"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://git.outfoxxed.me/outfoxxed/quickshell"
+      }
+    },
     "root": {
       "inputs": {
         "ags": "ags",
@@ -3773,6 +3793,7 @@
         "nixvim": "nixvim_2",
         "nur": "nur_3",
         "nvf": "nvf",
+        "quickshell": "quickshell",
         "sops-nix": "sops-nix_2",
         "stylix": "stylix_2",
         "xmonad-contrib": "xmonad-contrib"

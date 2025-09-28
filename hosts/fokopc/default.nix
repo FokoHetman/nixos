@@ -13,17 +13,20 @@
 
   
 
-
+  networking.firewall.allowedTCPPorts = [ 47984 47989 47990 48010 ];
+  networking.firewall.allowedUDPPortRanges = [
+    { from = 47998; to = 48000; }
+    { from = 8000; to = 8010; }
+  ];
   services = {
-    # it's kinda ass aactually
-    /*kmscon = {
+    sunshine = {
       enable = true;
-      fonts = [
-        {name="rainworld-font"; package = fonts.rainworld;}
-        {name="Fira Code"; package = pkgs.nerd-fonts.fira-code;}
-        {name="Droid Sans Mono"; package = pkgs.nerd-fonts.droid-sans-mono;}
-      ];
-    };*/
+      settings = {
+        sunshine_name = "fokopc";
+      };
+      autoStart = true;
+      capSysAdmin = true;
+    };
     xserver = {
       /*doesn't work either way ffs
       displayManager.sessionCommands = "${pkgs.xorg.xmodmap}/bin/xmodmap ${pkgs.writeText "xbk-layout" ''

@@ -115,6 +115,7 @@ myConf home = def
 management :: ManageHook
 management = composeAll
     [ className =? "lwpwlp" --> doLower
+    , className =? "quickshell" --> doFloat
     , isDialog            --> doFloat
     ]
 

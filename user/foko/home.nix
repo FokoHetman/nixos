@@ -56,6 +56,10 @@ in{
       #(jetbrains.plugins.addPlugins jetbrains.idea-community ["minecraft-dev"])
       obsidian
 
+      inputs.quickshell.packages.${system}.default
+
+      davinci-resolve
+
       kando
 
       #xmobar

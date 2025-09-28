@@ -68,8 +68,9 @@ instance Exec Hetmanat where
 -- plugin:
 
 config :: Config
-config = defaultConfig { overrideRedirect = True
-       , font     = "FiraCode Medium 9"
+config = defaultConfig { --overrideRedirect = True
+       --, 
+         font     = "FiraCode Medium 9"
        , bgColor  = "#282828"
        , fgColor  = "#ffffff"
        , position = TopH 24
