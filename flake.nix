@@ -114,23 +114,36 @@
     pubKeys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCjpL3XBTmxH6biR7rwIviQcA5q3WygfLriAv6+fLA566Bg7kmfHso3lXEm9zIf//EM+np15venbyg35kwf7jDbyPr80QrdQJFQacKL4KAWxj739uPdS5XCdwF2Lf4yHcOncdPz5vupgcQM7qlF/U3Xt2HoqXfb+7nnFZPgwiJ6xP81FltEQmhQRrj0vwK4aVu4VyZ2/7PqmAnbmo42OVYpkTcIjmFpOfnXpw/m3VqoLiNyDPra4LkhzL+umWEUqBtwqkZMG5rP/HNMll7u3AoCfbVwFJg4cjjUYy/uDE8PAZP9xrWQva6kCqH6YR4iUJpKXUMtQRqg1z+/e/QkjtehFnrwd4HOLK1+LBGgbQ4j7duyfblR5yKEYP3C8mGEKB5yqo3si26nzPxUzZvjT7XAoG02KypGHUeeZ9hJ7NbXdxaycmvRsRj4OSoXmexo1r6qY8RckPzAsqpdrDWFcoeePVcRR6Yc3P5dc7NDzXh0FQ55VViQTLqlDgdtETdPd17Vqa1RIFNr/sn0VMJJnXqno3ViEUl8b2LvRQBWKKJWy+oymTwnT3bxN9BFHpbEKK5zzOd4H8/qo7UtUBrCtr2WzSxnnmLQWwRguw9ysfkWdjMChNCwU4GjSBYy/VBkoO4sH9Phf1RNMRvoA6el4lRPn56qhIOeVKX+V0IzMeOoBw== foko@hetman.at"
     ];
-    
-    fonts.rainworld = pkgs.callPackage({ pkgs }: pkgs.stdenv.mkDerivation {
-      name = "rainworld-font";
+    mkFont = name: src: description: (pkgs.callPackage({pkgs}: pkgs.stdenv.mkDerivation {
+      inherit name src;
       dontConfigure = true;
-      src = ./fonts/rainworld;
       installPhase = ''
         runHook preInstall
-
         install -Dm644 $src/*.ttf -t $out/share/fonts/opentype
-
         runHook postInstall
-        #mkdir -p $out/share/fonts
-        #cp -R $src $out/share/fonts/opentype/
       '';
-      meta = { description = "A [rainworld font](https://www.reddit.com/r/rainworld/comments/1bei8sy/i_created_a_fully_functional_typeface_for_every/#lightbox) mapped to use private use area"; };
-    }) { inherit pkgs; };
+      meta = { inherit description; };
+    }) { inherit pkgs; });
 
+    fonts = {
+      rainworld = mkFont "rainworld-font" ./fonts/rainworld "A [rainworld font](https://www.reddit.com/r/rainworld/comments/1bei8sy/i_created_a_fully_functional_typeface_for_every/#lightbox) mapped to use private use area";
+      chakra = mkFont "chakra-petch" ./fonts/chakra "A Helldivers-like font";
+      /*rainworld = pkgs.callPackage({ pkgs }: pkgs.stdenv.mkDerivation {
+        name = "rainworld-font";
+        dontConfigure = true;
+        src = ./fonts/rainworld;
+        installPhase = ''
+          runHook preInstall
+
+          install -Dm644 $src/*.ttf -t $out/share/fonts/opentype
+  
+          runHook postInstall
+          #mkdir -p $out/share/fonts
+          #cp -R $src $out/share/fonts/opentype/
+        '';
+        meta = { description = "A [rainworld font](https://www.reddit.com/r/rainworld/comments/1bei8sy/i_created_a_fully_functional_typeface_for_every/#lightbox) mapped to use private use area"; };
+      }) { inherit pkgs; };*/
+    };
 
 
     nixosConfigurations = {

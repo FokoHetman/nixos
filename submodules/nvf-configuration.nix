@@ -174,6 +174,7 @@
 
     utility.images.image-nvim.enable = true;
     utility.images.image-nvim.setupOpts.integrations.neorg.enable = true;
+    utility.images.img-clip.enable = true;
     utility.images.image-nvim.setupOpts.backend = "kitty";
     utility.images.image-nvim.setupOpts.kitty_method = "normal";
     /* NOTES */
@@ -411,6 +412,7 @@ require("obsidian").setup {
             tree-sitter-python
             tree-sitter-rust
             tree-sitter-toml
+            tree-sitter-godot-resource
           ]
         ));
       mini-starter = let 

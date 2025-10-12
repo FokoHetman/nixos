@@ -28,6 +28,11 @@ in{
       })
     ];
     config = {
+      packageOverrides = self: rec {
+        blender = self.blender.override {
+          cudaSupport = true;
+        };
+      };
       allowUnfree = true;
       allowUnfreePredicate = _: true;
       permittedInsecurePackages = [
@@ -55,6 +60,8 @@ in{
       #jetbrains.idea-community #pls install pluginss here
       #(jetbrains.plugins.addPlugins jetbrains.idea-community ["minecraft-dev"])
       obsidian
+
+      blender
 
       inputs.quickshell.packages.${system}.default
 
@@ -99,6 +106,7 @@ in{
       tree
 
       godot_4
+      gdtoolkit_4
 
       #inputs.nixvim.packages.${pkgs.system}.default
 
@@ -106,6 +114,7 @@ in{
       nerd-fonts.fira-code
       nerd-fonts.droid-sans-mono
       (fonts.rainworld)
+      (fonts.chakra)
 
       (pkgs.writeShellScriptBin "xmobar-voice-control" /*bash*/ ''
         case "$1" in

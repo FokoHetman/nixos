@@ -156,8 +156,8 @@
       enable = true;
     };
     
-    firewall.allowedTCPPorts = [22 25 44 80 443 2137 5900 8000 8080 25565];
-    firewall.allowedUDPPorts = [5900 25565];
+    firewall.allowedTCPPorts = [22 25 44 80 443 2137 2138 5900 5901 8000 8080 25565];
+    firewall.allowedUDPPorts = [5900 5901 25565];
     firewall.enable = true;
 
     #proxy.default = "http://user:password@proxy:port/";
@@ -308,9 +308,9 @@
       #! {pkgs.bash}/bin/bash
       case $1 in
         sw      ) sudo nixos-rebuild switch;;
-        test      ) sudo nixos-rebuild test;;
+        test    ) sudo nixos-rebuild test;;
         edit    ) sudo lf /etc/nixos;;
-	up	) sudo nix flake update --flake /etc/nixos;;
+	      up	    ) sudo nix flake update --flake /etc/nixos;;
         *       ) echo "Bad Usage";;
       esac
 

@@ -41,6 +41,10 @@
       neededForBoot = true;
       options = [ "noatime" ];
     };
+    "/mnt/games" = {
+      device = "/dev/disk/by-label/nix";
+      fsType = "ext4";
+    };
   };
   hardware.graphics = {
     enable = true;
