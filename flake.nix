@@ -11,14 +11,14 @@
     nixvim.url = "github:fokohetman/nixvim-foko";
     chess.url = "github:fokohetman/cli_chess";
     fokutils.url = "github:fokohetman/fok-utils";
-    fokshell.url = "github:fokohetman/fokshell";
-    fokshell.inputs.nixpkgs.follows = "nixpkgs";
+    #fokshell.url = "github:fokohetman/fokshell";
+    #fokshell.inputs.nixpkgs.follows = "nixpkgs";
     nvf.url = "github:NotAShelf/nvf/v0.8";
 
     nur.url = "github:nix-community/nur";
     nur.inputs.nixpkgs.follows = "nixpkgs";
 
-    nathan.url = "github:poolloverNathan/nixos";#"github:fokohetman/nathanfixyourself";
+    nathan.url = "github:fokohetman/nathanfixyourself";
 
     stylix.url = "github:danth/stylix";
     ags.url = "github:Aylur/ags/v1";
@@ -79,7 +79,6 @@
 
     inherit (self) outputs;
   in rec {
-
     mkMonster = xs: let x = toString xs; in
       pkgs.runCommandLocal "monster-mass" {} ''
         mkdir -p $out/bin
@@ -153,6 +152,7 @@
 	      modules = [
 	        {_module.args = {inherit mkMonster username timezone inputs fonts pubKeys; nvim = nvim.packages.x86_64-linux;};}
 	        ./configuration.nix
+          ./submodules/monster.nix
           home-manager.nixosModules.default
           inputs.stylix.nixosModules.stylix
           inputs.discord.nixosModules.discord

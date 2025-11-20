@@ -15,4 +15,4 @@ import XMonad.Hooks.ScreenCorners (screenCornerEventHook)
 -- combine event hooks use mappend or mconcat from Data.Monoid.
 --
 myEventHook :: (Event -> X All)
-myEventHook = screenCornerEventHook <> swallowEventHook (className =? "kitty") (return True)
+myEventHook = screenCornerEventHook <+> swallowEventHook ( className =? "kitty") (fmap (/= "quickshell") className)

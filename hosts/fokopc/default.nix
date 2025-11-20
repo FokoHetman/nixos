@@ -28,7 +28,7 @@
   ];
   services = {
     sunshine = {
-      enable = true;
+      enable = false;
       settings = {
         sunshine_name = "fokopc";
       };
@@ -72,6 +72,11 @@
   ];
 
   programs = {
+
+    
+
+    firejail.enable = true;
+    wireshark.enable = true;
     /*hyprland = {
       enable=true;
       package = inputs.hyprland.packages."${pkgs.system}".hyprland;
@@ -81,6 +86,7 @@
       gamescopeSession.enable = true;
     };
     gamemode.enable = true;
+    gamescope.enable = true;
   };
 
   home-manager.users."${username}" = import ../../user/${username}/home.nix;
@@ -94,7 +100,9 @@
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM3xlUW2U02zcGS++Z/GIK6nda3t/e46y4u39CBhpmas toast@laptop"
       ] ++ pubKeys;
       packages = with pkgs; [
+        kitty
         blender
+        rsync
         x11vnc
         (pkgs.writeShellScriptBin "vnc" ''
         if [ "$1" == "help" ]; then
@@ -159,7 +167,7 @@
 
     xdg-desktop-portal
     gtk3
-    qt6ct
+    qt6Packages.qt6ct
     libsForQt5.qt5.qtgraphicaleffects
   ];# ++ inputs.blackmarket.monster.monster (import ../../monster.nix);
 

@@ -18,7 +18,19 @@
       style = "mocha";
     };
     ui.colorizer.enable = true;
-
+    ui.colorizer.setupOpts.filetypes."*" = {
+      AARRGGBB = true;
+      RGB = true;
+      RRGGBB = true;
+      RRGGBBAA = true;
+      always_update = true;
+      css = true;
+      css_fn = true;
+      hsl_fn = true;
+      mode = "background";
+      names = true;
+      rgb_fn = true;
+    };
     /* END THEME */
 
     /* KEBINDS */

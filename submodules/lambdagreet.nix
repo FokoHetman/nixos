@@ -1,10 +1,10 @@
 {config, pkgs, inputs, ...}:
 let
-  lambdagreet = inputs.blackmarket.legacyPackages.${pkgs.system}.lambdagreet;
+  #lambdagreet = inputs.blackmarket.legacyPackages.${pkgs.system}.lambdagreet;
   tty = "1";
 in
 {
-  systemd.services.lambdagreet = {
+  /*systemd.services.lambdagreet = {
     description = "Lambda Greet";
     wantedBy = [ "multi-user.target" ];
     after = [ "multi-user.target" ];
@@ -26,5 +26,5 @@ in
       ];
     };
   };
-  systemd.services."getty@tty${tty}".enable = false;
+  systemd.services."getty@tty${tty}".enable = false;*/
 }

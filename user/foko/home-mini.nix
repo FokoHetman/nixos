@@ -200,6 +200,7 @@
         p = "pull";
       };
       extraConfig = {
+      safe.directory = "/home/git/*";
       credential.helper = "${pkgs.git.override { withLibsecret = true; } }/bin/git-credential-libsecret";
       };
     };

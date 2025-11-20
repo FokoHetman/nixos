@@ -27,12 +27,19 @@
   };
   environment.systemPackages = with pkgs; [
     (pkgs.callPackage ../assets/xmonad {shell=false;})
+    (pkgs.writeShellScriptBin "cxmobar" ''
+      while :
+      do
+        custom-xmobar
+      done
+    '')
     (pkgs.callPackage ../assets/xmobar {shell=false;})
     #haskellPackages.xmobar
     haskellPackages.monad-logger
     haskellPackages.dbus
     haskellPackages.List
     pango
+    xorg.xwininfo
     xorg.libX11
     xorg.libX11.dev
     xorg.libXft

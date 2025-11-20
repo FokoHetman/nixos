@@ -23,9 +23,6 @@ in{
   imports = [inputs.ags.homeManagerModules.default];
   nixpkgs = {
     overlays = [
-      (self: super:
-      {
-      })
     ];
     config = {
       packageOverrides = self: rec {
@@ -63,7 +60,7 @@ in{
 
       blender
 
-      inputs.quickshell.packages.${system}.default
+      #inputs.quickshell.packages.${system}.default
 
       davinci-resolve
 
@@ -92,7 +89,11 @@ in{
 
       hashcat
 
-
+      (heroic.override {
+        extraPkgs = pkgs: [
+          pkgs.gamescope
+        ];
+      })
       (vesktop.override {withMiddleClickScroll = true;/* withSystemVencord = true;*/})
       krita
       prismlauncher
@@ -200,6 +201,14 @@ in{
   
   xdg.configFile."lf/icons".source = ./icons;
   programs = {
+    quickshell = {
+      enable = true;
+      package = inputs.quickshell.packages.${pkgs.system}.default;
+      configs = {
+        "control-panel" = ./dotfiles/quickshell/panel;
+      };
+      activeConfig = "control-panel";
+    };
     /*xmobar = {
       enable = true;
       extraConfig = lib.readFile ../../assets/xmobar/xmobar.hs;
@@ -675,7 +684,7 @@ in{
 
       env = [
         "QT_QPA_PLATFORM,wayland"
-        "QT_QPA_PLATFORMTHEME,qt5ct"
+        "QT_QPA_PLATFORMTHEME,qt6ct"
       ];
 
       exec-once = [

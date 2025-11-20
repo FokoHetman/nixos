@@ -54,6 +54,14 @@
     steamkey_path = config.sops.secrets.steam_key.path;
     steamid_path = config.sops.secrets.steam_id.path;
   };
+  monster = {
+    enable = true;
+    monsters."jerry" = {
+      enable = true;
+      startSize = 80;
+      maxSize=100;
+    };
+  };
   /*discord = {
     enable = true;
     token_path = config.sops.secrets.ds_token.path;
@@ -187,7 +195,7 @@
     };
     ${username} = {
       isNormalUser = true;
-      extraGroups = [ "wheel" "fok" "dialout" "firejail" "tty" ];
+      extraGroups = [ "wheel" "fok" "dialout" "firejail" "tty" "wireshark" ];
       packages = with pkgs; [
         
       ];
@@ -245,7 +253,7 @@
     haskellPackages.X11
     texlab
   
-    protonup
+    protonup-ng
 
     udiskie
     pinentry-curses
@@ -255,7 +263,7 @@
     inputs.fokquote.packages.${system}.default
     inputs.chess.packages.${system}.default
     inputs.fokutils.packages.${system}.default
-    inputs.fokshell.packages.${system}.default
+    #inputs.fokshell.packages.${system}.default
 
 
     alsa-lib

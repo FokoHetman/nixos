@@ -37,7 +37,7 @@ import System.Directory (getHomeDirectory)
 
 main :: IO ()
 
-mySB = statusBarProp "custom-xmobar" (clickablePP bar)
+mySB = statusBarProp "cxmobar" (clickablePP bar)
 main = do
   --mySB <- statusBarPipe "xmobar /etc/xmobar/xmobar.hs" (pure bar) --if this works (config), you can move to withSB
   
