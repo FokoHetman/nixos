@@ -19,8 +19,8 @@ let
   };
   package = lib.mkOption {
     description = "A function that given monster's name and component index, returns a package";
-    default = x: (pkgs.writeShellScriptBin (x.name + "${x.index}") ''
-      echo "This is ${x.index}th segment of ${x.name}'s body."
+    default = x: let i = toString x.index; in (pkgs.writeShellScriptBin (x.name + "${i}") ''
+      echo "This is ${i}th segment of ${x.name}'s body."
     '');
     type = lib.types.functionTo (lib.types.submodule {
       options = {
