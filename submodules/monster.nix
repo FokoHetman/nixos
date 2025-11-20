@@ -30,7 +30,7 @@ let
     });
   };
 
-  genParts = name: size: f: lib.lists.forEach (lib.lists.range 1 size) (x: f name x);
+  genParts = name: size: f: lib.lists.forEach (lib.lists.range 1 size) (index: f {inherit name index;});
 in
 {
   options.monster = {
