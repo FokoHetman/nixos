@@ -8,7 +8,7 @@ let
     default = false;
   };
   startSize = lib.mkOption {
-    description = "Revision from which the size will increase.";
+    description = "Revision from which the size will increase. You can check your current revision using `git rev-list --count --all`";
     type = lib.types.int;
     default = 1;
   };
@@ -28,10 +28,10 @@ let
   genParts = name: size: f: lib.lists.forEach (lib.lists.range 1 size) (index: f {inherit name index;});
 in
 {
-  options.monster = {
+  options.monster = lib.warnIfNot (inputs.self ? revCount) "You're on a dirty git tree. Monsters will default to size `0`." {
     inherit enable;
     monsters = lib.mkOption {
-      description = "attribute set defining monsters.";
+      description = "Attribute set defining monsters.";
       type = lib.types.attrsOf (lib.types.submodule {
         options = {
           inherit startSize maxSize enable package;

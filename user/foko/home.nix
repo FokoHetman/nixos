@@ -17,12 +17,14 @@
       sha256 = "sha256:1580i6mppd8s5fmy5vvhspg58lgfi6qsm7vrh508rpv9piha2556";
     };
   };
+
   /*builtins.fetchurl { url = "https://fokopi.axolotl-snake.ts.net:10000/static/executing_traitors_liberty_day.png"; 
 sha256 = ""; }*/
 in{
   imports = [inputs.ags.homeManagerModules.default];
   nixpkgs = {
     overlays = [
+
     ];
     config = {
       packageOverrides = self: rec {
@@ -59,7 +61,7 @@ in{
       obsidian
 
       blender
-
+      
       #inputs.quickshell.packages.${system}.default
 
       davinci-resolve
