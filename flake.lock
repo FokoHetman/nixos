@@ -256,11 +256,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1763662021,
-        "narHash": "sha256-B8JzTjf+ZGmEHxGVAPLyk4lNgm7/VHYV5x9jEIIfvq0=",
+        "lastModified": 1763663328,
+        "narHash": "sha256-g6PeyakkHGhBkDHwP8Pybc/6ggGzNGe3eWC2vOcAU5M=",
         "ref": "refs/heads/master",
-        "rev": "2bc35545713d0a19de5f6fb3690191f09cd582f6",
-        "revCount": 37,
+        "rev": "0a271a8e22e94925baaf8e021fc0a8c875f376c7",
+        "revCount": 38,
         "type": "git",
         "url": "https://git.hetman.at/blackmarket"
       },
