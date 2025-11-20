@@ -22,7 +22,12 @@ let
     default = name: i: (pkgs.writeShellScriptBin (name ++ (lib.toString i)) ''
       echo "This is ${i}th segment of ${name}'s body."
     '');
-    type = lib.types.functionTo lib.types.package;
+    type = lib.types.functionTo (lib.types.submodule {
+      options = {
+        name = lib.mkOption { type = lib.types.str; };
+        index = lib.mkOption { type = lib.types.int; };
+      };
+    });
   };
 
   genParts = name: size: f: lib.lists.forEach (lib.lists.range 1 size) (x: f name x);
