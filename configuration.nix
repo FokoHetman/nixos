@@ -59,7 +59,12 @@
     monsters."jerry" = {
       enable = true;
       startSize = 80;
-      maxSize=100;
+      maxSize=200;
+    };
+    monsters."tom" = {
+      enable = true;
+      startSize = 100;
+      maxSize=200;
     };
   };
   /*discord = {
