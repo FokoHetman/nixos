@@ -22,12 +22,7 @@ let
     default = x: let i = toString x.index; in (pkgs.writeShellScriptBin (x.name + "${i}") ''
       echo "This is ${i}th segment of ${x.name}'s body."
     '');
-    type = lib.types.functionTo (lib.types.submodule {
-      options = {
-        name = lib.mkOption { type = lib.types.str; };
-        index = lib.mkOption { type = lib.types.int; };
-      };
-    });
+    type = lib.types.functionTo lib.types.package;
   };
 
   genParts = name: size: f: lib.lists.forEach (lib.lists.range 1 size) (index: f {inherit name index;});
