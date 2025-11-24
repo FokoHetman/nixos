@@ -109,6 +109,19 @@
       }
 
       {
+        key = "gt";
+        desc = "go to next buffer";
+        mode = "n";
+        action = "<cmd>bnext<CR>";
+      }
+      {
+        key = "gb";
+        desc = "go to prev buffer";
+        mode = "n";
+        action = "<cmd>bprev<CR>";
+      }
+
+      {
         key  = "<leader>r";
         desc = "Toggle Linter";
         mode = "n";
@@ -120,6 +133,14 @@
       {key="<S-Down>"; action = "<Esc>v<Down>"; mode = ["n"];}
       {key="<S-Left>"; action = "<Esc>v<Left>"; mode = ["n"];}
       {key="<S-Right>"; action = "<Esc>v<Right>"; mode = ["n"];}
+
+      #{key="<Up>"   ; action="<nop>"; mode=["n"];}
+      #{key="<Down>" ; action="<nop>"; mode=["n"];}
+      #{key="<Left>" ; action="<nop>"; mode=["n"];}
+      #{key="<Right>"; action="<nop>"; mode=["n"];}
+
+
+
 
       {action = "<cmd>bnext<CR>"; key="<C-Right>"; mode = "n";}
       {action = "<cmd>bprev<CR>"; key="<C-Left>"; mode = "n";}

@@ -19,6 +19,16 @@ in
     recommendedProxySettings = true;
     recommendedTlsSettings = true;
     virtualHosts = {
+      /* NATHAN'S */
+      "rce.hetman.at" = {
+        addSSL = true;
+        enableACME = true;
+        locations."/" = {
+          proxyPass = http://127.0.0.1:8082;
+          proxyWebsockets = true;
+        };
+      };
+      /* MINE */
       "hetman.at" = {
         addSSL = true;
         enableACME = true;

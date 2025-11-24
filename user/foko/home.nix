@@ -202,7 +202,7 @@ in{
   fonts.fontconfig.enable = true;
   
   xdg.configFile."lf/icons".source = ./icons;
-  programs = {
+  programs = rec {
     quickshell = {
       enable = true;
       package = inputs.quickshell.packages.${pkgs.system}.default;
@@ -545,10 +545,10 @@ in{
         allow_images = true;
       };
     };
-    /*firefox = { */librewolf = {
+    librewolf = {
       enable = true;
-      profiles.yurii = {
-	containers.school = {
+      profiles.foko = {
+	      containers.school = {
           color = "red";
           icon = "fruit";
         };
@@ -595,6 +595,7 @@ in{
         };
       };
     };
+    firefox = librewolf;
     bash = {
       enable = true;
       bashrcExtra = ''

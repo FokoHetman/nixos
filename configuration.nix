@@ -54,19 +54,6 @@
     steamkey_path = config.sops.secrets.steam_key.path;
     steamid_path = config.sops.secrets.steam_id.path;
   };
-  monster = {
-    enable = true;
-    monsters."jerry" = {
-      enable = true;
-      startSize = 80;
-      maxSize=200;
-    };
-    monsters."tom" = {
-      enable = true;
-      startSize = 100;
-      maxSize=200;
-    };
-  };
   /*discord = {
     enable = true;
     token_path = config.sops.secrets.ds_token.path;

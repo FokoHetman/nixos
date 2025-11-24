@@ -20,6 +20,20 @@
 
 
   
+  monster = {
+    enable = true;
+    monsters."jerry" = {
+      enable = true;
+      startSize = 80;
+      maxSize=200;
+    };
+    monsters."tom" = {
+      enable = true;
+      startSize = 100;
+      maxSize=200;
+    };
+  };
+  
 
   networking.firewall.allowedTCPPorts = [ 47984 47989 47990 48010 ];
   networking.firewall.allowedUDPPortRanges = [
