@@ -19,6 +19,7 @@ myStartupHook = do
   spawnOnce "dunst"
 
   spawnOn "etc" term
-  spawnOn "www" browser
+  spawnOn "www" $ browser <> " " <> hetmanat <> roadmapPath
   spawnOn "dev" (term ++ " " ++ multiplexer)
   spawnOn "etc" discord
+  spawnOnce "quickshell -c notifications"

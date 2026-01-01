@@ -56,6 +56,7 @@ in{
     #  nerd-fonts.droid-sans-mono
     #];
     packages = with pkgs; [
+      anki
       #jetbrains.idea-community #pls install pluginss here
       #(jetbrains.plugins.addPlugins jetbrains.idea-community ["minecraft-dev"])
       obsidian
@@ -208,6 +209,7 @@ in{
       package = inputs.quickshell.packages.${pkgs.system}.default;
       configs = {
         "control-panel" = ./dotfiles/quickshell/panel;
+        "notifications" = ./dotfiles/quickshell/notif;
       };
       activeConfig = "control-panel";
     };

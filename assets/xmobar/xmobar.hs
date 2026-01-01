@@ -73,6 +73,7 @@ config = defaultConfig { --overrideRedirect = True
          font     = "FiraCode Medium 9"
        , bgColor  = "#282828"
        , fgColor  = "#ffffff"
+       , textOffset = 0
        , position = TopH 24
        , lowerOnStart = True
        , overrideRedirect = True
@@ -112,7 +113,7 @@ config = defaultConfig { --overrideRedirect = True
        , template = "%UnsafeXMonadLog% <fc=#ddbf27>\57673 </fc> " ++
           "}<action=playerctl play-pause button=play>[ %playing% \57615 ]</action>{" ++
           "%kbd% %hat% <fc=#9edd27>\57670 </fc> <action=amixer set Master toggle>%alsa:default:Master%</action> | %cpu% | %memory% <*> %swap% | %EGPF% | %date% <fc=#dd3d27>\57688 </fc>"
-       , additionalFonts = [ "RainWorldSymbols"]
+       , additionalFonts = [ "RainWorldSymbols", "xft:FiraCode Medium:pixelsize=9"]
        }
 
 --{

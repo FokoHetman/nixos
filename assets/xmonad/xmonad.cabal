@@ -23,6 +23,8 @@ library
     TrueFullscreen
     Layout
     StartupHook
+    Vimization
+    Foreign.ScreenCast
 --    XMobar
 --    KeyBindings
 --    TrueFullscreen

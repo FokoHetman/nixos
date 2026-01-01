@@ -33,20 +33,23 @@ import Layout (myLayout)
 import XMonad.Layout.BoringWindows (focusUp, focusDown, focusMaster)
 import XMonad.Hooks.WallpaperSetter (wallpaperSetter, defWallpaperConf, WallpaperConf (wallpapers), defWPNames, WallpaperList (WallpaperList), defWPNamesPng, Wallpaper (WallpaperDir))
 import System.Directory (getHomeDirectory)
+import XMonad.Actions.MouseGestures (mouseGesture)
+import XMonad.Actions.ToggleFullFloat (toggleFullFloatEwmhFullscreen)
+import GHC.IORef (newIORef, IORef)
 
+import qualified Vimization as Vim
+import Foreign.ScreenCast (screencast)
 
 main :: IO ()
 
-mySB = statusBarProp "cxmobar" (clickablePP bar)
 main = do
-  --mySB <- statusBarPipe "xmobar /etc/xmobar/xmobar.hs" (pure bar) --if this works (config), you can move to withSB
-  
-  --xmproc <- myXmobar
-  
+  mode <- newIORef Vim.Normal
+  let mySB = statusBarProp "systemctl --user start xmobar.service" (clickablePP $ bar mode)
+
   home <- getHomeDirectory
 
-  xmonad . ewmhFullscreen . ewmh 
-     . withEasySB mySB defToggleStrutsKey
+  xmonad . toggleFullFloatEwmhFullscreen . ewmhFullscreen . ewmh . withEasySB mySB defToggleStrutsKey
+    . Vim.vimize mode
     $ docks (myConf home)
 
 
@@ -81,9 +84,18 @@ myConf home = def
 --      }
   } 
   `additionalKeys`
-    [  
-      ((0,xK_Print), spawn "scrot --select -e 'xclip -selection clipboard -t image/png -i $f'") -- <Print>
-      , ( (mod4Mask, xK_f), spawn browser) -- M-f
+    concat [[
+      ((0,key), spawn "scrot --select -e 'xclip -selection clipboard -t image/png -i $f'")
+    , ((mod4Mask, key), screencast [])
+    , ((mod4Mask .|. shiftMask, key), screencast ["-a"])] | key<-[xK_F12,xK_Print]]
+  `additionalKeys`
+        {--- capture
+        ((0,xK_F12), spawn "scrot --select -e 'xclip -selection clipboard -t image/png -i $f'") -- F6
+      , ((0,xK_Print), spawn "scrot --select -e 'xclip -selection clipboard -t image/png -i $f'") -- <Print>
+      , ((mod4Mask, xK_Print), screencast [])
+      , ((mod4Mask .|. shiftMask, xK_Print), screencast ["-a"])-}
+    [
+      ( (mod4Mask, xK_f), spawn browser) -- M-f
       --, ("M-t", spawn "vesktop")
       , ((mod4Mask, xK_r), spawn "rofi -show drun -show-icons") -- M-r
       , ((mod4Mask, xK_x), restart "/run/current-system/sw/bin/xmonad" True) -- M-x
@@ -103,8 +115,11 @@ myConf home = def
       , ((0, xK_KP_Add), focusUp)
       , ((0, xK_KP_Subtract), focusDown)
       , ((0, xK_KP_Enter), focusMaster)
-      , ((mod4Mask, xK_h), hooglePrompt myXPConfig "hoogle")
+      --, ((mod4Mask, xK_h), hooglePrompt myXPConfig "hoogle") moved to Vimization
+      , ((mod1Mask, xK_q), spawn $ term ++ " ssh hetman.at")
       --("M-c", 
+    ] `additionalMouseBindings` [
+        ((shiftMask, button3), mouseGesture gestures)
     ]
     where
       toggleFloat w = windows (\s -> if M.member w (W.floating s)
@@ -116,20 +131,21 @@ management :: ManageHook
 management = composeAll
     [ className =? "lwpwlp" --> doLower
     , className =? "quickshell" --> doFloat
+    , className =? "quickshell" --> doIgnore
     , isDialog            --> doFloat
     ]
 
 
 
-bar :: PP
-bar = def 
+bar :: IORef Vim.Mode -> PP
+bar modeRef = def 
   { ppSep             = sep " * ",
     ppTitleSanitize   = xmobarStrip,
-    ppCurrent         = wrap (active "[") (active "]") . active . xmobarBorder "Top" "#8be9fd" 2,
+    ppCurrent         = wrap (active "[") (active "]") . active,-- . xmobarBorder "Top" myGreen 2,
     ppHidden          = inactive . wrap " " " ",
     ppUrgent          = red . wrap (yellow "!") (yellow "!"),
-    ppOrder           = \[ws, l, _, wins] -> [ws, l, wins],
-    ppExtras          = [logTitles formatFocused formatUnfocused]
+    ppOrder           = \(ws:l:_:vim:win:extras) -> extras ++ [vim, ws, l, win],
+    ppExtras          = [Vim.modeLogger modeRef, logTitles formatFocused formatUnfocused]
   }
   where
     formatFocused   = wrap (white    "[") (white    "]") . focused . ppWindow
@@ -141,13 +157,13 @@ bar = def
     ppWindow = xmobarRaw . (\w -> if null w then "untitled" else w) . shorten 30
 
     blue, lowWhite, magenta, red, white, green, yellow :: String -> String
-    magenta  = xmobarColor "#B16286" ""
+    magenta  = xmobarColor myMagenta ""
     blue     = xmobarColor "#458588" ""
-    white    = xmobarColor "#f8f8f2" ""
-    yellow   = xmobarColor "#D79921" ""
-    red      = xmobarColor "#CC241D" ""
+    white    = xmobarColor myWhite ""
+    yellow   = xmobarColor myYellow ""
+    red      = xmobarColor myRed ""
     lowWhite = xmobarColor "#bbbbbb" ""
-    green    = xmobarColor "#98971A" ""
+    green    = xmobarColor myGreen ""
 
     sep = magenta
 

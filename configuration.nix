@@ -156,8 +156,8 @@
       enable = true;
     };
     
-    firewall.allowedTCPPorts = [22 25 44 80 443 2137 2138 5900 5901 8000 8080 25565];
-    firewall.allowedUDPPorts = [5900 5901 25565];
+    firewall.allowedTCPPorts = [22 25 44 80 443 2137 2138 5900 5901 8000 8080 25565 51413];
+    firewall.allowedUDPPorts = [5900 5901 25565 51413];
     firewall.enable = true;
 
     #proxy.default = "http://user:password@proxy:port/";
@@ -282,7 +282,6 @@
     nasm gcc rustc cargo ghc zig
     
     ncurses
-    ffmpeg
     
     pulseaudio alsa-utils
     nixd

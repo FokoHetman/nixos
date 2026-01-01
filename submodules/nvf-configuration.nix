@@ -102,6 +102,12 @@
         action = "<cmd>split<CR>";
       }
       {
+        key = "<leader>h";
+        desc = "Spawn a repl for the current project.";
+        mode = "n";
+        action = "<cmd>Haskell repl toggle<CR>";
+      }
+      {
         key = "<leader>w";
         desc = "Split screen vertically.";
         mode = "n";

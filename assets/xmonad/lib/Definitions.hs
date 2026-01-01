@@ -2,10 +2,11 @@ module Definitions where
 
 
 import Data.Monoid
+import qualified Data.Map as M
+
+
 import XMonad
-
 import XMonad.Util.NamedScratchpad
-
 
 import qualified XMonad.StackSet as W
 import Data.Tree
@@ -20,11 +21,20 @@ import XMonad.Util.Run (runProcessWithInput)
 import Data.Char (isSpace)
 import XMonad.Prelude (isPrefixOf)
 
-
+import XMonad.Actions.Commands
+import XMonad.Actions.MouseGestures
+import TrueFullscreen (toggleFullscreen)
 ------------------------------------------------------------------------
 -- Definitions
 --
 
+gestures = M.fromList
+         [ ([L, R], const kill)
+         , ([R, D], const toggleFullscreen)
+         , ([U], \w -> focus w >> windows W.swapUp)
+         , ([D], \w -> focus w >> windows W.swapDown)
+         , ([D, L], \_ -> sendMessage NextLayout)
+         ]
 
 treeselectAction :: TS.TSConfig (X ()) -> X ()
 treeselectAction a = TS.treeselectAction a
@@ -43,20 +53,32 @@ commonApps = [term,browser,"blender","krita","drawio","godot4.4","prismlauncher"
 
 
 
-term, multiplexer, browser, discord :: String
+term, multiplexer, browser, discord, hetmanat, roadmapPath :: String
 term = "kitty"
 multiplexer = "tmux"
 browser = "librewolf"
 discord = "nix run nixpkgs#legcord"
+hetmanat = "https://hetman.at/"
+roadmapPath = "roadmap/2026/"
 
 myFont = "xft:FiraCode Medium:size=9"
 
 myBorderWidth :: Word32
 myBorderWidth = 2
-myBorderColor = "#98971A"
+myBorderColor = myGreen
 myFocusedBorderColor = "#FB4934"
-
 myBackground = "#282828"
+
+myLightGreen, myGreen, myBlue, myRed, myYellow, myOrange, myWhite, myTeal, myMagenta :: String
+myLightGreen = "#50FA7B"
+myGreen = "#98971A"
+myBlue =  "#89b4fa"
+myRed   = "#CC241D"
+myYellow= "#fab387"
+myOrange= "#FE8019"
+myWhite = "#f8f8f2"
+myTeal = "#94e2d5"
+myMagenta = "#B16286"
 
 myWorkspaces :: Forest String
 myWorkspaces = [ Node "etc" []
@@ -136,11 +158,18 @@ myXPConfig = def
     
   }
 
-hooglePrompt :: XPConfig -> String -> X ()
-hooglePrompt c ans = inputPrompt c (trim ans) ?+ \input -> do 
-    _ <- runProcessWithInput browser ["hoogle.haskell.org/?hoogle=" ++ input] ""
+mkPrompt :: String -> (XPConfig -> String -> X ())
+mkPrompt s = \c ans -> inputPrompt c (trim ans) ?+ \input -> do 
+    _ <- runProcessWithInput browser [s ++ input] ""
     --hooglePrompt c ans
     pure ()
   where 
     trim = f . f
       where f = reverse . dropWhile isSpace
+
+hooglePrompt :: XPConfig -> String -> X ()
+hooglePrompt = mkPrompt "hoogle.haskell.org/?hoogle="
+
+
+nooglePrompt :: XPConfig -> String -> X ()
+nooglePrompt = mkPrompt "noogle.dev/?term="
