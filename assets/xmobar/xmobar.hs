@@ -104,7 +104,7 @@ config = defaultConfig { --overrideRedirect = True
                     , Run $ Memory ["--template", "Mem: <usedratio>%"] 10
                     , Run $ Swap [] 10
                     , Run $ Date "%a %Y-%m-%d <fc=#8be9fd>%H:%M</fc>" "date" 10
-                    , Run $ Kbd [("pl", "PL"), ("us", "US")]
+                    , Run $ Kbd [("pl", "PL"), ("us", "US"), ("ru", "RU")]
                     , Run $ Hetmanat "62.21.6.136:443" 600
                     , Run UnsafeXMonadLog
                     ]

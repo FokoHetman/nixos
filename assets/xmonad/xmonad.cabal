@@ -76,6 +76,7 @@ executable xmonad
                   , random
                   , filepath
                   , directory
+                  , X11
     -- Directories containing source files.
     hs-source-dirs: .
 

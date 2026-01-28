@@ -113,7 +113,12 @@
         mode = "n";
         action = "<cmd>vs<CR>";
       }
-
+      {
+        key = "gb";
+        desc = "go to prev buffer";
+        mode = "n";
+        action = "<cmd>bprev<CR>";
+      }
       {
         key = "gt";
         desc = "go to next buffer";
@@ -197,6 +202,7 @@
     };
     autocomplete.nvim-cmp.enable = true;
     lsp.enable = true;
+    lsp.otter-nvim.enable = true;
     mini.tabline.enable = true;
     
     /* moved to extraPlugins */

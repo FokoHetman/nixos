@@ -60,6 +60,8 @@ in
     } // forwardNameserver "git" // forwardNameserver "mail" // forwardNameserver "fok";
   };
   security.acme = {
+    certs."hetman.at".group = "hetmanat";
+    certs."mail.hetman.at".group = "hetmanat";
     acceptTerms = true;
     defaults.email = "foko@hetman.at";
   };

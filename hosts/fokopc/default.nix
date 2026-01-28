@@ -50,13 +50,7 @@
       capSysAdmin = true;
     };
     xserver = {
-      /*doesn't work either way ffs
-      displayManager.sessionCommands = "${pkgs.xorg.xmodmap}/bin/xmodmap ${pkgs.writeText "xbk-layout" ''
-        keysym e = e E ę
-      ''}";*/
       enable = true;
-      #xkb.layout = "pl";
-      #xkb.options = "eurosign:e,caps:escape";
       videoDrivers = ["nvidia"];
       displayManager = lib.mkDefault {
         startx.enable = true;
@@ -86,7 +80,7 @@
   ];
 
   programs = {
-
+    adb.enable = true;
     
 
     firejail.enable = true;
@@ -98,6 +92,9 @@
     steam = {
       enable = true;
       gamescopeSession.enable = true;
+      extraCompatPackages = with pkgs; [
+        proton-ge-bin
+      ];
     };
     gamemode.enable = true;
     gamescope.enable = true;
@@ -133,6 +130,7 @@
       ];
     };
     foko = {
+      extraGroups = [ "adbusers" ];
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFs8Toyc7bQ9n6LV7czYtpCj6Ki5hItivcuWY21+iPfo nathan@nathanpc"
       ] ++ pubKeys;

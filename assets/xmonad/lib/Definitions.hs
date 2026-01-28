@@ -57,7 +57,7 @@ term, multiplexer, browser, discord, hetmanat, roadmapPath :: String
 term = "kitty"
 multiplexer = "tmux"
 browser = "librewolf"
-discord = "nix run nixpkgs#legcord"
+discord = "vesktop"
 hetmanat = "https://hetman.at/"
 roadmapPath = "roadmap/2026/"
 

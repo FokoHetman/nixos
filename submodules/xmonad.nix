@@ -7,7 +7,7 @@ in {
     ${pkgs.xcompmgr}/bin/xcompmgr &
   '';*/
   services.xserver = {
-    xkb.layout = "pl,ru";
+    xkb.layout = "pl,ru,jp";
     #xkbOptions = "grp:win_space_toggle";
     /*windowManager.xmonad = {
       enable = true;
@@ -22,6 +22,22 @@ in {
       enableConfiguredRecompile = true;
     };*/
   };
+  i18n.inputMethod = {
+    enabled = "fcitx5";
+    fcitx5.addons = with pkgs; [ fcitx5-mozc fcitx5-gtk kdePackages.fcitx5-qt];
+    fcitx5.settings.inputMethod = {
+      GroupOrder."0" = "Default";
+      "Groups/0" = {
+        Name = "Default";
+        "Default Layout" = "pl";
+        DefaultIM = "keyboard-pl";
+      };
+      "Groups/0/Items/0".Name = "keyboard-pl";
+      "Groups/0/Items/1".Name = "keyboard-ru";
+      "Groups/0/Items/2".Name = "mozc";
+    };
+  };
+
   programs.i3lock = {
     enable = true;
     package = pkgs.i3lock-fancy-rapid;
@@ -71,6 +87,14 @@ in {
     xorg.libXScrnSaver
     feh
     (pkgs.writeShellScriptBin "layout-sw" ''
+      case $(fcitx5-remote -n) in
+        keyboard-pl   ) fcitx5-remote -s keyboard-ru;;
+        keyboard-ru   ) fcitx5-remote -s mozc;;
+        mozx          ) fcitx5-remote -s keyboard-pl;;
+        *             ) fcitx5-remote -s keyboard-pl;; # fallback
+      esac
+    '')
+    (pkgs.writeShellScriptBin "xlayout-sw" ''
       case $(setxkbmap -query | grep -oP "(?<=layout:).*" | tr -d [:space:]) in
         pl  ) setxkbmap ru;;
         ru  ) setxkbmap pl;;
@@ -78,7 +102,7 @@ in {
       esac
     '')
     
-    #https://www.reddit.com/r/xmonad/comments/j5419h/gif_screen_capture/
+    #https://www.reddit.com/r/xmonad/comments/j5419h/gif_screen_capture/ | thank you, roboboticus.
     (pkgs.writeShellScriptBin "screencast" ''
 set -u
 expectedExitCode=0
@@ -165,6 +189,6 @@ echo $output.gif | ${pkgs.xclip}/bin/xclip -selection clipboard
     (ffmpeg.override {
       withXcb = true;
     })
-    toybox
+    killall
   ];
 }

@@ -31,7 +31,7 @@ import TrueFullscreen
 import StartupHook
 import Layout (myLayout)
 import XMonad.Layout.BoringWindows (focusUp, focusDown, focusMaster)
-import XMonad.Hooks.WallpaperSetter (wallpaperSetter, defWallpaperConf, WallpaperConf (wallpapers), defWPNames, WallpaperList (WallpaperList), defWPNamesPng, Wallpaper (WallpaperDir))
+import XMonad.Hooks.WallpaperSetter (wallpaperSetter, defWallpaperConf, WallpaperConf (wallpapers, WallpaperConf), defWPNames, WallpaperList (WallpaperList), defWPNamesPng, Wallpaper (WallpaperDir))
 import System.Directory (getHomeDirectory)
 import XMonad.Actions.MouseGestures (mouseGesture)
 import XMonad.Actions.ToggleFullFloat (toggleFullFloatEwmhFullscreen)
@@ -39,6 +39,11 @@ import GHC.IORef (newIORef, IORef)
 
 import qualified Vimization as Vim
 import Foreign.ScreenCast (screencast)
+import Control.Arrow (Arrow(first))
+
+import Graphics.X11.ExtraTypes.XF86
+
+
 
 main :: IO ()
 
@@ -62,15 +67,12 @@ myConf home = def
     , workspaces = TS.toWorkspaces myWorkspaces
     , logHook = let 
         defWP = home ++ "/.config/wallpapers/def"
+        d = WallpaperDir defWP
+        nestwp :: Tree String -> [(WorkspaceId, Wallpaper)]
+        nestwp (Node text tree) = (text, d):concatMap (fmap (first ((text<>".")<>)) . nestwp) tree
       in wallpaperSetter defWallpaperConf {
                                wallpapers = defWPNamesPng (TS.toWorkspaces myWorkspaces)
-                                         <> WallpaperList [
-                                              ("etc",    WallpaperDir defWP)
-                                            , ("www",    WallpaperDir defWP)
-                                            , ("dev",    WallpaperDir defWP)
-                                            , ("dev.tmp",WallpaperDir defWP)
-                                            , ("art",    WallpaperDir defWP)
-                                          ]
+                                         <> WallpaperList (concatMap nestwp myWorkspaces)
                             } <> workspaceHistoryHook
 
     , handleEventHook = myEventHook
@@ -89,13 +91,10 @@ myConf home = def
     , ((mod4Mask, key), screencast [])
     , ((mod4Mask .|. shiftMask, key), screencast ["-a"])] | key<-[xK_F12,xK_Print]]
   `additionalKeys`
-        {--- capture
-        ((0,xK_F12), spawn "scrot --select -e 'xclip -selection clipboard -t image/png -i $f'") -- F6
-      , ((0,xK_Print), spawn "scrot --select -e 'xclip -selection clipboard -t image/png -i $f'") -- <Print>
-      , ((mod4Mask, xK_Print), screencast [])
-      , ((mod4Mask .|. shiftMask, xK_Print), screencast ["-a"])-}
     [
-      ( (mod4Mask, xK_f), spawn browser) -- M-f
+        ((0, xF86XK_AudioPlay), spawn "playerctl play")
+      , ((0, xF86XK_AudioPause), spawn "playerctl pause")
+      , ( (mod4Mask, xK_f), spawn browser) -- M-f
       --, ("M-t", spawn "vesktop")
       , ((mod4Mask, xK_r), spawn "rofi -show drun -show-icons") -- M-r
       , ((mod4Mask, xK_x), restart "/run/current-system/sw/bin/xmonad" True) -- M-x
@@ -121,6 +120,7 @@ myConf home = def
     ] `additionalMouseBindings` [
         ((shiftMask, button3), mouseGesture gestures)
     ]
+    -- M-C-S-D-Space
     where
       toggleFloat w = windows (\s -> if M.member w (W.floating s)
         then W.sink w s

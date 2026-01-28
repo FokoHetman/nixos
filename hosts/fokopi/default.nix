@@ -12,7 +12,9 @@
   services.blueman.enable = true;
 
   home-manager.users."${username}" = import ../../user/${username}/home-mini.nix;
+  users.groups.hetmanat = {};
   users.users = {
+    nginx.extraGroups = ["hetmanat"];
     jakub = {isNormalUser = true;};
     root = {
     };
@@ -32,7 +34,7 @@
     };
     ${username} = {
       isNormalUser = true;
-      extraGroups = [ "wheel" ];
+      extraGroups = [ "wheel" "hetmanat" ];
       packages = with pkgs; [
         
       ];

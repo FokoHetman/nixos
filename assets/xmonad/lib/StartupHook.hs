@@ -15,6 +15,7 @@ myStartupHook = do
   spawnOnce "quickshell -c control-panel"
   spawnOnce "udiskie"
   spawnOnce "xcompmgr"
+  spawnOnce "fcitx5 -d"
   spawnOnce "xhost +SI:localuser:$(whoami)"
   spawnOnce "dunst"
 
