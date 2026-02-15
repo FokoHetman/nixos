@@ -4,6 +4,7 @@
     ../../submodules/nginx.nix
     ../../submodules/nathan-overrides.nix
     ../../submodules/nginx.nix
+    ../../submodules/matrix.nix
   ];
   boot.loader.grub.enable = lib.mkForce false;
   boot.loader.generic-extlinux-compatible.enable = true;
@@ -67,4 +68,5 @@
       AuthorizedKeysFile = "~/.ssh/submitted_authorized_keys";
     };
   };
+  services.haveged.enable = true;
 }
