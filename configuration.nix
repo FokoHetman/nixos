@@ -261,10 +261,7 @@
 
     ripgrep
     
-    inputs.fokquote.packages.${system}.default
-    inputs.chess.packages.${system}.default
-    inputs.fokutils.packages.${system}.default
-    #inputs.fokshell.packages.${system}.default
+    inputs.blackmarket.legacyPackages.${system}.fokquote
 
 
     alsa-lib

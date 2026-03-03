@@ -3,26 +3,18 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
-
-    fokquote.url = "github:fokohetman/fok-quote";
-    nixvim.url = "github:fokohetman/nixvim-foko";
-    chess.url = "github:fokohetman/cli_chess";
-    fokutils.url = "github:fokohetman/fok-utils";
-    #fokshell.url = "github:fokohetman/fokshell";
-    #fokshell.inputs.nixpkgs.follows = "nixpkgs";
-    nvf.url = "github:NotAShelf/nvf/v0.8";
-
     nur.url = "github:nix-community/nur";
     nur.inputs.nixpkgs.follows = "nixpkgs";
 
-    nathan.url = "github:fokohetman/nathanfixyourself";
+    nvf.url = "github:NotAShelf/nvf/v0.8";
 
+    nathan.url = "github:poollovernathan/nixos";
+    nathan.inputs.nixpkgs.follows = "nixpkgs";
+    
     stylix.url = "github:danth/stylix";
     ags.url = "github:Aylur/ags/v1";
-
     hyprland = {
       type = "git";
       url = "https://github.com/hyprwm/Hyprland";
@@ -33,41 +25,58 @@
       url = "github:hyprwm/hyprland-plugins";
       inputs.hyprland.follows = "hyprland";
     };
-
+    
     sops-nix.url = "github:Mic92/sops-nix";
     
     kmonad.url = "git+https://github.com/kmonad/kmonad?submodules=1&dir=nix";
     xmonad-contrib.url = "github:xmonad/xmonad-contrib";
-    
-    home-manager.url = "github:nix-community/home-manager/master";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
-
-    discord.url = "github:fokohetman/discord.nix";
-
-    nix-on-droid = {
-      url = "github:nix-community/nix-on-droid";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-  
-    blackmarket.type = "git";
-    blackmarket.url = "https://git.hetman.at/blackmarket";
-    blackmarket.inputs.nixpkgs.follows = "nixpkgs";
-
-    mobile-nixos = {
-      url = "github:nixos/mobile-nixos"; # least stable mirror
-      flake = false;
-    };
-
     quickshell = {
       url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    home-manager.url = "github:nix-community/home-manager/master";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    
+    nix-on-droid = {
+      url = "github:nix-community/nix-on-droid";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    mobile-nixos = {
+      url = "github:nixos/mobile-nixos";
+      flake = false;
+    };
+    
+    blackmarket.type = "git";
+    blackmarket.url = "https://git.hetman.at/blackmarket";
+    blackmarket.inputs.nixpkgs.follows = "nixpkgs";
+    
+    #flake-parts.url = "github:hercules-ci/flake-parts";
+    templater.url = ./templater;
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-on-droid, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, nix-on-droid, /*flake-parts,*/templater, ... }@inputs:
     let
-    system = "x86_64-linux";
+      arch = ["x86_64" "aarch64"];
+      systems = map (x: x+"-linux") arch;
+
+      /*inherit (inputs.nixpkgs.lib.fileset) toList fileFilter;
+      inherit (inputs.nixpkgs.lib) hasPrefix;
+      import-tree =
+        path:
+        toList (fileFilter (file: file.hasExt "nix" 
+          && !(hasPrefix "_" file.name 
+            || hasPrefix "." file.name
+            || "default.nix" == file.name
+            || "shell.nix" == file.name
+          )) path);*/
+    in templater.lib.makeConfig {inherit inputs self;} {imports = [./templates.nix] ++ templater.lib.import-tree ./modules;};
+    /*flake-parts.lib.mkFlake { inherit inputs; } {
+      inherit systems;
+      imports = import-tree ./modules;
+    };*/
+
+    /*system = "x86_64-linux";
     aarch = "aarch64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
     pkgsAarch = import nixpkgs { system = aarch; config.allowUnfree = true;};
@@ -78,13 +87,10 @@
     timezone = "Europe/Warsaw";
 
     inherit (self) outputs;
-  in rec {
+  in rec 
 
-    /*packages."${system}".default = 
-    (inputs.nvf.lib.neovimConfiguration {
-      pkgs = pkgs;
-      modules = [ ./submodules/nvf-configuration.nix ];
-    }).neovim;*/
+
+  {
     mkFoko = {uid ? 1825, entire ? false, canSudo}: defineUser {
       name = "foko";
       inherit uid canSudo;
@@ -133,7 +139,7 @@
           #cp -R $src $out/share/fonts/opentype/
         '';
         meta = { description = "A [rainworld font](https://www.reddit.com/r/rainworld/comments/1bei8sy/i_created_a_fully_functional_typeface_for_every/#lightbox) mapped to use private use area"; };
-      }) { inherit pkgs; };*/
+      }) { inherit pkgs; };* /
     };
 
 
@@ -147,7 +153,6 @@
           inputs.blackmarket.nixosModules.x86_64-linux.monster.default
           home-manager.nixosModules.default
           inputs.stylix.nixosModules.stylix
-          inputs.discord.nixosModules.discord
           (inputs.nathan.mkTailnet {})
           (inputs.nathan.mkNathan {canSudo = true;})
 	      ] ++ inputs.xmonad-contrib.nixosModules;
@@ -193,7 +198,7 @@
           #(inputs.nathan.mkNathan {canSudo = true;})
 	      ] ++ inputs.xmonad-contrib.nixosModules;
       };
-      /*"fokoserver" = nixpkgs.lib.nixosSystem {
+      / *"fokoserver" = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs;};
         modules = [
           {_module.args = {inherit username timezone inputs hostname;};}
@@ -202,7 +207,7 @@
           inputs.stylix.nixosModules.stylix
           (inputs.nathan.mkTailnet {})
         ];
-      };*/
+      };* /
     };
     nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration rec {
       pkgs = import nixpkgs { system = "aarch64-linux"; };
@@ -318,5 +323,5 @@
         };
       };
     };
-  };
+  }; */
 }
