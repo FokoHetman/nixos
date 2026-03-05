@@ -1,17 +1,22 @@
 {inputs, self, ...}: {
-  flake.nixosConfigurations.fokopc = builtins.trace self (inputs.nixpkgs.lib.nixosSystem {
+  flake.nixosConfigurations.fokopc = inputs.nixpkgs.lib.nixosSystem {
     modules = [
-      self.nixosModules.fokopc-hardware   ##
-      self.nixosModules.bootloader-grub  ##
-      #self.nixosModules.support-ntfs     ##
-      #self.nixosModules.packages-common-big  ##
-      #self.nixosModules.packages-fok     ##
-      #self.nixosModules.user-foko
+      self.nixosModules.fokopc-hardware
+      self.nixosModules.bootloader-grub
+      self.nixosModules.support-ntfs
+      self.nixosModules.packages-common-big
+      self.nixosModules.packages-fok
+      self.nixosModules.openssh
+      self.nixosModules.nixpkgs
+      self.nixosModules.user-foko
+      self.nixosModules.sops
       #self.nixosModules.user-nathan
     ];
-  });
-
+  };
   flake.nixosModules.fokopc-hardware = {config, pkgs, lib, ...}: {
+    nixpkgs.config.cudaSupport = true;
+    nixpkgs.config.allowUnfree = true;
+
     security.rtkit.enable = true;
     hardware.enableRedistributableFirmware = lib.mkDefault true;
     boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
@@ -60,5 +65,14 @@
     networking.useDHCP = lib.mkDefault true;
     nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
     hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+
+    systemd.services.nvidia-control-devices = {
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig.ExecStart = "${pkgs.linuxPackages.nvidia_x11.bin}/bin/nvidia-smi";
+    };
+    networking.interfaces.enp6s0.wakeOnLan.enable=true;
+  };
+  flake.nixosModules.fokopc-services = {config, pkgs, lib, ...}: {
+    services.xserver.videoDrivers = ["nvidia"];
   };
 }

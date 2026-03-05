@@ -55,22 +55,14 @@
     templater.url = ./templater;
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-on-droid, /*flake-parts,*/templater, ... }@inputs:
-    let
-      arch = ["x86_64" "aarch64"];
-      systems = map (x: x+"-linux") arch;
-
-      /*inherit (inputs.nixpkgs.lib.fileset) toList fileFilter;
-      inherit (inputs.nixpkgs.lib) hasPrefix;
-      import-tree =
-        path:
-        toList (fileFilter (file: file.hasExt "nix" 
-          && !(hasPrefix "_" file.name 
-            || hasPrefix "." file.name
-            || "default.nix" == file.name
-            || "shell.nix" == file.name
-          )) path);*/
-    in templater.lib.makeConfig {inherit inputs self;} {imports = [./templates.nix] ++ templater.lib.import-tree ./modules;};
+  outputs = { self, nixpkgs, home-manager, nix-on-droid, /*flake-parts,*/templater, ... }@inputs: 
+    templater.lib.makeConfig {inherit inputs self;} 
+    {
+      imports = [./templates.nix] ++ templater.lib.import-tree ./modules;
+      architectures = templater.architectures.default;
+      nixpkgsConfig = {config.allowUnfree = true;};
+      templates = import ./templates.nix;
+    };
     /*flake-parts.lib.mkFlake { inherit inputs; } {
       inherit systems;
       imports = import-tree ./modules;

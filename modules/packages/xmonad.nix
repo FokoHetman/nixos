@@ -1,5 +1,5 @@
 {inputs, ...}: {
   flake.perSystem.packages = {pkgs, ...}: {
-    ffmpegxcb = pkgs.ffmpeg.override {withXcb = true;};
+    xmobar = pkgs.callPackage ../assets/xmonad {shell=false;};
   };
 }

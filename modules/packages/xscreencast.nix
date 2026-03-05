@@ -1,9 +1,9 @@
 {self, ...}: {
   #https://www.reddit.com/r/xmonad/comments/j5419h/gif_screen_capture/ | thank you, roboboticus.
-  perSystem = {pkgs, ...}: let
+  flake.perSystem.packages = {pkgs, ...}: let
   ffmpegxcb = self.packages.${pkgs.system}.ffmpegxcb;
 in {
-    packages.xscreencast = pkgs.writeShellScriptBin "xscreencast" ''
+    xscreencast = pkgs.writeShellScriptBin "xscreencast" ''
 set -u
 expectedExitCode=0
 checkError() {

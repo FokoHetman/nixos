@@ -3,7 +3,7 @@ let
   common = pkgs: with pkgs; [
     pkg-config ripgrep neofetch pinentry-curses vim
     self.packages.${pkgs.system}.nvim
-    self.packages.${pkgs.system}.ffmpegxcb-sw
+    self.packages.${pkgs.system}.ffmpegxcb
   ];
   big = pkgs: with pkgs; [
     bluez
@@ -13,9 +13,9 @@ let
   ];
 in {
   flake.nixosModules.packages-common = { pkgs, ...}: {
-    environment.systemPackages = common;
+    environment.systemPackages = common pkgs;
   };
   flake.nixosModules.packages-common-big = { pkgs, ...}: {
-    environment.systemPackages = common ++ big;
+    environment.systemPackages = common pkgs ++ big pkgs;
   };
 }
