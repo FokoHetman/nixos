@@ -8,5 +8,12 @@
         *             ) fcitx5-remote -s keyboard-pl;; # fallback
       esac
       '';
+    xlayout-sw = pkgs.writeShellScriptBin "xlayout-sw" ''
+      case $(setxkbmap -query | grep -oP "(?<=layout:).*" | tr -d [:space:]) in
+        pl  ) setxkbmap ru;;
+        ru  ) setxkbmap pl;;
+        *   ) setxkbmap pl;; # fallback
+      esac
+      '';
   };
 }

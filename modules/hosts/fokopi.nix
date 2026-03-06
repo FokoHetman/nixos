@@ -2,12 +2,15 @@
   flake.nixosConfigurations.fokopi = inputs.nixpkgs.lib.nixosSystem {
     modules = self.packages [
       self.nixosModules.fokopi-hardware
-      self.nixosModules.bootloader-grub
+      self.nixosModules.extlinux
       self.nixosModules.support-ntfs
       self.nixosModules.packages-common-big
       self.nixosModules.packages-fok
       self.nixosModules.openssh
+      self.nixosModules.builder-client
+      self.nixosModules.nix
       self.nixosModules.nixpkgs
+      self.nixosModules.user-foko
       #self.nixosModules.user-foko
       #self.nixosModules.user-nathan
     ];
@@ -19,8 +22,6 @@
     boot.kernelModules = [ ];
     boot.extraModulePackages = [ ];
 
-    boot.loader.grub.enable = lib.mkForce false;
-    boot.loader.generic-extlinux-compatible.enable = true;
     boot.kernelPackages = pkgs.linuxPackages_rpi4;
 
     fileSystems."/" =

@@ -16,6 +16,11 @@ in rec {
     builder = configurations : {nixosConfigurations = configurations;};
     default = {};
   };
+  globals = {
+    preconf = x: x;
+    builder = x: {globals = x;};
+    default = {};
+  };
   /*flake.perSystem.packages = {pkgs, ...}: {
     hello = pkgs.hello;
   };

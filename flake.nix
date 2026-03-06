@@ -55,7 +55,7 @@
     templater.url = ./templater;
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-on-droid, /*flake-parts,*/templater, ... }@inputs: 
+  outputs = { self, nixpkgs, home-manager, nix-on-droid, /*flake-parts,*/templater, ... }@inputs:
     templater.lib.makeConfig {inherit inputs self;} 
     {
       imports = [./templates.nix] ++ templater.lib.import-tree ./modules;

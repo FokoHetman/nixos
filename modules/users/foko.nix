@@ -9,7 +9,10 @@
       extraGroups = [ "wheel" "fok" "dialout" "tty" ]; # "firejail"
       packages = with pkgs; [
         self.packages.${pkgs.system}.packettracer
+        blender
+        krita
       ];
+      openssh.authorizedKeys.keys = self.globals.fokossh ++ self.globals.nathanssh;
     };
 
     home-manager = {
@@ -24,7 +27,7 @@
       fontDir.enable = true;
       enableGhostscriptFonts = true;
       packages = with pkgs; [
-        self.packages.${pkgs.system}.fonts.rainworld-glyphs
+        self.packages.${pkgs.system}.fonts.rainworld
         self.packages.${pkgs.system}.fonts.chakra
       ];
     };

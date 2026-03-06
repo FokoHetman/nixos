@@ -1,5 +1,5 @@
 {lib, ...}: {
-  perSystem.packages = {pkgs,...}: let 
+  flake.perSystem.packages = {pkgs,...}: let
     mkFont = name: src: (pkgs.callPackage({pkgs}: pkgs.stdenv.mkDerivation {
       inherit name src;
       dontConfigure = true;
@@ -10,8 +10,9 @@
       '';
     }) { inherit pkgs; });
   in {
-    fonts = lib.readDir ./fonts 
+    fonts = lib.readDir ./fonts
       |> lib.attrNames
-      |> map (x: {name= x; value= mkFont x ./fonts/${x};});
+      |> map (x: {name= x; value= mkFont x ./fonts/${x};})
+      |> builtins.listToAttrs;
   };
 }

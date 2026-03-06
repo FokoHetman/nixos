@@ -7,9 +7,13 @@
       self.nixosModules.packages-common-big
       self.nixosModules.packages-fok
       self.nixosModules.openssh
+      self.nixosModules.builder
+      self.nixosModules.nix
       self.nixosModules.nixpkgs
       self.nixosModules.user-foko
       self.nixosModules.sops
+      self.nixosModules.xserver
+      self.nixosModules.xmonad
       #self.nixosModules.user-nathan
     ];
   };
@@ -74,5 +78,10 @@
   };
   flake.nixosModules.fokopc-services = {config, pkgs, lib, ...}: {
     services.xserver.videoDrivers = ["nvidia"];
+    rainworld = {
+      enable = true;
+      steamkey_path = config.sops.secrets.steam_key.path;
+      steamid_path = config.sops.secrets.steam_id.path;
+    };
   };
 }
