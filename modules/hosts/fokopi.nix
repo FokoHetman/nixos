@@ -18,6 +18,7 @@
       nixpkgs
       
       security
+      gnupg
       
       blueman
       pcscd
