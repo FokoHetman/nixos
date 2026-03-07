@@ -1,5 +1,5 @@
 {self, inputs, ...}: {
-  flake.homeConfigurations.foko = {...}: rec {
+  flake.homeConfigurations.foko = {pkgs, ...}: rec {
     imports = [
       self.homeModules.nixpkgs
       self.homeModules.xdg
@@ -28,6 +28,7 @@
     home.username = "foko";
     home.homeDirectory = "/home/${home.username}";
     
+    home.packages = with pkgs; [dconf];
     gtk.enable = true;
     qt.enable = true;
     fonts.fontconfig.enable = true;
@@ -52,11 +53,7 @@
     ];
     home.username = "foko";
     home.homeDirectory = "/home/${home.username}";
-    
-    gtk.enable = true;
-    qt.enable = true;
     fonts.fontconfig.enable = true;
-    
     programs.home-manager.enable = true;
     systemd.user.startServices = "sd-switch";
     home.stateVersion = "23.11";
