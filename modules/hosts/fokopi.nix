@@ -5,6 +5,8 @@
       bootloader-extlinux
       support-ntfs
 
+      dev-haskell
+
       packages-common-big
       packages-fok
       

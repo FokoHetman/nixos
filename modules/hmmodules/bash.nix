@@ -7,7 +7,7 @@
       export FIGNORE=.lock
       if [[ $- == *i* ]]
       then
-        fok-quote
+        fokquote
         fok news -lun5
       fi
       '';

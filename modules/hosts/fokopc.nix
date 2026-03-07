@@ -5,6 +5,8 @@
       bootloader-grub
       support-ntfs
 
+      dev-haskell
+
       packages-common-big
       packages-graphical
       packages-fok
