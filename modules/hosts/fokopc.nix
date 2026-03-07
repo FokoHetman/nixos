@@ -25,6 +25,7 @@
 
       openssh
       security
+      gnupg
       blueman
       pcscd
       default-networking

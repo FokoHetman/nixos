@@ -1,2 +1,2 @@
-# nixos
-my very extra super awesome nixos config (no)
+# Foko's NixOS
+Uses ./templater to modularize the config.
