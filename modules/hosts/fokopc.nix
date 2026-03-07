@@ -2,6 +2,7 @@
   flake.nixosConfigurations.fokopc = inputs.nixpkgs.lib.nixosSystem {
     modules = with self.nixosModules; [
       fokopc-hardware
+      fokopc-services
       bootloader-grub
       support-ntfs
 
@@ -108,8 +109,9 @@
     networking.interfaces.enp6s0.wakeOnLan.enable=true;
   };
   flake.nixosModules.fokopc-services = {config, pkgs, lib, ...}: {
-    blueman.enable = true;
-    printing.enable = true;
+    imports = [self.nixosModules.rainworld];
+    services.blueman.enable = true;
+    services.printing.enable = true;
     services.xserver.videoDrivers = ["nvidia"];
     rainworld = {
       enable = true;

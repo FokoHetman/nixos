@@ -2,6 +2,7 @@
   flake.nixosConfigurations.fokopi = inputs.nixpkgs.lib.nixosSystem {
     modules = with self.nixosModules; [
       fokopi-hardware
+      fokopi-services
       bootloader-extlinux
       support-ntfs
 
