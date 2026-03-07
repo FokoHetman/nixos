@@ -24,12 +24,13 @@
       user-nathan
       
       default-networking
-      fokmail
-      hetmanat
       internalisation
       state-version
 
       matrix-server
+      fokmail
+      hetmanat
+      nginx
     ];
   };
   flake.nixosModules.fokopi-hardware = {config, pkgs, lib, ...}: {
