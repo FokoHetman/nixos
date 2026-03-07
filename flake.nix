@@ -13,8 +13,13 @@
     nathan.url = "github:poollovernathan/nixos";
     nathan.inputs.nixpkgs.follows = "nixpkgs";
     
-    stylix.url = "github:danth/stylix";
+    juna = {
+      url = "git+https://codeberg.org/juna-lab/juna";
+      inputs.nixpkgs.follows = "nixpkgs"; # Critical for store hygiene
+    };
+
     ags.url = "github:Aylur/ags/v1";
+    
     hyprland = {
       type = "git";
       url = "https://github.com/hyprwm/Hyprland";

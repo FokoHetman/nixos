@@ -7,5 +7,8 @@
     sops.secrets.shrimp = { owner = username; };
     sops.secrets.ds_token = { owner = username; };
     sops.secrets.fok = {};
+    environment.systemPackages = with pkgs; [
+      sops
+    ];
   };
 }

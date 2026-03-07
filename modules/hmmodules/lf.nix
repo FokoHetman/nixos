@@ -1,0 +1,104 @@
+{inputs, ...}: {
+  flake.homeModules.lf = {pkgs, ...}: {
+    xdg.configFile."lf/icons".source = ./icons;
+    programs.lf = {
+      enable = true;
+      settings = {
+        preview = true;
+        drawbox = true;
+        icons = true;
+      };
+      commands = {
+        ripdrag = ''%${pkgs.ripdrag}/bin/ripdrag -x "$fx"'';
+        edit = ''$$EDITOR $f'';
+        mkdir = ''
+          ''${{
+          printf "Directory Name: "
+          read DIR
+          mkdir $DIR
+        }}'';
+        shell = ''
+          ''${{
+          printf("$: ")
+          read COMMAND
+          $COMMAND
+          read NULL
+        }}'';
+
+        compile = ''
+          ''${{
+    set -m
+    extension=$(echo "$fx" | cut -d "." -f 2)
+    fxnoext=$(echo "fx" | cut -d "." -f 1)
+    case "$extension" in
+      rs		) ${pkgs.rustc}/bin/rustc $fx;;
+      c		) ${pkgs.gcc}/bin/gcc -o $fxnoext $fx;;
+      zig		) ${pkgs.zig}/bin/zig $fx;;
+      hs		) ${pkgs.ghc}/bin/ghc $fx;;
+      py		) ${pkgs.python3}/bin/python $fx;;
+      *		) echo "Unknown extension";;
+    esac
+
+  }}'';
+        execute = ''
+          ''${{
+          ${pkgs.bash}/bin/bash -c $fx
+  }}'';
+
+
+        fok-utils = ''
+          ''${{
+    fok-utils
+  }}'';
+
+        quit = "q";
+      };
+      keybindings = {
+        "\\\"" = "";
+        "o" = "";
+        "c" = "shell";
+        "b" = "compile";
+        "x" = "execute";
+        "." = "set hidden!";        
+
+        "<enter>" = "open";
+        "<c-c>" = "quit";
+        "<esc>" = "quit";
+        "e" = "edit";
+        "f" = "fok-utils";
+        "d" = "ripdrag";
+
+
+        "V" = ''''$${pkgs.bat}/bin/bat --paging=always --theme=gruvbox "$f"'';
+      };
+      /*previewer = {
+keybinding = "i";
+source = "${pkgs.ctpv}/bin/ctpv";
+};*/
+      extraConfig = 
+        let 
+          previewer = pkgs.writeShellScriptBin "pv.sh" ''
+        file=$1
+        w=$2
+        h=$3
+        x=$4
+        y=$5
+
+        if [[ "$( ${pkgs.file}/bin/file -Lb --mime-type "$file")" =~ ^image ]]; then
+            ${pkgs.kitty}/bin/kitty +kitten icat --silent --stdin no --transfer-mode file --place "''${w}x''${h}@''${x}x''${y}" "$file" < /dev/null > /dev/tty
+            exit 1
+        fi
+
+            ${pkgs.pistol}/bin/pistol "$file"
+          '';
+          cleaner = pkgs.writeShellScriptBin "clean.sh" ''
+            ${pkgs.kitty}/bin/kitty +kitten icat --clear --stdin no --silent --transfer-mode file < /dev/null > /dev/tty
+          '';
+        in
+          ''
+        set cleaner ${cleaner}/bin/clean.sh
+        set previewer ${previewer}/bin/pv.sh
+        '';
+    };
+  };
+}

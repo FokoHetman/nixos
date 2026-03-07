@@ -5,7 +5,7 @@
   flake.globals.nathanssh = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFs8Toyc7bQ9n6LV7czYtpCj6Ki5hItivcuWY21+iPfo nathan@nathanpc"
   ];
-  flake.globals.toastkeys = [
+  flake.globals.toastssh = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM3xlUW2U02zcGS++Z/GIK6nda3t/e46y4u39CBhpmas toast@laptop"
   ];
 }

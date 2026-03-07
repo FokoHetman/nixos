@@ -1,5 +1,6 @@
+#https://www.reddit.com/r/xmonad/comments/j5419h/gif_screen_capture/ | thank you, roboboticus.
 {...}: {
-  perSystem.packages = {pkgs,...}: {screencast=pkgs.writeShellScriptBin "screencast" ''
+  flake.perSystem.packages = {pkgs,...}: {screencast=pkgs.writeShellScriptBin "screencast" ''
 set -u
 expectedExitCode=0
 checkError() {

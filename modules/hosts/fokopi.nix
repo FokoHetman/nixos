@@ -1,21 +1,41 @@
 {inputs, self, ...}: {
   flake.nixosConfigurations.fokopi = inputs.nixpkgs.lib.nixosSystem {
-    modules = self.packages [
-      self.nixosModules.fokopi-hardware
-      self.nixosModules.extlinux
-      self.nixosModules.support-ntfs
-      self.nixosModules.packages-common-big
-      self.nixosModules.packages-fok
-      self.nixosModules.openssh
-      self.nixosModules.builder-client
-      self.nixosModules.nix
-      self.nixosModules.nixpkgs
-      self.nixosModules.user-foko
-      #self.nixosModules.user-foko
-      #self.nixosModules.user-nathan
+    modules = with self.nixosModules; [
+      fokopi-hardware
+      bootloader-extlinux
+      support-ntfs
+
+      packages-common-big
+      packages-fok
+      
+      openssh
+      
+      builder-client
+      
+      nix
+      nixpkgs
+      
+      security
+      
+      blueman
+      pcscd
+
+      user-foko
+      user-nathan
+      
+      default-networking
+      fokmail
+      hetmanat
+      internalisation
+      state-version
+
+      matrix-server
     ];
   };
   flake.nixosModules.fokopi-hardware = {config, pkgs, lib, ...}: {
+    time.timeZone = "Poland";
+
+
     hardware.enableRedistributableFirmware = lib.mkDefault true;
     boot.initrd.availableKernelModules = [ "xhci_pci" ];
     boot.initrd.kernelModules = [ ];

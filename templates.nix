@@ -16,6 +16,16 @@ in rec {
     builder = configurations : {nixosConfigurations = configurations;};
     default = {};
   };
+  homeModules = {
+    preconf = x: x;
+    builder = modules: {homeModules = modules;};
+    default = {};
+  };
+  homeConfigurations = {
+    preconf = x: x;
+    builder = configurations: {homeConfigurations = configurations;};
+    default = {};
+  };
   globals = {
     preconf = x: x;
     builder = x: {globals = x;};

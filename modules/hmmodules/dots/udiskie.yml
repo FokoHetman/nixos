@@ -1,0 +1,9 @@
+program_options:
+  tray: true
+  menu: nested
+  notify: true
+device_config:
+  - device_file: /dev/loop*
+    ignore: true
+ignore_device:
+  - id_uuid: BC76714876710504

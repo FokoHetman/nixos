@@ -1,23 +1,51 @@
 {inputs, self, ...}: {
   flake.nixosConfigurations.fokopc = inputs.nixpkgs.lib.nixosSystem {
-    modules = [
-      self.nixosModules.fokopc-hardware
-      self.nixosModules.bootloader-grub
-      self.nixosModules.support-ntfs
-      self.nixosModules.packages-common-big
-      self.nixosModules.packages-fok
-      self.nixosModules.openssh
-      self.nixosModules.builder
-      self.nixosModules.nix
-      self.nixosModules.nixpkgs
-      self.nixosModules.user-foko
-      self.nixosModules.sops
-      self.nixosModules.xserver
-      self.nixosModules.xmonad
-      #self.nixosModules.user-nathan
+    modules = with self.nixosModules; [
+      fokopc-hardware
+      bootloader-grub
+      support-ntfs
+
+      packages-common-big
+      packages-graphical
+      packages-fok
+
+      builder
+      nix
+      nixpkgs
+      sops
+
+      xserver
+      xmonad
+
+      user-foko
+      user-nathan
+      user-toast
+
+      openssh
+      security
+      blueman
+      pcscd
+      default-networking
+      minecraft
+      internalisation
+      tailnet
+      proxychains
+      
+      sessions
+      keymanagement
+      
+      steam
+      adb
+      wireshark
+      firejail
+
+      state-version
     ];
   };
   flake.nixosModules.fokopc-hardware = {config, pkgs, lib, ...}: {
+    time.timeZone = "Poland";
+
+    networking.hostName = "fokopc";
     nixpkgs.config.cudaSupport = true;
     nixpkgs.config.allowUnfree = true;
 
@@ -77,11 +105,22 @@
     networking.interfaces.enp6s0.wakeOnLan.enable=true;
   };
   flake.nixosModules.fokopc-services = {config, pkgs, lib, ...}: {
+    blueman.enable = true;
+    printing.enable = true;
     services.xserver.videoDrivers = ["nvidia"];
     rainworld = {
       enable = true;
       steamkey_path = config.sops.secrets.steam_key.path;
       steamid_path = config.sops.secrets.steam_id.path;
+    };
+    environment = {
+      sessionVariables = {
+        MOZ_ENABLE_WAYLAND = 1;
+        STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
+      };
+      variables = {
+        EDITOR = "nvim";
+      };
     };
   };
 }

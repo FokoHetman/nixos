@@ -1,7 +1,7 @@
 {...}:
 {
   flake.nixosModules.wireshark = {...}: {
-    wireshark.enable = true;
+    programs.wireshark.enable = true;
     users.users.foko.extraGroups = ["wireshark"];
   };
 }
