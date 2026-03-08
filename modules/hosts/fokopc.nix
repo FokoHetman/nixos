@@ -57,7 +57,8 @@
     hardware.enableRedistributableFirmware = lib.mkDefault true;
     boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
     boot.initrd.kernelModules = [ ];
-    boot.kernelModules = [ "kvm-intel" ];
+    boot.kernelModules = [ "kvm-intel" "nvidia_drm" ];
+    boot.kernelParams = [ "nvidia-drm.modeset=1" ];
     boot.extraModulePackages = [ ];
     boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
