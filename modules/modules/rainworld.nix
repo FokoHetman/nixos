@@ -128,6 +128,7 @@ in {
     config = mkIf cfg.enable {
       system.activationScripts."rainworld_glyphs" = ''
         GLYPHS=$(${generateGlyphs}/bin/generate_glyphs)
+        echo $GLYPHS
         [ -n "$GLYPHS" ] && echo $GLYPHS > /tmp/glyphs.txt
       '';
     };

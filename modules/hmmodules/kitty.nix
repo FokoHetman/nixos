@@ -19,7 +19,7 @@
             "U+E100-U+E160"
           ];
         in
-          (builtins.concatStringsSep "," mappings) + " RainWorld";
+          (builtins.concatStringsSep "," mappings) + " RainWorldSymbols";
       };
     };
   };
