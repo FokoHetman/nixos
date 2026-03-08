@@ -5,6 +5,9 @@
       bashrcExtra = ''
       export SSH_AUTH_SOCK="/run/user/1000/ssh-agent.socket"
       export FIGNORE=.lock
+      if [ "$TERM" = "linux" ]; then
+        echo -en "\e]P0282828"
+      fi
       if [[ $- == *i* ]]
       then
         fokquote
