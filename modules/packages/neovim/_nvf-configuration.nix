@@ -160,6 +160,7 @@
 
     /* LANGUAGE */
     languages = {
+      enableExtraDiagnostics = true;
       enableTreesitter = true;
 
       markdown.enable = true;
@@ -192,6 +193,7 @@
         blacklist = [".java"];
       };
     };
+    treesitter.context.enable = true;
     filetree.neo-tree.enable = true;
     statusline.lualine.enable = true;
     telescope = {
@@ -199,7 +201,7 @@
       mappings.findFiles = "<C-f>";
       mappings.liveGrep = "<C-g>";
     };
-    autocomplete.nvim-cmp.enable = true;
+    autocomplete.blink-cmp.enable = true;
     lsp.enable = true;
     lsp.otter-nvim.enable = true;
     mini.tabline.enable = true;
@@ -299,7 +301,6 @@ require("obsidian").setup {
 
   -- Optional, boolean or a function that takes a filename and returns a boolean.
   -- `true` indicates that you don't want obsidian.nvim to manage frontmatter.
-  disable_frontmatter = false,
 
 
   -- Sets how you follow URLs
@@ -353,13 +354,6 @@ require("obsidian").setup {
   backlinks = {
     parse_headers = true,
   },
-
-
-  sort_by = "modified",
-  sort_reversed = true,
-
-  -- Set the maximum number of lines to read from notes on disk when performing certain searches.
-  search_max_lines = 1000,
 
   -- Optional, determines how certain commands open notes. The valid options are:
   -- 1. "current" (the default) - to always open in the current window
@@ -445,20 +439,19 @@ require("obsidian").setup {
         '';
       };
       nabla.package = nabla-nvim;
-      nvim-treesitter.package = (nvim-treesitter.withPlugins (
-          plugins: with pkgs.tree-sitter-grammars; [
-            tree-sitter-c
-            tree-sitter-cpp
-            tree-sitter-html
-            tree-sitter-latex
-            tree-sitter-lua
-            tree-sitter-nix
-            tree-sitter-python
-            tree-sitter-rust
-            tree-sitter-toml
-            tree-sitter-godot-resource
-          ]
-        ));
+      /*nvim-treesitter.package = pkgs.vimPlugins.nvim-treesitter.withPlugins (p: with pkgs.tree-sitter-grammars; [
+          tree-sitter-c
+          tree-sitter-cpp
+          tree-sitter-html
+          tree-sitter-latex
+          tree-sitter-lua
+          tree-sitter-nix
+          tree-sitter-python
+          tree-sitter-rust
+          tree-sitter-toml
+          tree-sitter-godot-resource
+          tree-sitter-norg
+      ]);*/
       mini-starter = let 
         headerFile = ./header.txt;
       in {

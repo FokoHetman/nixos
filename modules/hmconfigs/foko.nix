@@ -13,11 +13,10 @@
       self.homeModules.udiskie
       self.homeModules.ghci
       self.homeModules.lwp
-      self.homeModules.neofetch
       
-      self.homeModules.quickshell
-      self.homeModules.hyprlock
-      self.homeModules.hyprland
+      #self.homeModules.quickshell
+      #self.homeModules.hyprlock
+      #self.homeModules.hyprland
       self.homeModules.tmux
       self.homeModules.git
       self.homeModules.rofi

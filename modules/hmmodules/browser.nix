@@ -1,6 +1,9 @@
 {inputs, ...}: {
   flake.homeModules.browser = {pkgs, ...}: {
     programs = rec {
+      qutebrowser = {
+        enable = true;
+      };
       librewolf = {
         enable = true;
         profiles.foko = {

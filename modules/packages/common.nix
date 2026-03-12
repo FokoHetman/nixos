@@ -6,7 +6,7 @@ let
     hashcat
     bluez
     nixd
-    pkg-config neofetch pinentry-curses vim bat
+    pkg-config pinentry-curses vim bat
     self.packages.${pkgs.system}.nvim
     self.packages.${pkgs.system}.ffmpegxcb
     nmap wget git curl
@@ -38,7 +38,7 @@ let
     zathura
     texlab
     texliveMedium
-    self.packages.${pkgs.system}.packettracer
+    #self.packages.${pkgs.system}.packettracer
     blender
     krita
     drawio

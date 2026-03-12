@@ -21,7 +21,7 @@
       xmonad
 
       user-foko
-      user-nathan
+      #user-nathan
       user-toast
 
       openssh
@@ -35,7 +35,7 @@
       tailnet
       proxychains
       
-      sessions
+      #sessions
       keymanagement
       
       steam
