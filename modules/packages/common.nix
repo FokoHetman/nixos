@@ -39,7 +39,7 @@ let
     texlab
     texliveMedium
     #self.packages.${pkgs.system}.packettracer
-    blender
+    self.packages.${pkgs.system}.blender
     krita
     drawio
     prismlauncher
@@ -50,7 +50,7 @@ let
     xclip scrot grim slurp fuzzel libnotify dunst
     wl-clipboard wf-recorder imagemagick
 
-    blender anki obsidian davinci-resolve orca-slicer
+    anki obsidian davinci-resolve orca-slicer
 
     (heroic.override {
         extraPkgs = pkgs: [

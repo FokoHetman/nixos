@@ -1,5 +1,5 @@
-{inputs,...}: let username = "foko"; in {
-  flake.nixosModules.sops = {pkgs,...}: {
+{inputs, ...}: let username = "foko"; in {
+  flake.nixosModules.sops = {pkgs,config,...}: {
     imports = [inputs.sops-nix.nixosModules.sops];
     sops.defaultSopsFile = ./secrets.yaml;
     sops.defaultSopsFormat = "yaml";

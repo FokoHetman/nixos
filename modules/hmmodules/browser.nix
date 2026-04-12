@@ -11,7 +11,7 @@
             color = "red";
             icon = "fruit";
           };
-          extensions = with (inputs.nur.overlay pkgs pkgs).nur.repos.rycee.firefox-addons; [
+          extensions = with (inputs.nur.overlays.default pkgs pkgs).nur.repos.rycee.firefox-addons; [
             firefox-color
             sidebery
             sponsorblock

@@ -10,6 +10,11 @@
     };
     #package = inputs.nixvim.packages.${pkgs.system}.default;
 
+
+    visuals.indent-blankline = {
+      enable = true;
+    };
+
     /* THEME */
 
     theme = {
@@ -193,7 +198,14 @@
         blacklist = [".java"];
       };
     };
-    treesitter.context.enable = true;
+    treesitter = {
+      context.enable = true;
+      fold = true;
+      grammars = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
+        regex
+        kdl
+      ];
+    };
     filetree.neo-tree.enable = true;
     statusline.lualine.enable = true;
     telescope = {
@@ -271,7 +283,7 @@
     extraPlugins = with pkgs.vimPlugins; {
       telescope-undo.package = telescope-undo-nvim;
       vim-godot.package = vim-godot;
-      obsidian = {
+      /*obsidian = {
         package = obsidian-nvim;
         setup = ''
 vim.o.conceallevel = 2
@@ -437,7 +449,7 @@ require("obsidian").setup {
   },
 }
         '';
-      };
+      };*/
       nabla.package = nabla-nvim;
       /*nvim-treesitter.package = pkgs.vimPlugins.nvim-treesitter.withPlugins (p: with pkgs.tree-sitter-grammars; [
           tree-sitter-c

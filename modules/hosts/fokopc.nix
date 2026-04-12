@@ -25,6 +25,7 @@
       user-toast
 
       openssh
+      radicle
       security
       gnupg
       blueman
@@ -54,6 +55,7 @@
     nixpkgs.config.allowUnfree = true;
 
     security.rtkit.enable = true;
+    hardware.xpadneo.enable = true;
     hardware.enableRedistributableFirmware = lib.mkDefault true;
     boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
     boot.initrd.kernelModules = [ ];

@@ -7,6 +7,8 @@
         size = 12;
       };
       settings = {
+        clipboard_automatic = true;
+        paste_actions = "replace-dangerous-control-codes";
         confirm_os_window_close = 0;
         tab_bar_min_tabs = 1;
         tab_bar_edge = "bottom";

@@ -20,9 +20,10 @@
     };
     home-manager.users.foko = self.homeConfigurations.foko;
     xdg.portal = {
-      enable = true;
-      extraPortals = [pkgs.xdg-desktop-portal-gtk ];
+      #enable = true;
+      #extraPortals = [pkgs.xdg-desktop-portal-gtk ];
     };
+    programs.dconf.enable = true;
     fonts = {
       fontDir.enable = true;
       enableGhostscriptFonts = true;
