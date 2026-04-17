@@ -11,9 +11,7 @@
     #package = inputs.nixvim.packages.${pkgs.system}.default;
 
 
-    visuals.indent-blankline = {
-      enable = true;
-    };
+    visuals.indent-blankline.enable = true;
 
     /* THEME */
 
@@ -168,6 +166,8 @@
       enableExtraDiagnostics = true;
       enableTreesitter = true;
 
+      kotlin.enable = true;
+
       markdown.enable = true;
       css.enable = true;
 
@@ -200,7 +200,7 @@
     };
     treesitter = {
       context.enable = true;
-      fold = true;
+      fold = false;
       grammars = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
         regex
         kdl
@@ -514,7 +514,7 @@ require("mini.starter").setup({
       lazy = true; # Changed this
       ft = "tex"; # Added this
       setupOpts = {
-        init = ''
+        init = /*lua*/''
           vim.g.vimtex_view_method = "zathura"
           vim.g.vimtexd_view_forward_search_on_start = false
           vim.g.vimtexd_compiler_latexmk = {
@@ -524,13 +524,12 @@ require("mini.starter").setup({
         '';
       };
       # Added this
-      after = ''
+      after = /*lua*/''
         vim.api.nvim_command('unlet b:did_ftplugin')
         vim.api.nvim_command('call vimtex#init()')
       '';
     };
-  };
-  vim.luaConfigPre = ''
+    luaConfigPre = /*lua*/''
     linting = true
     local toggle_lint = function()
       linting = not linting
@@ -540,5 +539,18 @@ require("mini.starter").setup({
         vim.diagnostic.hide()
       end
     end
-  '';
+    '';
+    luaConfigPost = /*lua*/ ''
+    -- force default vim indentation for haskell files, as nvim-treesitter breaks it apparently.
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = "haskell",
+      callback = function()
+        vim.opt_local.indentexpr = ""
+        vim.opt_local.autoindent = true
+        vim.opt_local.smartindent = false
+        vim.opt_local.cindent = false
+      end,
+    })
+    '';
+  };
 }

@@ -2,14 +2,15 @@
   description = "fokflakefokflakefokflakefokflakefokflakefokflakefokflakefokflakefokflakefokflakefokflake";
 
   inputs = {
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    #nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
     nur.url = "github:nix-community/nur";
     nur.inputs.nixpkgs.follows = "nixpkgs";
 
-    nvf.url = "github:NotAShelf/nvf/v0.8";
+    nvf.url = "github:NotAShelf/nvf/main";
+    nvf.inputs.nixpkgs.follows = "nixpkgs";
 
     nathan.url = "github:poollovernathan/nixos";
     nathan.inputs.nixpkgs.follows = "nixpkgs";

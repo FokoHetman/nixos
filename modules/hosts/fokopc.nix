@@ -25,7 +25,7 @@
       user-toast
 
       openssh
-      radicle
+      #radicle
       security
       gnupg
       blueman
