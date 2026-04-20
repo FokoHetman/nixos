@@ -35,6 +35,7 @@
       fokmail
       hetmanat
       nginx
+      torrent-server
     ];
   };
   flake.nixosModules.fokopi-hardware = {config, pkgs, lib, ...}: {

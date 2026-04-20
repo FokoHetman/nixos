@@ -7,7 +7,7 @@
 
       dev-haskell
 
-      packages-common-big
+      packages-common
       packages-graphical
       packages-fok
 
@@ -31,7 +31,9 @@
       proxychains
 
       keymanagement
-      
+ 
+      steam
+
       wireshark
       firejail
 

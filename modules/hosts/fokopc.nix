@@ -129,6 +129,7 @@
       variables = {
         EDITOR = "nvim";
       };
+      systemPackages = [pkgs.hyprland];
     };
   };
 }
