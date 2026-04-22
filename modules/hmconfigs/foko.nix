@@ -45,7 +45,6 @@
       self.homeModules.lf
       self.homeModules.kitty
       self.homeModules.ghci
-      self.homeModules.neofetch
       self.homeModules.tmux
       self.homeModules.git
       self.homeModules.bash

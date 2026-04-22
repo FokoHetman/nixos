@@ -8,7 +8,6 @@ let
     nixd
     pkg-config pinentry-curses vim bat
     self.packages.${pkgs.system}.nvim
-    self.packages.${pkgs.system}.ffmpegxcb
     nmap wget git curl
     zip unzip
     ncurses
@@ -16,14 +15,19 @@ let
 
     self.packages.${pkgs.system}.ns
   ];
+  small = pkgs: with pkgs; [
+    ffmpeg
+  ];
   big = pkgs: with pkgs; [
     asciinema_3
+  ];
+  graphical = pkgs: with pkgs; [
+    self.packages.${pkgs.system}.ffmpegxcb
+    cudatoolkit
     alsa-lib
     alsa-utils
     feedbackd
-    cudatoolkit
-  ];
-  graphical = pkgs: with pkgs; [
+
     godot_4
     gdtoolkit_4
 
@@ -62,6 +66,9 @@ let
 in {
   flake.nixosModules.packages-common = { pkgs, ...}: {
     environment.systemPackages = common pkgs;
+  };
+  flake.nixosModules.packages-common-small = { pkgs, ...}: {
+    environment.systemPackages = common pkgs ++ small pkgs;
   };
   flake.nixosModules.packages-common-big = { pkgs, ...}: {
     environment.systemPackages = common pkgs ++ big pkgs;

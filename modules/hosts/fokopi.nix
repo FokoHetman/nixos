@@ -9,6 +9,7 @@
       dev-haskell
 
       packages-common-big
+      packages-common-small
       packages-fok
       
       openssh
@@ -24,13 +25,14 @@
       blueman
       pcscd
 
-      user-foko
-      user-nathan
+      user-foko-small
+      #user-nathan
       
       default-networking
       internalisation
       state-version
 
+      gitserver
       matrix-server
       fokmail
       hetmanat
@@ -40,6 +42,7 @@
   };
   flake.nixosModules.fokopi-hardware = {config, pkgs, lib, ...}: {
     time.timeZone = "Poland";
+    networking.hostName = "fokopi";
 
 
     hardware.enableRedistributableFirmware = lib.mkDefault true;

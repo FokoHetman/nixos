@@ -54,6 +54,7 @@
       backupFileExtension = "backup";
     };
     home-manager.users.foko = self.homeConfigurations.foko-small;
+    programs.dconf.enable = true;
     xdg.portal = {
       enable = true;
       extraPortals = [pkgs.xdg-desktop-portal-gtk ];
