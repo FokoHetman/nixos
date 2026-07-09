@@ -77,7 +77,13 @@
         action = "<C-U>TmuxNavigateLeft<CR>";
       }*/
 
-
+      {
+        key = "<leader>e";
+        unique = true;
+        desc = "Launch terminal in new buffer.";
+        mode = "n";
+        action = "<cmd>lua require(\"nabla\").popup()<CR>";
+      }
       {
         key = "<C-j>";
         unique = true;
@@ -120,19 +126,13 @@
         key = "gb";
         desc = "go to prev buffer";
         mode = "n";
-        action = "<cmd>bprev<CR>";
+        action = ":bprev<CR>";
       }
       {
         key = "gt";
         desc = "go to next buffer";
         mode = "n";
-        action = "<cmd>bnext<CR>";
-      }
-      {
-        key = "gb";
-        desc = "go to prev buffer";
-        mode = "n";
-        action = "<cmd>bprev<CR>";
+        action = ":bnext<CR>";
       }
 
       {
@@ -181,6 +181,8 @@
 
       lua.enable = true;
       ts.enable = true;
+      
+      tex.enable = true;
     };
     /* END LANGUAGE */
 
@@ -507,6 +509,7 @@ require("mini.starter").setup({
     startPlugins = with pkgs.vimPlugins; [
       vimtex
       haskell-tools-nvim
+      bigfile-nvim
     ];
     lazy.plugins.vimtex = {
       enabled = true;

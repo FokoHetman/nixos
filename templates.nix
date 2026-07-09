@@ -8,7 +8,7 @@ let
   };
 in rec {
   perSystem = {
-    preconf = x: builtins.mapAttrs (name: f: builtins.listToAttrs (map (arch: {name = arch; value = f {pkgs=mkPkgs arch;};}) architectures)) x;
+    preconf = x: builtins.mapAttrs (name: f: builtins.listToAttrs (map (arch: {name = arch; value = f {pkgs=mkPkgs arch;system=arch;};}) architectures)) x;
     builder = x: x;
     default = {};
   };

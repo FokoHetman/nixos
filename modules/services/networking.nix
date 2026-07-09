@@ -1,6 +1,7 @@
 {...}: {
   flake.nixosModules.default-networking = {...}: {
     networking = {
+      dhcpcd.wait = "background";
       wireless = {
         enable = true;
         userControlled.enable=true;
@@ -27,6 +28,22 @@
       firewall.enable = true;
       #firewall.allowedTCPPorts = [22 25 44 80 443 2137 2138 5900 5901 8000 8080 25565 51413];
       #firewall.allowedUDPPorts = [5900 5901 25565 51413];
+      hosts = {
+        "127.0.0.1" = [
+          "chatgpt.com" "www.chatgpt.com" "openai.com" "www.openai.com" "api.openai.com" "chat.openai.com" "platform.openai.com"
+          "gemini.google.com" "bard.google.com" "ai.google.com" "makersuite.google.com"
+          "anthropic.com" "www.anthropic.com" "claude.ai" "www.claude.ai" "api.anthropic.com"
+          "perplexity.ai" "www.perplexity.ai" "labs.perplexity.ai" "api.perplexity.ai"
+          "meta.ai" "www.meta.ai" "ai.facebook.com"
+          "mistral.ai" "www.mistral.ai" "api.mistral.ai"
+          "x.ai" "www.x.ai" "grok.x.ai" "api.x.ai"
+          "cohere.com" "www.cohere.com" "api.cohere.ai"
+          "cloud.ibm.com" "watson.ibm.com"
+          "cke.gov.pl"
+          
+          "paradise-s1.battleye.com" "test-s1.battleye.com" "paradiseenhanced-s1.battleye.com"
+        ];
+      };
     };
   };
 }

@@ -17,6 +17,8 @@
       nixpkgs
       sops
 
+      #monsters-fat-seal
+
       xserver
       xmonad
 
@@ -32,13 +34,17 @@
       pcscd
       default-networking
       minecraft
+      scp
       internalisation
       tailnet
       proxychains
       
       #sessions
       keymanagement
-      
+ 
+      fokmail
+      fokshell
+
       steam
       adb
       wireshark

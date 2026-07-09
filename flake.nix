@@ -53,6 +53,11 @@
       url = "github:nixos/mobile-nixos";
       flake = false;
     };
+
+    fokshell = {
+      url = "github:fokohetman/fokshell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     
     blackmarket.type = "git";
     blackmarket.url = "https://git.hetman.at/blackmarket";

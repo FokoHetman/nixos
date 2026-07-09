@@ -1,5 +1,6 @@
 {self, ...}: {
   flake.nixosModules.gitserver = {pkgs, ...}: {
+    services.openssh.settings.AllowUsers = ["git"];
     users.users.git = {
       isNormalUser = true;
       packages = with pkgs; [

@@ -26,6 +26,7 @@
       pcscd
 
       user-foko-small
+      user-solina
       #user-nathan
       
       default-networking
@@ -38,6 +39,7 @@
       hetmanat
       nginx
       torrent-server
+      foknet
     ];
   };
   flake.nixosModules.fokopi-hardware = {config, pkgs, lib, ...}: {

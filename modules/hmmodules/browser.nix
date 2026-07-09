@@ -11,6 +11,9 @@
             color = "red";
             icon = "fruit";
           };
+          settings = {
+            "general.useragent.override" = "Gleep Glorp Browser (Dos) 1921 (KHTML, like Gecko) Chrome/Mosin/Nagant/136.6";
+          };
           extensions = with (inputs.nur.overlays.default pkgs pkgs).nur.repos.rycee.firefox-addons; [
             firefox-color
             sidebery
@@ -28,6 +31,13 @@
             order = [ "ddg" "google" ];
           };
           search.engines = {
+            "Jisho" = {
+              urls = [{
+                template = "https://jisho.org/search/{searchTerms}";
+              }];
+              icon="https://jisho.org/favicon.ico";
+              definedAliases = [ "@ji" "@ja" ];
+            };
             "Nix Packages" = {
               urls = [{
                 template = "https://search.nixos.org/packages";

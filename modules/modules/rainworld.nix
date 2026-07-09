@@ -89,8 +89,6 @@ def getGlyph(s):
 
 user = requests.get(f"https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key={steam_key}&steamid={user_id}&language={language}&appid=312520&format=json").json()
 
-print(user)
-print(user["playerstats"])
 achievements = []
 for i in user["playerstats"]["achievements"]:
   if i["achieved"]:
